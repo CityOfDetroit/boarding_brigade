@@ -1,2 +1,2 @@
-# boarding_brigade
+# Boarding Brigade
 Help keep track of the home boarding program for the City of Detroit.
