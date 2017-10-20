@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Boarding Brigade | City of Detroit</title>
+  <meta name="description" content="Help keep track of the home boarding program for the City of Detroit.">
+  <meta name="author" content="Edgar Montes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <!--build:css css/styles.min.css-->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css" type="text/css" />
+  <link href="css/styles.css" rel="stylesheet" />
+  <!--endbuild-->
+</head>
+<body>
+  <section id="initial-loader-overlay" class="">
+    <article>
+      <div>
+        <div class="loader">
+          <div class="loader__bar"></div>
+          <div class="loader__bar"></div>
+          <div class="loader__bar"></div>
+          <div class="loader__bar"></div>
+          <div class="loader__bar"></div>
+          <div class="loader__ball"></div>
+        </div>
+        <p>LOADING</p>
+      </div>
+    </article>
+  </section>
+  <section id="alert-overlay" class="">
+    <article>
+      <span class="close">x</span>
+      <div></div>
+    </article>
+  </section>
+  <section id="drill-down-overlay" class="">
+    <article>
+      <span class="close">x</span>
+      <div></div>
+    </article>
+  </section>
+  <input type="checkbox" id="menu" />
+  <label for="menu" class="menu">
+    <span></span>
+    <span></span>
+    <span></span>
+    MENU
+  </label>
+  <nav class="nav">
+  	<section id="panel-container">
+  	  <article class="panel-tabs">
+  	    <div class="tab-btn active">
+  	      <img src="img/bars.png" alt="stats">
+          STAT
+  	    </div>
+        <div class="tab-btn">
+  	      <img src="img/route.png" alt="layers">
+          LAYER
+  	    </div>
+        <div class="tab-btn">
+  	      <img src="img/settings.png" alt="settings">
+          SET
+  	    </div>
+        <div class="tab-btn">
+  	      <img src="img/question.png" alt="form">
+          FORM
+  	    </div>
+  	  </article>
+      <article class="panel-content">
+        <article class="title">
+          <h1>City of Detroit</h1>
+        </article>
+        <article class="highlights">
+          <div class="item">
+            <h2>150<br><span>BOARDED</span></h2>
+          </div>
+          <div class="item">
+            <h2>72<br><span>NEED BOARDING</span></h2>
+          </div>
+        </article>
+      </article>
+  	</section>
+  </nav>
+  <main>
+    <article class="logo">
+      <img src="img/logo-220x220.jpg" alt="City of Detroit">
+    </article>
+    <section class="map-panel">
+      <article id="map"></article>
+    </section>
+  </main>
+  <script src="js/app.main.js"></script>
+</body>
+</html>

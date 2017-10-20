@@ -1,0 +1,33 @@
+{
+  "name": "Boarding-Brigade",
+  "version": "1.0.0",
+  "description": "Help keep track of the home boarding program for the City of Detroit.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CityOfDetroit/boarding_brigade.git"
+  },
+  "scripts": {
+    "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
+  },
+  "author": "Edgar Montes",
+  "license": "MIT",
+  "devDependencies": {
+    "@turf/turf": "^4.7.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.18.13",
+    "browserify": "^14.4.0",
+    "geojson": "^0.5.0",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "mapbox-gl": "^0.41.0",
+    "mapbox-gl-geocoder": "^2.0.1",
+    "terraformer-arcgis-parser": "^1.0.5",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.23.0"
+  }
+}
