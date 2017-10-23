@@ -79,6 +79,15 @@ import Connector from './connector.class.js';
         }
       }
     ]
+  },{
+    lat: 0,
+    lng: 0,
+    zoom: 0
+  });
+  console.log(controller);
+  controller.map.map.on("zoom", function(e, parent = this) {
+    console.log(controller.map.map.getZoom());
+    controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
   });
   controller.map.map.on("mousemove", function(e, parent = this) {
     try {

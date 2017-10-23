@@ -1,45 +1,47 @@
 'use strict';
 import Map from './map.class.js';
 import Connector from './connector.class.js';
-import mapboxgl from 'mapbox-gl';
 import Panel from './panel.class.js';
+import Router from './router.class.js';
+import mapboxgl from 'mapbox-gl';
 const turf = require('@turf/simplify');
 const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
-  constructor(init) {
+  constructor(map, router) {
     this.panel = new Panel();
-    this.map = new Map(init);
-    console.log(this.panel);
-    // this.initialLoad();
+    this.map = new Map(map);
+    this.router = new Router(router);
+    this.initialLoad();
   }
   initialLoad(){
-    let tempDate = new Date(this.surveyPeriod.start);
-    document.getElementById('start-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
-    tempDate = new Date(this.surveyPeriod.end);
-    document.getElementById('end-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
-    let tempParent = this;
-    Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants_admin_info/', function(response){
-      Connector.postData("https://cors-anywhere.herokuapp.com/"+"https://gisweb.glwater.org/arcgis/tokens/generateToken", JSON.parse(response).data, function(response){
-        // console.log(response);
-        tempParent.token = response;
-        Connector.getData('https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/HydrantCompanies/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=geojson', function(response){
-          // console.log(JSON.parse(response));
-          let tempHTML = "";
-          tempParent.cityData.companies = {};
-          JSON.parse(response).features.forEach(function(company){
-            tempHTML += '<option value="' + company.properties.new_engine + '"></option>';
-            tempParent.cityData.companies[""+ company.properties.new_engine] =  {inspected: 0, total: 0};
-          });
-          document.getElementById("company-list").innerHTML = tempHTML;
-          Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants/', function(response){
-            // console.log(JSON.parse(response));
-            tempParent.cityData.hydrants = JSON.parse(response);
-            tempParent.loadCityData(tempParent);
-          });
-        });
-      });
-    });
+    this.panel.createView('stats', {boarded: 150, needBoarding: 75});
+    // let tempDate = new Date(this.surveyPeriod.start);
+    // document.getElementById('start-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
+    // tempDate = new Date(this.surveyPeriod.end);
+    // document.getElementById('end-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
+    // let tempParent = this;
+    // Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants_admin_info/', function(response){
+    //   Connector.postData("https://cors-anywhere.herokuapp.com/"+"https://gisweb.glwater.org/arcgis/tokens/generateToken", JSON.parse(response).data, function(response){
+    //     // console.log(response);
+    //     tempParent.token = response;
+    //     Connector.getData('https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/HydrantCompanies/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=geojson', function(response){
+    //       // console.log(JSON.parse(response));
+    //       let tempHTML = "";
+    //       tempParent.cityData.companies = {};
+    //       JSON.parse(response).features.forEach(function(company){
+    //         tempHTML += '<option value="' + company.properties.new_engine + '"></option>';
+    //         tempParent.cityData.companies[""+ company.properties.new_engine] =  {inspected: 0, total: 0};
+    //       });
+    //       document.getElementById("company-list").innerHTML = tempHTML;
+    //       Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants/', function(response){
+    //         // console.log(JSON.parse(response));
+    //         tempParent.cityData.hydrants = JSON.parse(response);
+    //         tempParent.loadCityData(tempParent);
+    //       });
+    //     });
+    //   });
+    // });
   }
   loadCityData(controller){
     document.querySelector('.tabular-titles').innerHTML = "";
