@@ -15,7 +15,7 @@ export default class Controller {
     this.initialLoad();
   }
   initialLoad(){
-    this.panel.createView('stats', {boarded: 150, needBoarding: 75});
+    this.createPanelData('STAT', this);
     // let tempDate = new Date(this.surveyPeriod.start);
     // document.getElementById('start-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
     // tempDate = new Date(this.surveyPeriod.end);
@@ -42,6 +42,27 @@ export default class Controller {
     //     });
     //   });
     // });
+  }
+  createPanelData(view, controller){
+    console.log(view);
+    console.log(controller);
+    switch (view) {
+      case 'STAT':
+        console.log('creating stats data');
+        controller.panel.createView(view,{title: "City of Detroit", boarded: 76, needBoarding: 132}, controller.panel);
+        break;
+      case 'LAYER':
+        console.log('creating layers data');
+        break;
+      case 'SET':
+        console.log('creating settings data');
+        break;
+      case 'FORM':
+        console.log('creating forms data');
+        break;
+      default:
+        console.log('invalid view reverting back');
+    }
   }
   loadCityData(controller){
     document.querySelector('.tabular-titles').innerHTML = "";

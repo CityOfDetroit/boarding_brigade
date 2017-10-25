@@ -84,7 +84,16 @@ import Connector from './connector.class.js';
     lng: 0,
     zoom: 0
   });
-  console.log(controller);
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click',function(ev){
+      if(ev.target.tagName === "DIV"){
+        controller.createPanelData(ev.target.children[1].innerText, controller)
+      }else{
+        controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
+      }
+    });
+  })
   controller.map.map.on("zoom", function(e, parent = this) {
     console.log(controller.map.map.getZoom());
     controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
