@@ -1,0 +1,18 @@
+{
+  "dataSets":[
+    {
+      "id": "boarded",
+      "name": "Boarded"
+    },
+    {
+      "id": "needBoarding",
+      "name": "Need Boarding"
+    }
+  ],
+  "boundaries":[
+    {
+      "id": "council",
+      "name": "Council Districts"
+    }
+  ]
+}

@@ -16,32 +16,6 @@ export default class Controller {
   }
   initialLoad(){
     this.createPanelData('STAT', this);
-    // let tempDate = new Date(this.surveyPeriod.start);
-    // document.getElementById('start-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
-    // tempDate = new Date(this.surveyPeriod.end);
-    // document.getElementById('end-date').value = (tempDate.getMonth()+1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
-    // let tempParent = this;
-    // Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants_admin_info/', function(response){
-    //   Connector.postData("https://cors-anywhere.herokuapp.com/"+"https://gisweb.glwater.org/arcgis/tokens/generateToken", JSON.parse(response).data, function(response){
-    //     // console.log(response);
-    //     tempParent.token = response;
-    //     Connector.getData('https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/HydrantCompanies/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=geojson', function(response){
-    //       // console.log(JSON.parse(response));
-    //       let tempHTML = "";
-    //       tempParent.cityData.companies = {};
-    //       JSON.parse(response).features.forEach(function(company){
-    //         tempHTML += '<option value="' + company.properties.new_engine + '"></option>';
-    //         tempParent.cityData.companies[""+ company.properties.new_engine] =  {inspected: 0, total: 0};
-    //       });
-    //       document.getElementById("company-list").innerHTML = tempHTML;
-    //       Connector.getData('https://apis.detroitmi.gov/data_cache/hydrants/', function(response){
-    //         // console.log(JSON.parse(response));
-    //         tempParent.cityData.hydrants = JSON.parse(response);
-    //         tempParent.loadCityData(tempParent);
-    //       });
-    //     });
-    //   });
-    // });
   }
   createPanelData(view, controller){
     console.log(view);
@@ -49,19 +23,77 @@ export default class Controller {
     switch (view) {
       case 'STAT':
         console.log('creating stats data');
-        controller.panel.createView(view,{title: "City of Detroit", boarded: 76, needBoarding: 132}, controller.panel);
+        const url = 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=PbQEdKIr7l-BB7bmiviGJE34VD2zz3Uph9tYIoM2_TKVLWmvm0QfQGLx_ooVXTNoahNxCE9HvRUQ6mkj_VWUJSnHEdKN3btRhL8z1iR96qxFNi4qg0POMeJdG_za9m9Kx-r7mzvxSMMCPtF7GY0-PwddLXIv-4YqnqgBi-NsK4Xg8kw0zDaSBSvZLp3ro_h5xEwpffkxtXmVBo5ks4ixP0je_XCixBbzuPQCL1ruU7c602j7FlToULceqYzHYpaD';
+        fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          let dataObj= {title: "City of Detroit", boarded: 0, needBoarding: 0};
+          data.features.forEach(function(item){
+            (item.properties.property_secure === 'yes') ? dataObj.boarded++ : dataObj.needBoarding++;
+          });
+          controller.panel.createView(view, dataObj, controller);
+        })
         break;
       case 'LAYER':
         console.log('creating layers data');
+        const layerURL = 'js/layers.json';
+        fetch(layerURL)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          controller.panel.createView(view, data, controller);
+        })
         break;
       case 'SET':
         console.log('creating settings data');
+        controller.panel.createView(view, null, controller);
         break;
       case 'FORM':
         console.log('creating forms data');
+        controller.panel.createView(view, null, controller);
         break;
       default:
         console.log('invalid view reverting back');
+    }
+  }
+  layerAddRemove(id, actionType, controller){
+    console.log(id);
+    console.log(controller);
+    console.log(document.getElementById(id));
+    if(actionType === 'add'){
+      console.log('add layer');
+      if(controller.map.map.getLayer(id)){
+        console.log('layer already exist');
+      }else{
+        console.log('adding');
+        let color = null;
+        let property = null;
+        if(id === "boarded"){
+          color = "#00a0db";
+          property = "yes";
+        }else{
+          color = "#db9700";
+          property = "no";
+        }
+        controller.map.map.addLayer({
+          "id": id,
+          "source": "boardups",
+          "type": "circle",
+          "paint": {
+            "circle-radius": 5,
+            "circle-color": color
+          },
+          "filter": ["==", "property_secure", property]
+        });
+      }
+    }else{
+      if(controller.map.map.getLayer(id)){
+        console.log('removing layer');
+        controller.map.map.removeLayer(id);
+      }else{
+        console.log('layer does not exist');
+      }
     }
   }
   loadCityData(controller){

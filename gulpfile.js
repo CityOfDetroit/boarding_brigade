@@ -34,6 +34,7 @@ gulp.task('browserSync', function() {
     server: {
       baseDir: 'dist'
     },
+    https: true
   });
 });
 
@@ -42,6 +43,7 @@ gulp.task('watch', function () {
     gulp.watch('app/*.html', ['copy']);
     gulp.watch('app/**/*.scss', ['sass']);
     gulp.watch('app/scss/**/*.scss', ['sass']);
+    gulp.watch('dist/**/*.css', browserSync.reload);
     gulp.watch('dist/**/*.js', browserSync.reload);
     gulp.watch('dist/*.html', browserSync.reload);
 });

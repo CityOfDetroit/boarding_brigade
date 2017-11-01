@@ -26,11 +26,16 @@ import Connector from './connector.class.js';
         id: "council-labels",
         type: "geojson",
         data: 'https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/3/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token='
+      },
+      {
+        id: "boardups",
+        type: "geojson",
+        data: 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=PbQEdKIr7l-BB7bmiviGJE34VD2zz3Uph9tYIoM2_TKVLWmvm0QfQGLx_ooVXTNoahNxCE9HvRUQ6mkj_VWUJSnHEdKN3btRhL8z1iR96qxFNi4qg0POMeJdG_za9m9Kx-r7mzvxSMMCPtF7GY0-PwddLXIv-4YqnqgBi-NsK4Xg8kw0zDaSBSvZLp3ro_h5xEwpffkxtXmVBo5ks4ixP0je_XCixBbzuPQCL1ruU7c602j7FlToULceqYzHYpaD'
       }
     ],
     layers: [
       {
-        "id": "council-fill",
+        "id": "council",
         "type": "fill",
         "source": "council",
         "maxzoom": 12.5,
@@ -87,10 +92,19 @@ import Connector from './connector.class.js';
   const buttons = document.querySelectorAll('.tab-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click',function(ev){
+      console.log(ev);
       if(ev.target.tagName === "DIV"){
-        controller.createPanelData(ev.target.children[1].innerText, controller)
+        if(ev.target.className != "tab-btn active"){
+          document.querySelector('.tab-btn.active').className = 'tab-btn';
+          controller.createPanelData(ev.target.children[1].innerText, controller);
+          ev.target.className = 'tab-btn active';
+        }
       }else{
-        controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
+        if(ev.target.parentNode.className != "tab-btn active"){
+          document.querySelector('.tab-btn.active').className = 'tab-btn';
+          controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
+          ev.target.parentNode.className = 'tab-btn active';
+        }
       }
     });
   })
@@ -101,7 +115,7 @@ import Connector from './connector.class.js';
   controller.map.map.on("mousemove", function(e, parent = this) {
     try {
       var features = this.queryRenderedFeatures(e.point, {
-        layers: ["council-fill"]
+        layers: ["council"]
       });
       // console.log(features);
       if (features.length) {
@@ -117,7 +131,7 @@ import Connector from './connector.class.js';
   controller.map.map.on("click", function(e, parent = this) {
     try {
       var features = this.queryRenderedFeatures(e.point, {
-        layers: ["council-fill"]
+        layers: ["council"]
       });
       if (features.length) {
         console.log(features);

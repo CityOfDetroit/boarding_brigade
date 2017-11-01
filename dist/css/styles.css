@@ -1,4 +1,63 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,700,900");
+[type="radio"]:checked,
+[type="radio"]:not(:checked),
+nav [type="checkbox"]:checked,
+nav [type="checkbox"]:not(:checked) {
+  position: absolute;
+  left: -9999px; }
+
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label,
+nav [type="checkbox"]:checked + label,
+nav [type="checkbox"]:not(:checked) + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+  color: #444; }
+
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before,
+nav [type="checkbox"]:checked + label:before,
+nav [type="checkbox"]:not(:checked) + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .35em;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  background: #9fd5b3; }
+
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after,
+nav [type="checkbox"]:checked + label:after,
+nav [type="checkbox"]:not(:checked) + label:after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #004544;
+  position: absolute;
+  top: .55em;
+  left: .2em;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease; }
+
+[type="radio"]:not(:checked) + label:after,
+nav [type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0); }
+
+[type="radio"]:checked + label:after,
+nav [type="checkbox"]:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1); }
+
 .loader {
   position: relative;
   width: 75px;
@@ -380,6 +439,17 @@ img {
           .nav .panel-content .highlights .item h2 span {
             display: block;
             font-size: .3em; }
+    .nav .panel-content .data-sets-boundaries {
+      padding: 1em; }
+      .nav .panel-content .data-sets-boundaries div article {
+        position: relative;
+        background-color: #fff;
+        padding: .5em; }
+      .nav .panel-content .data-sets-boundaries h2 {
+        color: #9fd5b3; }
+      .nav .panel-content .data-sets-boundaries label {
+        display: block;
+        padding: .35em 0 .35em 1.5em; }
   .nav .panel-tabs {
     position: absolute;
     width: 3.5em;
