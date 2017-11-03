@@ -101,6 +101,20 @@ export default class Panel {
           });
         });
         break;
+      case 'TOOLS':
+        console.log('creating settings view');
+        tempHTML = `
+          <article class="title">
+            <h1>${controller.panel.title}</h1>
+          </article>
+          <article class="data-sets-boundaries">
+            <div>
+              <p>Tools panel comming soon.</p>
+            </div>
+          </article>
+        `;
+        document.querySelector('.panel-content').innerHTML = tempHTML;
+        break;
       case 'SET':
         console.log('creating settings view');
         tempHTML = `

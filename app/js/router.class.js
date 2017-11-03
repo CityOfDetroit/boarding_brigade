@@ -1,32 +1,12 @@
 'use strict';
+import JSUtilities from './utilities.class.js';
 export default class Router {
   constructor(params) {
     this.params = {};
     for(let param in params){
       this.params[param] = params[param];
     }
-  }
-  zoomAdjust(type, value, exp) {
-    // If the exp is undefined or zero...
-    if (typeof exp === 'undefined' || +exp === 0) {
-      return Math[type](value);
-    }
-    value = +value;
-    exp = +exp;
-    // If the value is not a number or the exp is not an integer...
-    if (value === null || isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-      return NaN;
-    }
-    // If the value is negative...
-    if (value < 0) {
-      return -decimalAdjust(type, -value, exp);
-    }
-    // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    window.onhashchange = this.routerChange;
   }
   getRoutingResults() {
     let currentRouting = [];
@@ -83,8 +63,13 @@ export default class Router {
   updateURLParams(newParams) {
     for (var item in newParams) {
       if (this.params.hasOwnProperty(item)) {
-        if(item === 'zoom'){
-          newParams[item] = this.zoomAdjust('round', newParams[item], -4);
+        switch (item) {
+          case 'boundary':
+            break;
+          case 'dataSets':
+            break;
+          default:
+            newParams[item] = JSUtilities.roundNumber(newParams[item], 4);
         }
         this.params[item] = newParams[item];
       }

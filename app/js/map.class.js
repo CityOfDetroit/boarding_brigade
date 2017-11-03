@@ -126,27 +126,39 @@ export default class Map {
       }
     }
   }
-  updateMap(sources,layers){
-    this.updateSources(sources);
-    this.updateLayers(layers);
+  addSources(sources){
+    sources.forEach(function(source){
+      this.currentState.sources.push(source);
+      let tempSource = {
+        type: source.type
+      };
+      (source.data === undefined) ? 0: tempSource.data = source.data;
+      (source.url === undefined) ? 0: tempSource.url = source.url;
+      if(this.map.getSource(source.id) === undefined){
+        this.map.addSource(this.currentState.sources[i].id, tempSource);
+      }
+    });
   }
-  updateSources(sources){
-    for (var i = 0; i < sources.length; i++) {
-      let found = false;
-      this.currentState.sources.forEach(function(oldSource){
-        (oldSource.id === sources[i].id) ? found = true : 0;
-      });
-      (found) ? 0 : this.currentState.sources.push(sources[i]);
-    }
-  }
-  updateLayers(layers){
-    for (var i = 0; i < layers.length; i++) {
-      let found = false;
-      this.currentState.layers.forEach(function(oldLayer){
-        (oldLayer.id === layers[i].id) ? found = true : 0;
-      });
-      (found) ? 0 : this.currentState.layers.push(layers[i]);
-    }
+  addLayer(layers){
+    layers.forEach(function(layer){
+      this.currentState.layers.push(layer);
+      let tempLayer = {
+        id: layer.id,
+        source: layer.source,
+      };
+      (layer.paint === undefined) ? 0: tempLayer.paint = layer.paint;
+      (layer.layout === undefined) ? 0: tempLayer.layout = layer.layout;
+      (layer.type === undefined) ? 0: tempLayer.type = layer.type;
+      (layer['source-layer'] === undefined) ? 0: tempLayer['source-layer'] = layer['source-layer'];
+      (layer.filter === undefined) ? 0: tempLayer.filter = layer.filter;
+      (layer.minzoom === undefined) ? 0: tempLayer.minzoom = layer.minzoom;
+      (layer.maxzoom === undefined) ? 0: tempLayer.maxzoom = layer.maxzoom;
+      (layer.metadata === undefined) ? 0: tempLayer.metadata = layer.metadata;
+      (layer.ref === undefined) ? 0: tempLayer.ref = layer.ref;
+      if(val.map.getLayer(layer.id) === undefined){
+        val.map.addLayer(tempLayer);
+      }
+    });
   }
   static getMap(){
     return this.map;

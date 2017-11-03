@@ -18,6 +18,11 @@ import Connector from './connector.class.js';
     },
     sources: [
       {
+        id:'parcels',
+        type: 'vector',
+        url: 'mapbox://slusarskiddetroitmi.cwobdjn0'
+      },
+      {
         id: "council",
         type: "geojson",
         data: 'https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/7/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=geojson'
@@ -42,7 +47,7 @@ import Connector from './connector.class.js';
         "layout": {},
         "paint": {
           "fill-color": '#9FD5B3',
-          "fill-opacity": .5
+          "fill-opacity": .2
         }
       },
       {
@@ -64,7 +69,7 @@ import Connector from './connector.class.js';
         "layout": {},
         "paint": {
           "fill-color": '#23A696',
-          "fill-opacity": .5
+          "fill-opacity": .3
         },
         "filter": ["==", "districts", ""]
       },
@@ -82,12 +87,47 @@ import Connector from './connector.class.js';
         'paint': {
           'text-color': '#004544'
         }
-      }
+      },
+      {
+          "id": "parcel-fill",
+          "type": "fill",
+          "source": "parcels",
+          "minzoom": 15.5,
+          "layout": {
+          },
+          "paint": {
+               "fill-color":"#fff",
+               "fill-opacity":0
+          },
+          'source-layer': 'parcelsgeojson'
+       },
+       {
+          "id": "parcel-line",
+          "type": "line",
+          "source": "parcels",
+          "minzoom": 15.5,
+          "layout": {
+          },
+          "paint": {
+               "line-color":"#cbcbcb",
+          },
+          'source-layer': 'parcelsgeojson'
+       }
     ]
   },{
     lat: 0,
     lng: 0,
-    zoom: 0
+    zoom: 0,
+    boundary: '',
+    dataSets: ''
+  },{
+    boundaries: [
+      'council'
+    ],
+    dataSets: [
+      'boarded',
+      'needBoarding'
+    ]
   });
   const buttons = document.querySelectorAll('.tab-btn');
   buttons.forEach(function(btn){
@@ -112,16 +152,29 @@ import Connector from './connector.class.js';
     console.log(controller.map.map.getZoom());
     controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
   });
+  controller.map.map.on("dragend", function(e, parent = this) {
+    console.log(controller.map.map.getCenter());
+    controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat});
+  });
   controller.map.map.on("mousemove", function(e, parent = this) {
     try {
       var features = this.queryRenderedFeatures(e.point, {
         layers: ["council"]
       });
-      // console.log(features);
       if (features.length) {
         this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
       }else{
         this.setFilter("council-hover", ["==", "districts", ""]);
+        if(controller.map.map.getLayer("boarded")){
+          var features = this.queryRenderedFeatures(e.point, {
+            layers: ["boarded"]
+          });
+        }
+        if(controller.map.map.getLayer("needBoarding")){
+          var features = this.queryRenderedFeatures(e.point, {
+            layers: ["needBoarding"]
+          });
+        }
       }
       this.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
     } catch (e) {
@@ -135,7 +188,25 @@ import Connector from './connector.class.js';
       });
       if (features.length) {
         console.log(features);
-        // controller.filterData(features, controller);
+        controller.checkLayerType(features[0].layer.id, controller);
+      }else{
+        var features = this.queryRenderedFeatures(e.point, {
+          layers: ["boarded"]
+        });
+        if (features.length) {
+          console.log(features);
+          controller.checkLayerType(features[0].layer.id, controller);
+        }else{
+          var features = this.queryRenderedFeatures(e.point, {
+            layers: ["needBoarding"]
+          });
+          if(features.length){
+            console.log(features);
+            controller.checkLayerType(features[0].layer.id, controller);
+          }else{
+            console.log('No features');
+          }
+        }
       }
     } catch (e) {
       console.log("Error: " + e);

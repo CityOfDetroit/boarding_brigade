@@ -3,18 +3,33 @@ import Map from './map.class.js';
 import Connector from './connector.class.js';
 import Panel from './panel.class.js';
 import Router from './router.class.js';
+import JSUtilities from './utilities.class.js';
 import mapboxgl from 'mapbox-gl';
 const turf = require('@turf/simplify');
 const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
-  constructor(map, router) {
+  constructor(map, router, layerTypes) {
+    this.layerTypes = layerTypes;
     this.panel = new Panel();
     this.map = new Map(map);
     this.router = new Router(router);
     this.initialLoad();
   }
   initialLoad(){
+    let controller = this;
+    let boundaries = '';
+    let dataList = '';
+    console.log(dataList);
+    this.map.currentState.layers.forEach(function(layer){
+      console.log(layer.id);
+      console.log(JSUtilities.inArray(controller.layerTypes.dataSets, layer.id));
+      (JSUtilities.inArray(controller.layerTypes.boundaries, layer.id)) ? boundaries += layer.id : 0;
+      (JSUtilities.inArray(controller.layerTypes.dataSets, layer.id)) ? dataList += layer.id + ',' : 0;
+      console.log(dataList);
+    });
+    console.log(dataList);
+    this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList});
     this.createPanelData('STAT', this);
   }
   createPanelData(view, controller){
@@ -44,6 +59,10 @@ export default class Controller {
           console.log(data);
           controller.panel.createView(view, data, controller);
         })
+        break;
+      case 'TOOLS':
+        console.log('creating tools data');
+        controller.panel.createView(view, null, controller);
         break;
       case 'SET':
         console.log('creating settings data');
@@ -76,16 +95,50 @@ export default class Controller {
           color = "#db9700";
           property = "no";
         }
-        controller.map.map.addLayer({
-          "id": id,
-          "source": "boardups",
-          "type": "circle",
-          "paint": {
-            "circle-radius": 5,
-            "circle-color": color
-          },
-          "filter": ["==", "property_secure", property]
+        let filter = ["in",'parcelno'];
+        const layerURL = 'js/layers.json';
+        fetch(layerURL)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          fetch(data.urls[id])
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            console.log(data);
+            data.features.forEach(function(property){
+              if(id === "boarded"){
+                (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+              }else{
+                (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+              }
+            });
+            console.log(filter);
+            controller.map.map.addLayer({
+              "id": id,
+              "type": "fill",
+              "source": "parcels",
+              'source-layer': 'parcelsgeojson',
+              'filter': filter,
+              "paint": {
+                "fill-color": color,
+                "fill-opacity":0.5
+              }
+            });
+          });
         });
+
+        //
+        //
+        // controller.map.map.addLayer({
+        //   "id": id,
+        //   "source": "boardups",
+        //   "type": "circle",
+        //   "paint": {
+        //     "circle-radius": 5,
+        //     "circle-color": color
+        //   },
+        //   "filter": ["==", "property_secure", property]
+        // });
       }
     }else{
       if(controller.map.map.getLayer(id)){
@@ -94,6 +147,19 @@ export default class Controller {
       }else{
         console.log('layer does not exist');
       }
+    }
+  }
+  checkLayerType(id, controller){
+    console.log(id);
+    switch (true) {
+      case JSUtilities.inArray(controller.layerTypes.boundaries,id):
+        console.log('layer is the type boundary');
+        break;
+      case JSUtilities.inArray(controller.layerTypes.dataSets,id):
+        console.log('layer is the type data set');
+        break;
+      default:
+        console.log('no type find');
     }
   }
   loadCityData(controller){
