@@ -119,7 +119,8 @@ import Connector from './connector.class.js';
     lng: 0,
     zoom: 0,
     boundary: '',
-    dataSets: ''
+    dataSets: '',
+    polygon: ''
   },{
     boundaries: [
       'council'
@@ -188,7 +189,7 @@ import Connector from './connector.class.js';
       });
       if (features.length) {
         console.log(features);
-        controller.checkLayerType(features[0].layer.id, controller);
+        controller.checkLayerType(features[0].layer.id,features[0],controller);
       }else{
         var features = this.queryRenderedFeatures(e.point, {
           layers: ["boarded"]

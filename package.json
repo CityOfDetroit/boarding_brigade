@@ -13,6 +13,7 @@
   "author": "Edgar Montes",
   "license": "MIT",
   "devDependencies": {
+    "@turf/simplify": "^4.7.3",
     "@turf/turf": "^4.7.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",

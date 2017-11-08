@@ -1,6 +1,5 @@
 'use strict';
 import mapboxgl from 'mapbox-gl';
-import Connector from './connector.class.js';
 var MapboxGeocoder = require('mapbox-gl-geocoder');
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eW9mZGV0cm9pdCIsImEiOiJjajd3MGlodXIwZ3piMnhudmlzazVnNm44In0.BL29_7QRvcnOrVuXX_hD9A';
 export default class Map {
@@ -98,50 +97,47 @@ export default class Map {
       }
     }
   }
-  removeSources(sources){
-    for (var i = 0; i < sources.length; i++) {
-      try {
-        if(this.map.getSource(sources[i]) != undefined){
-            this.map.removeSource(sources[i]);
-            for (var x = 0; x < this.currentState.sources.length; x++) {
-              (this.currentState.sources[x].id === source[i]) ? this.currentState.sources[x].splice(i, 1) : 0;
-            }
-        }
-      } catch (e) {
-        console.log(e);
+  removeSources(source, controller){
+    try {
+      if(controller.map.map.getSource(source) != undefined){
+          controller.map.map.removeSource(source);
+          for (var x = 0; x < controller.map.currentState.sources.length; x++) {
+            (controller.map.currentState.sources[x].id === source) ? controller.map.currentState.sources[x].splice(i, 1) : 0;
+          }
       }
+    } catch (e) {
+      console.log(e);
     }
   }
-  removeLayers(layers){
-    for (var i = 0; i < layers.length; i++) {
-      try {
-        if(this.map.getLayer(layers[i]) != undefined){
-            this.map.removeLayer(layers[i]);
-            for (var x = 0; x < this.currentState.layers.length; x++) {
-              (this.currentState.layers[x].id === layers[i]) ? this.currentState.layers.splice(x, 1) : 0;
-            }
-        }
-      } catch (e) {
-        console.log(e);
+  removeLayer(layer, controller){
+    try {
+      if(controller.map.map.getLayer(layer) != undefined){
+          controller.map.map.removeLayer(layer);
+          for (var x = 0; x < controller.map.currentState.layers.length; x++) {
+            (controller.map.currentState.layers[x].id === layer) ? controller.map.currentState.layers.splice(x, 1) : 0;
+          }
       }
+    } catch (e) {
+      console.log(e);
     }
   }
-  addSources(sources){
+  addSources(sources, controller){
     sources.forEach(function(source){
-      this.currentState.sources.push(source);
+      controller.map.currentState.sources.push(source);
       let tempSource = {
         type: source.type
       };
       (source.data === undefined) ? 0: tempSource.data = source.data;
       (source.url === undefined) ? 0: tempSource.url = source.url;
-      if(this.map.getSource(source.id) === undefined){
-        this.map.addSource(this.currentState.sources[i].id, tempSource);
+      if(controller.map.map.getSource(source.id) === undefined){
+        controller.map.map.addSource(this.currentState.sources[i].id, tempSource);
       }
     });
   }
-  addLayer(layers){
+  addLayers(layers, controller){
+    console.log(layers);
     layers.forEach(function(layer){
-      this.currentState.layers.push(layer);
+      controller.map.currentState.layers.push(layer);
       let tempLayer = {
         id: layer.id,
         source: layer.source,
@@ -155,8 +151,8 @@ export default class Map {
       (layer.maxzoom === undefined) ? 0: tempLayer.maxzoom = layer.maxzoom;
       (layer.metadata === undefined) ? 0: tempLayer.metadata = layer.metadata;
       (layer.ref === undefined) ? 0: tempLayer.ref = layer.ref;
-      if(val.map.getLayer(layer.id) === undefined){
-        val.map.addLayer(tempLayer);
+      if(controller.map.map.getLayer(layer.id) === undefined){
+        controller.map.map.addLayer(tempLayer);
       }
     });
   }

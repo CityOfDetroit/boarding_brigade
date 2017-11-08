@@ -1,4 +1,5 @@
 'use strict';
+import JSUtilities from './utilities.class.js';
 export default class Panel {
   constructor() {
     this.title = null;
@@ -8,12 +9,51 @@ export default class Panel {
       LAYER: {},
       SET: {},
       FORM: {}
+    };
+  }
+  createStats(view, data, controller){
+    let markUp = "";
+    let breadcrumbs = "";
+    switch (true) {
+      case (data.boarded === null && data.needBoarding === null):
+        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
+                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        markUp = `<p>No data sets selected.</p>`;
+        break;
+      case (data.boarded === null && data.needBoarding != null):
+        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
+                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        markUp = `
+        <div class="item">
+          <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
+        </div>`;
+        break;
+      case (data.boarded != null && data.needBoarding === null):
+        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
+                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        markUp = `
+        <div class="item">
+          <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
+        </div>`;
+        break;
+      default:
+        if(controller.router.getQueryVariable('polygon')){
+          breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
+                        <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        }else{
+          breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>`;
+        }
+        markUp = `
+        <div class="item">
+          <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
+        </div>
+        <div class="item">
+          <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
+        </div>`;
     }
+    return [markUp, breadcrumbs];
   }
   createView(view, data, controller){
-    console.log(view);
-    console.log(data);
-    console.log(controller.panel);
     if(data != null){
       (data.title) ? controller.panel.title = data.title : 0;
       controller.panel.currentView = view;
@@ -25,34 +65,54 @@ export default class Panel {
     switch (view) {
       case 'STAT':
         console.log('creating stats view');
+        let tempMarkup = this.createStats(view, data, controller);
         tempHTML = `
           <article class="title">
             <h1>${controller.panel.title}</h1>
           </article>
+          <section class="breadcrumbs">
+            <article class="inner">
+              <ul class="cf">
+                ${tempMarkup[1]}
+              </ul>
+            </article>
+          </section>
           <article class="highlights">
-            <div class="item">
-              <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
-            </div>
-            <div class="item">
-              <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
-            </div>
+            ${tempMarkup[0]}
           </article>
         `;
         document.querySelector('.panel-content').innerHTML = tempHTML;
+        document.getElementById('initial-loader-overlay').className = '';
         break;
       case 'LAYER':
         console.log('creating layers view');
         let boundariesHTML = '';
         let datasetsHTML = '';
-        data.boundaries.forEach(function(bound){
+        let activeOptions = [];
+        let tempDataSets = '';
+        if(controller.router.getQueryVariable('dataSets')){
+          tempDataSets = controller.router.getQueryVariable('dataSets');
+          tempDataSets = tempDataSets.split(',');
+        }
+        if(Array.isArray(tempDataSets)){
+          tempDataSets.forEach(function(set){
+            (set != '') ? activeOptions.push(set) : 0;
+          });
+        }
+        activeOptions.push(controller.router.getQueryVariable('boundary'));
+        data.data.boundaries.forEach(function(bound){
+          let tempCheck = '';
+          (JSUtilities.inArray(activeOptions,bound.id)) ? tempCheck = 'checked' : tempCheck = '';
           boundariesHTML += `
-          <input type="radio" id="${bound.id}" name="boundaries" checked>
+          <input type="radio" id="${bound.id}" name="boundaries" ${tempCheck}>
           <label class="layer-btn radio" data-id="${bound.id}" for="${bound.id}">${bound.name}</label>
           `;
         });
-        data.dataSets.forEach(function(set){
+        data.data.dataSets.forEach(function(set){
+          let tempCheck = '';
+          (JSUtilities.inArray(activeOptions,set.id)) ? tempCheck = 'checked' : tempCheck = '';
           datasetsHTML += `
-          <input type="checkbox" id="${set.id}" name="datasets">
+          <input type="checkbox" id="${set.id}" name="datasets" ${tempCheck}>
           <label class="layer-btn checkbox" data-id="${set.id}" for="${set.id}">${set.name}</label>
           `;
         });

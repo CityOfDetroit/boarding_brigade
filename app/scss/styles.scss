@@ -49,7 +49,7 @@ img{width: 100%;}
 }
 #initial-loader-overlay.active{
   position: absolute;
-	z-index: 5;
+	z-index: 205;
 	height: 100vh;
 	width: 100vw;
 	padding: 1em;
@@ -380,28 +380,6 @@ img{width: 100%;}
 				font-weight: bold;
 				text-decoration: none;
 				text-transform: uppercase;
-
-				&:before {
-					position: absolute;
-					content: '';
-					top: 0;
-					left: 0;
-					width: 0;
-					height: 100%;
-					transition: width 250ms ease;
-					z-index: -1;
-				}
-
-				&:hover {
-					color: $color-1;
-
-					&:before {
-						width: 100%;
-						height: 100%;
-						background-color: rgba($color-3,1);
-						transition: width 250ms ease;
-					}
-				}
 			}
 		}
 	}
@@ -445,26 +423,29 @@ ul {
 
 .breadcrumbs {
 	width: 100%;
+  padding: 0 2em 0 1em;
 }
 
 .inner{
-	width: calc(100% - 1em;)
+	width: 100%;
 }
 
 .breadcrumbs ul {
 	display: flex;
+  margin: 2em 0 1em 0;
 }
 
 .breadcrumbs li {
   float: left;
 	flex: 1;
-  max-width: 30em;
+  max-width: 25em;
+  border-bottom: none !important;
 }
 
 .breadcrumbs a {
   position: relative;
   display: block;
-  padding: 20px;
+  padding: 20.5px !important;
   padding-right: 0 !important; /* important overrides media queries */
   font-size: 13px;
   font-weight: bold;
@@ -543,6 +524,7 @@ main .logo{
 	}
 	.breadcrumbs a:hover {
 	  background: $color-3;
+    color: $color-1;
 	}
 
 	.breadcrumbs a.active {
@@ -584,11 +566,11 @@ main .logo{
 
 	.breadcrumbs a:before {
 	  margin-left: 1px;
-	  border-left-color: $color-1;
+	  border-left-color: $color-3;
 	}
 
 	.breadcrumbs a:after {
-	  border-left-color: $white;
+	  border-left-color: $color-1;
 	}
 
 	.breadcrumbs a:hover:after {
