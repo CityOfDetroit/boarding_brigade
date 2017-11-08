@@ -280,6 +280,10 @@ img{width: 100%;}
   .panel-content{
     overflow-y: auto;
 
+    p{
+      color: $white; 
+    }
+
     .title{
       margin: 1.5em auto;
 

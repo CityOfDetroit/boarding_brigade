@@ -133,7 +133,7 @@ import Connector from './connector.class.js';
   const buttons = document.querySelectorAll('.tab-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click',function(ev){
-      console.log(ev);
+      // console.log(ev);
       if(ev.target.tagName === "DIV"){
         if(ev.target.className != "tab-btn active"){
           document.querySelector('.tab-btn.active').className = 'tab-btn';
@@ -150,11 +150,11 @@ import Connector from './connector.class.js';
     });
   })
   controller.map.map.on("zoom", function(e, parent = this) {
-    console.log(controller.map.map.getZoom());
+    // console.log(controller.map.map.getZoom());
     controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
   });
   controller.map.map.on("dragend", function(e, parent = this) {
-    console.log(controller.map.map.getCenter());
+    // console.log(controller.map.map.getCenter());
     controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat});
   });
   controller.map.map.on("mousemove", function(e, parent = this) {
@@ -188,21 +188,21 @@ import Connector from './connector.class.js';
         layers: ["council"]
       });
       if (features.length) {
-        console.log(features);
+        // console.log(features);
         controller.checkLayerType(features[0].layer.id,features[0],controller);
       }else{
         var features = this.queryRenderedFeatures(e.point, {
           layers: ["boarded"]
         });
         if (features.length) {
-          console.log(features);
+          // console.log(features);
           controller.checkLayerType(features[0].layer.id, controller);
         }else{
           var features = this.queryRenderedFeatures(e.point, {
             layers: ["needBoarding"]
           });
           if(features.length){
-            console.log(features);
+            // console.log(features);
             controller.checkLayerType(features[0].layer.id, controller);
           }else{
             console.log('No features');

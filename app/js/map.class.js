@@ -135,7 +135,7 @@ export default class Map {
     });
   }
   addLayers(layers, controller){
-    console.log(layers);
+    // console.log(layers);
     layers.forEach(function(layer){
       controller.map.currentState.layers.push(layer);
       let tempLayer = {

@@ -68,6 +68,8 @@ export default class Router {
             break;
           case 'dataSets':
             break;
+          case 'polygon':
+            break;
           default:
             newParams[item] = JSUtilities.roundNumber(newParams[item], 4);
         }

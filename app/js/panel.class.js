@@ -16,32 +16,37 @@ export default class Panel {
     let breadcrumbs = "";
     switch (true) {
       case (data.boarded === null && data.needBoarding === null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
-                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
-        markUp = `<p>No data sets selected.</p>`;
+        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
+                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
+        markUp = `
+        <article class="data-sets-boundaries">
+          <div>
+            <p>No data sets selected.</p>
+          </div>
+        </article>`;
         break;
       case (data.boarded === null && data.needBoarding != null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
-                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
+                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
         markUp = `
         <div class="item">
           <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
         </div>`;
         break;
       case (data.boarded != null && data.needBoarding === null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
-                      <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
+                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
         markUp = `
         <div class="item">
           <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
         </div>`;
         break;
       default:
-        if(controller.router.getQueryVariable('polygon')){
-          breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>
-                        <li><a href="#"><span>2</span><span>${controller.panel.title}</span></a></li>`;
+        if(controller.router.getQueryVariable('polygon') != 'city'){
+          breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
+                        <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
         }else{
-          breadcrumbs = `<li><a href="#"><span>1</span><span>City</span></a></li>`;
+          breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>`;
         }
         markUp = `
         <div class="item">
@@ -64,7 +69,7 @@ export default class Panel {
     let tempHTML = '';
     switch (view) {
       case 'STAT':
-        console.log('creating stats view');
+        // console.log('creating stats view');
         let tempMarkup = this.createStats(view, data, controller);
         tempHTML = `
           <article class="title">
@@ -82,10 +87,16 @@ export default class Panel {
           </article>
         `;
         document.querySelector('.panel-content').innerHTML = tempHTML;
+        let breadcrumbs = document.querySelectorAll('.cf a');
+        breadcrumbs.forEach(function(bread){
+          bread.addEventListener('click', function(e){
+            controller.loadPrevious(e, controller);
+          });
+        });
         document.getElementById('initial-loader-overlay').className = '';
         break;
       case 'LAYER':
-        console.log('creating layers view');
+        // console.log('creating layers view');
         let boundariesHTML = '';
         let datasetsHTML = '';
         let activeOptions = [];
@@ -139,8 +150,8 @@ export default class Panel {
         let layerBtns = document.querySelectorAll('.layer-btn');
         layerBtns.forEach(function(btn){
           btn.addEventListener('click', function(ev){
-            console.log(ev);
-            console.log(ev.target.attributes[1].nodeValue);
+            // console.log(ev);
+            // console.log(ev.target.attributes[1].nodeValue);
             if(ev.target.className === 'layer-btn radio'){
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){
                 console.log('radio already checked');
@@ -149,12 +160,12 @@ export default class Panel {
                 // controller.layerAddRemove(ev.target.attributes[1].nodeValue,controller);
               }
             }else{
-              console.log(document.getElementById(ev.target.attributes[1].nodeValue).checked);
+              // console.log(document.getElementById(ev.target.attributes[1].nodeValue).checked);
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){
-                console.log('unchecking');
+                // console.log('unchecking');
                 controller.layerAddRemove(ev.target.attributes[1].nodeValue,'remove',controller);
               }else{
-                console.log('checking');
+                // console.log('checking');
                 controller.layerAddRemove(ev.target.attributes[1].nodeValue,'add',controller);
               }
             }
@@ -162,7 +173,7 @@ export default class Panel {
         });
         break;
       case 'TOOLS':
-        console.log('creating settings view');
+        // console.log('creating settings view');
         tempHTML = `
           <article class="title">
             <h1>${controller.panel.title}</h1>
@@ -176,7 +187,7 @@ export default class Panel {
         document.querySelector('.panel-content').innerHTML = tempHTML;
         break;
       case 'SET':
-        console.log('creating settings view');
+        // console.log('creating settings view');
         tempHTML = `
           <article class="title">
             <h1>${controller.panel.title}</h1>
@@ -190,7 +201,7 @@ export default class Panel {
         document.querySelector('.panel-content').innerHTML = tempHTML;
         break;
       case 'FORM':
-        console.log('creating forms view');
+        // console.log('creating forms view');
         tempHTML = `
           <article class="title">
             <h1>${controller.panel.title}</h1>
@@ -206,9 +217,5 @@ export default class Panel {
       default:
         console.log('invalid view reverting back');
     }
-  }
-  viewToggle(view, panel){
-    console.log(view);
-    console.log(panel);
   }
 }

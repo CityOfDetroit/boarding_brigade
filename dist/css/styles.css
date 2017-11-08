@@ -416,6 +416,8 @@ img {
     position: relative; }
   .nav .panel-content {
     overflow-y: auto; }
+    .nav .panel-content p {
+      color: #fff; }
     .nav .panel-content .title {
       margin: 1.5em auto; }
       .nav .panel-content .title h1 {
