@@ -1,7 +1,13 @@
 'use strict';
 import Controller from './controller.class.js';
 import Connector from './connector.class.js';
+import flatpickr from "flatpickr";
 (function(){
+  flatpickr('#datepicker', {
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d",
+});
   let controller = new Controller({
     styleURL: 'mapbox://styles/mapbox',
     mapContainer: 'map',
