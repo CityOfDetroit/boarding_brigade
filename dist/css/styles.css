@@ -416,6 +416,8 @@ img {
     position: relative; }
   .nav .panel-content {
     overflow-y: auto; }
+    .nav .panel-content input {
+      padding: .85em; }
     .nav .panel-content p {
       color: #fff; }
     .nav .panel-content .title {
@@ -423,7 +425,8 @@ img {
       .nav .panel-content .title h1 {
         font-size: 1.5em;
         text-align: center;
-        color: #E48F22; }
+        color: #E48F22;
+        text-transform: uppercase; }
     .nav .panel-content .highlights {
       display: flex;
       flex-wrap: wrap; }
@@ -447,11 +450,16 @@ img {
         position: relative;
         background-color: #fff;
         padding: .5em; }
+        .nav .panel-content .data-sets-boundaries div article span {
+          padding-right: 2em; }
+        .nav .panel-content .data-sets-boundaries div article label:first-child {
+          padding-left: 0; }
       .nav .panel-content .data-sets-boundaries h2 {
         color: #9fd5b3; }
       .nav .panel-content .data-sets-boundaries label {
-        display: block;
         padding: .35em 0 .35em 1.5em; }
+    .nav .panel-content .time-range article {
+      display: flex; }
   .nav .panel-tabs {
     position: absolute;
     width: 3.5em;

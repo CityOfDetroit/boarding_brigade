@@ -280,6 +280,10 @@ img{width: 100%;}
   .panel-content{
     overflow-y: auto;
 
+    input{
+      padding: .85em;
+    }
+
     p{
       color: $white;
     }
@@ -291,6 +295,7 @@ img{width: 100%;}
         font-size: 1.5em;
         text-align: center;
         color: $color-3;
+        text-transform: uppercase;
       }
     }
 
@@ -327,6 +332,14 @@ img{width: 100%;}
           position: relative;
           background-color: $white;
           padding: .5em;
+
+          span{
+            padding-right: 2em;
+          }
+
+          label:first-child{
+            padding-left: 0;
+          }
         }
       }
 
@@ -334,8 +347,13 @@ img{width: 100%;}
         color: $color-2;
       }
       label{
-        display: block;
         padding: .35em 0 .35em 1.5em;
+      }
+    }
+
+    .time-range{
+      article{
+        display: flex;
       }
     }
   }

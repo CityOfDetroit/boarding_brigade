@@ -10,7 +10,7 @@ const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
   constructor(map, router, layerTypes) {
-    this.defaultSettings = {};
+    this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
     this.layerTypes = layerTypes;
     this.panel = new Panel();
@@ -20,8 +20,33 @@ export default class Controller {
   }
   initialLoad(){
     let currentDayofWeek = moment().weekday();
-    let dayOffset = 0;
     console.log(currentDayofWeek);
+    let currentOfSet = 0;
+    switch (currentDayofWeek) {
+      case 0:
+        currentOfSet = 7;
+        break;
+      case 1:
+        currentOfSet = 8;
+        break;
+      case 2:
+        currentOfSet = 9;
+        break;
+      case 3:
+        currentOfSet = 10;
+        break;
+      case 4:
+        currentOfSet = 11;
+        break;
+      case 5:
+        currentOfSet = 12;
+        break;
+      default:
+        currentOfSet = 13;
+    }
+    this.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
+    this.defaultSettings.endDate = moment().format('YYYY-MM-DD');
+    console.log(this.defaultSettings);
     let controller = this;
     let boundaries = '';
     let dataList = '';
@@ -112,29 +137,29 @@ export default class Controller {
           });
         }
         break;
-      case 'LAYER':
+      case 'FILTERS':
         // console.log('creating layers data');
         const layerURL = 'js/layers.json';
         fetch(layerURL)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
           // console.log(data);
-          let dataObj = {title: "Layers", data: data};
+          let dataObj = {title: "FILTERS", data: data};
           controller.panel.createView(view, dataObj, controller);
         })
         break;
       case 'TOOLS':
         // console.log('creating tools data');
-        let dataObj = {title: "Tools", boarded: null, needBoarding: null};
+        let dataObj = {title: "TOOLS", boarded: null, needBoarding: null};
         controller.panel.createView(view, dataObj, controller);
         break;
       case 'SET':
         // console.log('creating settings data');
-        dataObj = {title: "Setting", boarded: null, needBoarding: null};
+        dataObj = {title: "SETTINGS", boarded: null, needBoarding: null};
         controller.panel.createView(view, dataObj, controller);
         break;
       case 'FORM':
-        dataObj = {title: "Form", boarded: null, needBoarding: null};
+        dataObj = {title: "FORM", boarded: null, needBoarding: null};
         // console.log('creating forms data');
         controller.panel.createView(view, dataObj, controller);
         break;

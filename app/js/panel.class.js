@@ -74,7 +74,7 @@ export default class Panel {
         let tempMarkup = this.createStats(view, data, controller);
         tempHTML = `
           <article class="title">
-            <h1>${controller.panel.title}</h1>
+            <h1>${controller.panel.title} : stats</h1>
           </article>
           <section class="breadcrumbs">
             <article class="inner">
@@ -96,7 +96,7 @@ export default class Panel {
         });
         document.getElementById('initial-loader-overlay').className = '';
         break;
-      case 'LAYER':
+      case 'FILTERS':
         // console.log('creating layers view');
         let boundariesHTML = '';
         let datasetsHTML = '';
@@ -116,16 +116,20 @@ export default class Panel {
           let tempCheck = '';
           (JSUtilities.inArray(activeOptions,bound.id)) ? tempCheck = 'checked' : tempCheck = '';
           boundariesHTML += `
+          <span>
           <input type="radio" id="${bound.id}" name="boundaries" ${tempCheck}>
           <label class="layer-btn radio" data-id="${bound.id}" for="${bound.id}">${bound.name}</label>
+          </span>
           `;
         });
         data.data.dataSets.forEach(function(set){
           let tempCheck = '';
           (JSUtilities.inArray(activeOptions,set.id)) ? tempCheck = 'checked' : tempCheck = '';
           datasetsHTML += `
+          <span>
           <input type="checkbox" id="${set.id}" name="datasets" ${tempCheck}>
           <label class="layer-btn checkbox" data-id="${set.id}" for="${set.id}">${set.name}</label>
+          </span>
           `;
         });
         tempHTML = `
@@ -144,6 +148,30 @@ export default class Panel {
                   End Date:
                   <input type="text" id="end-date" name="end-date" value="">
                 </label>
+              </article>
+            </div>
+            <div class="boundaries">
+              <h2>DEPARTMENTS</h2>
+              <article>
+                <input id="departments" type="text" list="departments-list" name="departments" value="All">
+                <datalist id="departments-list">
+                  <option value="All"></option>
+                  <option value="BSEED"></option>
+                  <option value="Civil Rights"></option>
+                  <option value="DAH"></option>
+                  <option value="DBA/DLBA"></option>
+                  <option value="DEGC"></option>
+                  <option value="DDOT"></option>
+                  <option value="DFD"></option>
+                  <option value="DPD"></option>
+                  <option value="DPW"></option>
+                  <option value="DWSD"></option>
+                  <option value="GSD"></option>
+                  <option value="Health"></option>
+                  <option value="HRD"></option>
+                  <option value=""></option>
+                </datalist>
+                <button id="department-btn">Filter</button>
               </article>
             </div>
             <div class="boundaries">
@@ -186,14 +214,24 @@ export default class Panel {
           });
         });
         flatpickr('#start-date', {
+          defaultDate: controller.defaultSettings.startDate,
           altInput: true,
           altFormat: "F j, Y",
           dateFormat: "Y-m-d",
+          onChange: function(selectedDates){
+            console.log(selectedDates);
+            controller.defaultSettings.startDate = selectedDates;
+          }
         });
         flatpickr('#end-date', {
+          defaultDate: controller.defaultSettings.endDate,
           altInput: true,
           altFormat: "F j, Y",
           dateFormat: "Y-m-d",
+          onChange: function(selectedDates){
+            console.log(selectedDates);
+            controller.defaultSettings.endDate = selectedDates;
+          }
         });
         break;
       case 'TOOLS':
