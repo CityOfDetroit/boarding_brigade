@@ -1,4 +1,5 @@
 'use strict';
+import flatpickr from "flatpickr";
 import JSUtilities from './utilities.class.js';
 export default class Panel {
   constructor() {
@@ -132,6 +133,19 @@ export default class Panel {
             <h1>${controller.panel.title}</h1>
           </article>
           <article class="data-sets-boundaries">
+            <div class="time-range">
+              <h2>DATES</h2>
+              <article>
+                <label for="start-date">
+                  Start Date:
+                  <input type="text" id="start-date" name="start-date" value="">
+                </label>
+                <label for="end-date">
+                  End Date:
+                  <input type="text" id="end-date" name="end-date" value="">
+                </label>
+              </article>
+            </div>
             <div class="boundaries">
               <h2>BOUNDARIES</h2>
               <article>
@@ -170,6 +184,16 @@ export default class Panel {
               }
             }
           });
+        });
+        flatpickr('#start-date', {
+          altInput: true,
+          altFormat: "F j, Y",
+          dateFormat: "Y-m-d",
+        });
+        flatpickr('#end-date', {
+          altInput: true,
+          altFormat: "F j, Y",
+          dateFormat: "Y-m-d",
         });
         break;
       case 'TOOLS':

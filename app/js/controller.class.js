@@ -4,11 +4,13 @@ import Panel from './panel.class.js';
 import Router from './router.class.js';
 import JSUtilities from './utilities.class.js';
 import mapboxgl from 'mapbox-gl';
+const moment = require('moment');
 const turf = require('@turf/simplify');
 const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
   constructor(map, router, layerTypes) {
+    this.defaultSettings = {};
     this.currentPolygon = null;
     this.layerTypes = layerTypes;
     this.panel = new Panel();
@@ -17,6 +19,9 @@ export default class Controller {
     this.initialLoad();
   }
   initialLoad(){
+    let currentDayofWeek = moment().weekday();
+    let dayOffset = 0;
+    console.log(currentDayofWeek);
     let controller = this;
     let boundaries = '';
     let dataList = '';

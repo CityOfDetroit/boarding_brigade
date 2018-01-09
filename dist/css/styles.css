@@ -564,8 +564,8 @@ main .logo {
   .nav {
     position: fixed;
     top: 0;
-    left: -35em;
-    width: 25em;
+    left: calc(-60vw - 5em);
+    width: 60vw;
     height: 100vh; }
   header {
     position: fixed;
