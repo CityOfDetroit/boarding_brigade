@@ -2,11 +2,14 @@
 import mapboxgl from 'mapbox-gl';
 var MapboxGeocoder = require('mapbox-gl-geocoder');
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eW9mZGV0cm9pdCIsImEiOiJjajd3MGlodXIwZ3piMnhudmlzazVnNm44In0.BL29_7QRvcnOrVuXX_hD9A';
+const detroitBBox = [-83.3437,42.2102,-82.8754,42.5197];
 export default class Map {
   constructor(init) {
     if(init.geocoder){
       this.geocoder = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken
+        accessToken: mapboxgl.accessToken,
+        placeholder: 'Enter address',
+        bbox: detroitBBox
       });
       this.geocoder.on('result', function(e) {
         // console.log(ev);
@@ -29,6 +32,9 @@ export default class Map {
       zoom: init.zoom, // starting zoom
       keyboard: true
     });
+    if(init.controls){
+      this.map.addControl(new mapboxgl.NavigationControl());
+    }
     this.styleURL = init.styleURL;
     this.baseLayers = {
       street: init.baseLayers.street,

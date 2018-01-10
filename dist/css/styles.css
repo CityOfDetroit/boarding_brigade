@@ -196,19 +196,19 @@ nav [type="checkbox"]:checked + label:after {
 
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
-  color: #fff; }
+  color: #444; }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: #fff; }
+  color: #444; }
 
 :-ms-input-placeholder {
   /* IE 10+ */
-  color: #fff; }
+  color: #444; }
 
 :-moz-placeholder {
   /* Firefox 18- */
-  color: #fff; }
+  color: #444; }
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -218,7 +218,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
-  font-weight: lighter; }
+  font-weight: lighter;
+  overflow: hidden; }
 
 header {
   width: 100%;
@@ -444,6 +445,10 @@ img {
           .nav .panel-content .highlights .item h2 span {
             display: block;
             font-size: .3em; }
+    .nav .panel-content .chart-section {
+      display: flex; }
+      .nav .panel-content .chart-section #myChart, .nav .panel-content .chart-section div {
+        flex: 1; }
     .nav .panel-content .data-sets-boundaries {
       padding: 1em; }
       .nav .panel-content .data-sets-boundaries div article {
@@ -561,7 +566,7 @@ ul {
   color: #004544;
   cursor: pointer; }
 
-main .logo {
+.logo {
   position: absolute;
   bottom: 1.5em;
   right: 1em;
@@ -575,21 +580,6 @@ main .logo {
     left: calc(-60vw - 5em);
     width: 60vw;
     height: 100vh; }
-  header {
-    position: fixed;
-    z-index: 3;
-    background: #004544;
-    width: 100%;
-    display: flex;
-    height: 5em;
-    box-shadow: 0px 2px 5px 0px rgba(0, 69, 68, 0.5); }
-    header h1 {
-      margin: auto;
-      text-align: center; }
-  header section {
-    display: block; }
-  #logo {
-    width: 5em; }
   .filter {
     flex: 1;
     display: flex; }
@@ -659,22 +649,24 @@ main .logo {
   .breadcrumbs a.active:after {
     border-left-color: #fafafa; } }
 
-.container {
-  width: 75%;
-  margin: 0 auto; }
+#geocoder {
+  position: absolute;
+  top: 1em;
+  right: 3em; }
 
 main {
   position: relative;
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   transform: translateX(0px);
   transition: transform 500ms ease;
   z-index: 0; }
   main .map-panel {
     display: block;
-    flex: 1; }
+    flex: 1;
+    position: relative; }
     main .map-panel #map {
       width: 100%;
       height: 100%;
