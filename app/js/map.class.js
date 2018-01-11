@@ -4,6 +4,72 @@ var MapboxGeocoder = require('mapbox-gl-geocoder');
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eW9mZGV0cm9pdCIsImEiOiJjajd3MGlodXIwZ3piMnhudmlzazVnNm44In0.BL29_7QRvcnOrVuXX_hD9A';
 const detroitBBox = [-83.3437,42.2102,-82.8754,42.5197];
 export default class Map {
+  // NOTE: Add a event listener functions for dynamically create and remove click events
+  
+  // controller.map.map.on("zoom", function(e, parent = this) {
+  //   // console.log(controller.map.map.getZoom());
+  //   controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
+  // });
+  // controller.map.map.on("dragend", function(e, parent = this) {
+  //   // console.log(controller.map.map.getCenter());
+  //   controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat});
+  // });
+  // controller.map.map.on("mousemove", function(e, parent = this) {
+  //   try {
+  //     var features = this.queryRenderedFeatures(e.point, {
+  //       layers: ["council"]
+  //     });
+  //     if (features.length) {
+  //       this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
+  //     }else{
+  //       this.setFilter("council-hover", ["==", "districts", ""]);
+  //       if(controller.map.map.getLayer("boarded")){
+  //         var features = this.queryRenderedFeatures(e.point, {
+  //           layers: ["boarded"]
+  //         });
+  //       }
+  //       if(controller.map.map.getLayer("needBoarding")){
+  //         var features = this.queryRenderedFeatures(e.point, {
+  //           layers: ["needBoarding"]
+  //         });
+  //       }
+  //     }
+  //     this.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+  //   } catch (e) {
+  //     console.log("Error: " + e);
+  //   }
+  // });
+  // controller.map.map.on("click", function(e, parent = this) {
+  //   try {
+  //     var features = this.queryRenderedFeatures(e.point, {
+  //       layers: ["council"]
+  //     });
+  //     if (features.length) {
+  //       // console.log(features);
+  //       controller.checkLayerType(features[0].layer.id,features[0],controller);
+  //     }else{
+  //       var features = this.queryRenderedFeatures(e.point, {
+  //         layers: ["boarded"]
+  //       });
+  //       if (features.length) {
+  //         // console.log(features);
+  //         controller.checkLayerType(features[0].layer.id, controller);
+  //       }else{
+  //         var features = this.queryRenderedFeatures(e.point, {
+  //           layers: ["needBoarding"]
+  //         });
+  //         if(features.length){
+  //           // console.log(features);
+  //           controller.checkLayerType(features[0].layer.id, controller);
+  //         }else{
+  //           console.log('No features');
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.log("Error: " + e);
+  //   }
+  // });
   constructor(init) {
     if(init.geocoder){
       this.geocoder = new MapboxGeocoder({

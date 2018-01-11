@@ -146,7 +146,7 @@ export default class Controller {
           // console.log(data);
           let dataObj = {title: "FILTERS", data: data};
           controller.panel.createView(view, dataObj, controller);
-        })
+        }) 
         break;
       case 'TOOLS':
         // console.log('creating tools data');

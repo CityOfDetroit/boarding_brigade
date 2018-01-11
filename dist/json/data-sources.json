@@ -1,0 +1,213 @@
+{
+  "data-sets":[
+    {
+      "id": "properties",
+      "name": "Properties",
+      "departments": ["All"],
+      "layers": [
+        {
+          "id": "parcel-fill",
+          "type": "fill",
+          "source": "parcels",
+          "minzoom": 15.5,
+          "layout": {},
+          "paint": {
+             "fill-color":"#fff",
+             "fill-opacity":0
+          },
+          "source-layer": "parcelsgeojson"
+         },
+         {
+          "id": "parcel-line",
+          "type": "line",
+          "source": "parcels",
+          "minzoom": 15.5,
+          "layout": {},
+          "paint": {
+             "line-color":"#cbcbcb"
+          },
+          "source-layer": "parcelsgeojson"
+         },
+         {
+           "id": "parcel-fill-selected",
+           "type": "line",
+           "source": "parcels",
+           "minzoom": 15.5,
+           "layout": {},
+           "paint": {
+             "line-color": "#BD0019",
+             "line-width": 3
+           },
+           "source-layer": "parcelsgeojson",
+           "filter": ["==", "parcelno", ""]
+         }
+      ],
+      "default": true,
+      "alwaysOn": true
+    },
+    {
+      "id": "boarded",
+      "name": "Boarded",
+      "departments": ["GSD"],
+      "layers": [
+        {
+          "id": "boarded",
+          "type": "circle",
+          "source": "boarded",
+          "paint":{
+            "circle-radius": 10,
+            "circle-color": "#9fd5b3"
+          }
+        }
+      ],
+      "default": false,
+      "alwaysOn": false
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "council",
+      "name": "Council Districts",
+      "departments": ["All"],
+      "layers": [
+        {
+          "id": "council-fill",
+          "type": "fill",
+          "source": "council",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "fill-color": "#9FD5B3",
+            "fill-opacity": 0.5
+          }
+        },
+        {
+          "id": "council-borders",
+          "type": "line",
+          "source": "council",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "line-color": "#004544",
+            "line-width": 3
+          }
+        },
+        {
+          "id": "council-hover",
+          "type": "fill",
+          "source": "council",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "fill-color": "#23A696",
+            "fill-opacity": 0.5
+          },
+          "filter": ["==", "districts", ""]
+        },
+        {
+          "id": "council-label",
+          "type": "symbol",
+          "source": "council-label",
+          "maxzoom": 12.5,
+          "layout": {
+            "text-font": ["Mark SC Offc Pro Bold"],
+            "text-field": "District " + "{districts}",
+            "symbol-placement": "point",
+            "text-size": 22
+          },
+          "paint": {
+            "text-color": "#004544"
+          }
+        }
+      ]
+    },
+    {
+      "id": "neighborhood",
+      "name": "Neighborhoods",
+      "departments": ["All"],
+      "layers": [
+        {
+          "id": "neighborhood-fill",
+          "type": "fill",
+          "source": "neighborhood",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "fill-color": "#9FD5B3",
+            "fill-opacity": .5
+          }
+        },
+        {
+          "id": "neighborhood-borders",
+          "type": "line",
+          "source": "neighborhood",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "line-color": "#004544",
+            "line-width": 3
+          }
+        },
+        {
+          "id": "neighborhood-hover",
+          "type": "fill",
+          "source": "neighborhood",
+          "maxzoom": 12.5,
+          "layout": {},
+          "paint": {
+            "fill-color": "#23A696",
+            "fill-opacity": .5
+          },
+          "filter": ["==", "name", ""]
+        },
+        {
+          "id": "neighborhood-label",
+          "type": "symbol",
+          "source": "neighborhood-label",
+          "maxzoom": 12.5,
+          "layout": {
+            "text-font": ["Mark SC Offc Pro Bold"],
+            "text-field": "{name}",
+            "symbol-placement": "point",
+            "text-size": 22
+          },
+          "paint": {
+            "text-color": "#004544"
+          }
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "parcels",
+      "type": "vector",
+      "url": "mapbox://slusarskiddetroitmi.cwobdjn0"
+    },
+    {
+      "id": "council",
+      "type": "geojson",
+      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/7/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=geojson"
+    },
+    {
+      "id": "council-label",
+      "type": "geojson",
+      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/3/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token="
+    },
+    {
+      "id": "neighborhood",
+      "type": "geojson",
+      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/5/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=2898&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&f=geojson"
+    },
+    {
+      "id": "neighborhoods-label",
+      "type": "geojson",
+      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/2/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=2898&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&f=geojson"
+    },
+    {
+      "id": "boardups",
+      "type": "geojson",
+      "data": "'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=PbQEdKIr7l-BB7bmiviGJE34VD2zz3Uph9tYIoM2_TKVLWmvm0QfQGLx_ooVXTNoahNxCE9HvRUQ6mkj_VWUJSnHEdKN3btRhL8z1iR96qxFNi4qg0POMeJdG_za9m9Kx-r7mzvxSMMCPtF7GY0-PwddLXIv-4YqnqgBi-NsK4Xg8kw0zDaSBSvZLp3ro_h5xEwpffkxtXmVBo5ks4ixP0je_XCixBbzuPQCL1ruU7c602j7FlToULceqYzHYpaD'"
+    }
+  ]
+}
