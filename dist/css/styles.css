@@ -416,6 +416,8 @@ img {
   .nav .panel-container {
     position: relative; }
   .nav .panel-content {
+    height: 100vh;
+    overflow-x: hidden;
     overflow-y: auto; }
     .nav .panel-content input {
       padding: .85em; }
@@ -462,7 +464,8 @@ img {
       .nav .panel-content .data-sets-boundaries h2 {
         color: #9fd5b3; }
       .nav .panel-content .data-sets-boundaries label {
-        padding: .35em 0 .35em 1.5em; }
+        padding: .35em 0 .35em 1.5em;
+        margin-bottom: .5em; }
     .nav .panel-content .time-range article {
       display: flex; }
   .nav .panel-tabs {

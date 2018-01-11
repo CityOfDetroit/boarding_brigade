@@ -192,11 +192,12 @@ export default class Panel {
               </article>
             </div>
             <div class="boundaries">
-              <h2>DEPARTMENTS</h2>
+              <h2>DEPARTMENTS & CATEGORIES</h2>
               <article>
                 <input id="departments" type="text" list="departments-list" name="departments" value="All">
                 <datalist id="departments-list">
                   <option value="All"></option>
+                  <option value="Assessors"></option>
                   <option value="BSEED"></option>
                   <option value="Civil Rights"></option>
                   <option value="DAH"></option>
@@ -204,6 +205,7 @@ export default class Panel {
                   <option value="DEGC"></option>
                   <option value="DDOT"></option>
                   <option value="DFD"></option>
+                  <option value="DOIT"></option>
                   <option value="DPD"></option>
                   <option value="DPW"></option>
                   <option value="DWSD"></option>

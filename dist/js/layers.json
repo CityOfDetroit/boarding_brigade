@@ -1,15 +1,70 @@
 {
   "dataSets":[
     {
+      "id": "911",
+      "name": "911 Calls",
+      "departments": ["DPD"]
+    },
+    {
+      "id": "auction-sales",
+      "name": "Auction Sales",
+      "departments": ["DLBA"]
+    },
+    {
+      "id": "blight-tickets",
+      "name": "Blight Tickets",
+      "departments": ["DAH"]
+    },
+    {
       "id": "boarded",
       "name": "Boarded",
       "departments": ["GSD"]
+    },
+    {
+      "id": "permits",
+      "name": "Building Permits",
+      "departments": ["BSEED"]
+    },
+    {
+      "id": "commercial-demos",
+      "name": "Commercial Demolitions",
+      "departments": ["DBA"]
+    },
+    {
+      "id": "green-lights",
+      "name": "Green Lights",
+      "departments": ["DPD"]
+    },
+    {
+      "id": "improve-det",
+      "name": "Improve Detroit Issues",
+      "departments": ["DOIT"]
+    },
+    {
+      "id": "lot-sales",
+      "name": "Side Lot Sales",
+      "departments": ["DLBA"]
+    },
+    {
+      "id": "total-property-sales",
+      "name": "Total Property Sales",
+      "departments": ["Assessor"]
     }
   ],
   "boundaries":[
     {
+      "id": "city",
+      "name": "City",
+      "departments": ["All"]
+    },
+    {
       "id": "council",
       "name": "Council Districts",
+      "departments": ["All"]
+    },
+    {
+      "id": "neighborhoods",
+      "name": "Neighborhoods",
       "departments": ["All"]
     }
   ],
@@ -42,7 +97,7 @@
     {
       "id": "boarded",
       "type": "geojson",
-      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token="
+      "data": "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token="
     }
   ]
 }

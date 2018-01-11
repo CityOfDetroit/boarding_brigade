@@ -48,8 +48,9 @@ export default class Controller {
     this.defaultSettings.endDate = moment().format('YYYY-MM-DD');
     console.log(this.defaultSettings);
     let controller = this;
-    let boundaries = '';
+    let boundaries = 'city';
     let dataList = '';
+    let polygon = '';
     // console.log(dataList);
     this.map.currentState.layers.forEach(function(layer){
       // console.log(layer.id);
@@ -59,11 +60,11 @@ export default class Controller {
       // console.log(dataList);
     });
     // console.log(dataList);
-    this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: 'city'});
+    this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
     this.createPanelData('STAT', this);
   }
   createPanelData(view, controller){
-    // console.log(view);
+    console.log(view);
     // console.log(controller);
     switch (view) {
       case 'STAT':
@@ -73,68 +74,88 @@ export default class Controller {
         let tempBoundary = controller.router.getQueryVariable('boundary');
         let tempDataSets = controller.router.getQueryVariable('dataSets');
         let tempPolygon = controller.router.getQueryVariable('polygon');
-        if(tempPolygon != 'city'){
-          // console.log(controller.currentPolygon);
-          if(tempDataSets){
-            let simplePolygon = turf(controller.currentPolygon, 0.005, false);
-            // console.log(simplePolygon);
-            let arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
-            // console.log(arcsimplePolygon);
-            switch (tempBoundary) {
-              case 'council':
-                url = 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=&objectIds=&time=&geometry=' + encodeURI(JSON.stringify(arcsimplePolygon))+ '&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=';
-                fetch(url)
+        console.log(tempPolygon);
+        if(!tempPolygon){
+          console.log(tempBoundary);
+          switch (tempBoundary) {
+            case "council":
+              let simplePolygon = turf(controller.currentPolygon, 0.005, false);
+              // console.log(simplePolygon);
+              let arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
+              url = 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=&objectIds=&time=&geometry=' + encodeURI(JSON.stringify(arcsimplePolygon))+ '&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=';
+              fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                console.log(data);
+                let dataObj= {title: "District " + tempPolygon, boarded: null, needBoarding: null};
+                let dataSetsArr = tempDataSets.split(',');
+                if(dataSetsArr.length > 2){
+                  // console.log('multiple data sets');
+                  let checker = [];
+                  dataSetsArr.forEach(function(set){
+                    (set != '') ? checker.push(set) : 0;
+                  });
+                  checker.forEach(function(check){
+                    let tempCheck = null;
+                    dataObj[check] = 0;
+                    (check === 'boarded') ? tempCheck = 'yes' : tempCheck = 'no';
+                    data.features.forEach(function(item){
+                      (item.properties.property_secure === tempCheck) ? dataObj[check]++ : 0;
+                    });
+                  });
+                }else{
+                  // console.log('only one data set');
+                  let checker = null;
+                  dataObj[dataSetsArr[0]] = 0;
+                  (dataSetsArr[0] === 'boarded') ? checker = 'yes' : checker = 'no';
+                  data.features.forEach(function(item){
+                    (item.properties.property_secure === checker) ? dataObj[dataSetsArr[0]]++ : 0;
+                  });
+                }
+                controller.panel.createView(view, dataObj, controller);
+              });
+              break;
+            case "neighborhood":
+              simplePolygon = turf(controller.currentPolygon, 0.005, false);
+              // console.log(simplePolygon);
+              arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
+              break;
+            default:
+              let dataObj = {title: "City of Detroit"};
+              let pBoarded = new Promise((resolve, reject) => {
+                let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+%3E+%27" + controller.defaultSettings.startDate + "%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
+                return fetch(url)
                 .then((resp) => resp.json()) // Transform the data into json
                 .then(function(data) {
-                  console.log(data);
-                  let dataObj= {title: "District " + tempPolygon, boarded: null, needBoarding: null};
-                  let dataSetsArr = tempDataSets.split(',');
-                  if(dataSetsArr.length > 2){
-                    // console.log('multiple data sets');
-                    let checker = [];
-                    dataSetsArr.forEach(function(set){
-                      (set != '') ? checker.push(set) : 0;
-                    });
-                    checker.forEach(function(check){
-                      let tempCheck = null;
-                      dataObj[check] = 0;
-                      (check === 'boarded') ? tempCheck = 'yes' : tempCheck = 'no';
-                      data.features.forEach(function(item){
-                        (item.properties.property_secure === tempCheck) ? dataObj[check]++ : 0;
-                      });
-                    });
-                  }else{
-                    // console.log('only one data set');
-                    let checker = null;
-                    dataObj[dataSetsArr[0]] = 0;
-                    (dataSetsArr[0] === 'boarded') ? checker = 'yes' : checker = 'no';
-                    data.features.forEach(function(item){
-                      (item.properties.property_secure === checker) ? dataObj[dataSetsArr[0]]++ : 0;
-                    });
-                  }
-                  controller.panel.createView(view, dataObj, controller);
+                  console.log({"boarded": data.features.length});
+                  resolve({"name" : "boarded", "numbers" : data.features.length, "data": data});
+                })
+              });
+              let pBuildingPermits = new Promise((resolve, reject) => {
+                let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?$where=permit_issued > '" + controller.defaultSettings.startDate + "'";
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log({"buildingPermits": data.length});
+                  resolve({"name": "buildingPermits", "numbers": data.length, "data": data});
                 });
-                break;
-              default:
-
-            }
-          }else{
-            // console.log('No data sets selected');
-            let dataObj= {title: "District-" + tempPolygon, boarded: null, needBoarding: null};
-            controller.panel.createView(view, dataObj, controller);
+              });
+              Promise.all([pBoarded, pBuildingPermits]).then(values => {
+                  console.log(values); //one, two
+                  let dataSets = [];
+                  values.forEach(function(value) {
+                    (value != null) ? dataSets.push(value) : 0;
+                  });
+                  dataObj.dataSets = dataSets;
+                  console.log(dataObj);
+                  controller.panel.createView(view, dataObj, controller);
+              }).catch(reason => {
+                console.log(reason);
+              });
           }
         }else{
-          url = 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/service_d8ef2e7ac3074dc5907b49914d5d7f7b/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=';
-          fetch(url)
-          .then((resp) => resp.json()) // Transform the data into json
-          .then(function(data) {
-            // console.log(data);
-            let dataObj= {title: "City of Detroit", boarded: 0};
-            data.features.forEach(function(item){
-              (item.properties.property_secure === 'yes') ? dataObj.boarded++ : 0;
-            });
-            controller.panel.createView(view, dataObj, controller);
-          });
+          // NOTE: Add functions for quering manually created polygons
+          console.log("custom polygon");
         }
         break;
       case 'FILTERS':

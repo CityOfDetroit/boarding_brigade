@@ -278,6 +278,8 @@ img{width: 100%;}
   }
 
   .panel-content{
+    height: 100vh;
+    overflow-x: hidden;
     overflow-y: auto;
 
     input{
@@ -356,6 +358,7 @@ img{width: 100%;}
       }
       label{
         padding: .35em 0 .35em 1.5em;
+        margin-bottom: .5em;
       }
     }
 
