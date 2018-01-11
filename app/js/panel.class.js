@@ -53,9 +53,6 @@ export default class Panel {
         markUp = `
         <div class="item">
           <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
-        </div>
-        <div class="item">
-          <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
         </div>`;
     }
     return [markUp, breadcrumbs];

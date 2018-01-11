@@ -52,7 +52,8 @@ import Connector from './connector.class.js';
                  "fill-color":"#fff",
                  "fill-opacity":0
             },
-            'source-layer': 'parcelsgeojson'
+            'source-layer': 'parcelsgeojson',
+            "event": true
          },
          {
             "id": "parcel-line",
@@ -87,10 +88,8 @@ import Connector from './connector.class.js';
       boundary: '',
       dataSets: '',
       polygon: ''
-    },{
-      boundaries: json.boundaries,
-      dataSets: json.dataSets
-    });
+    },
+    json);
   })
   .catch(function(error) { console.log(error); });
   const buttons = document.querySelectorAll('.tab-btn');

@@ -5,7 +5,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eW9mZGV0cm9pdCIsImEiOiJjajd3MGlodXIwZ3piM
 const detroitBBox = [-83.3437,42.2102,-82.8754,42.5197];
 export default class Map {
   // NOTE: Add a event listener functions for dynamically create and remove click events
-  
+
   // controller.map.map.on("zoom", function(e, parent = this) {
   //   // console.log(controller.map.map.getZoom());
   //   controller.router.updateURLParams({zoom: controller.map.map.getZoom()});
@@ -127,6 +127,29 @@ export default class Map {
     });
     sourcePromise.then(function(val){
       val.loadLayers(val);
+      val.map.on('click', "parcel-fill", function (e, parent = this) {
+        let features = this.queryRenderedFeatures(e.point, {
+          layers: ["parcel-fill"]
+        });
+        if (features.length) {
+          console.log(features);
+          // controller.checkLayerType(features[0].layer.id,features[0],controller);
+        }else{
+          console.log('No features');
+        }
+      });
+
+      // Change the cursor to a pointer when the mouse is over the places layer.
+      val.map.on('mouseenter', "parcel-fill", function (e, parent = this) {
+          this.getCanvas().style.cursor = 'pointer';
+          // this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
+      });
+
+      // Change it back to a pointer when it leaves.
+      val.map.on('mouseleave', "parcel-fill", function (e, parent = this) {
+          this.getCanvas().style.cursor = '';
+          // this.setFilter("council-hover", ["==", "districts", ""]);
+      });
     }).catch(function(e){
       console.log("Error:" + e);
     });
@@ -225,7 +248,33 @@ export default class Map {
       (layer.ref === undefined) ? 0: tempLayer.ref = layer.ref;
       if(controller.map.map.getLayer(layer.id) === undefined){
         controller.map.map.addLayer(tempLayer);
+        (layer.event) ? controller.map.addEvent(layer, controller) : 0;
       }
+    });
+  }
+  addEvent(layer, controller){
+    controller.map.map.on('click', layer.id, function (e, parent = this) {
+      let features = this.queryRenderedFeatures(e.point, {
+        layers: [layer.id]
+      });
+      if (features.length) {
+        console.log(features);
+        // controller.checkLayerType(features[0].layer.id,features[0],controller);
+      }else{
+        console.log('No features');
+      }
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    controller.map.map.on('mouseenter', layer.id, function (e, parent = this) {
+        this.getCanvas().style.cursor = 'pointer';
+        // this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
+    });
+
+    // Change it back to a pointer when it leaves.
+    controller.map.map.on('mouseleave', layer.id, function (e, parent = this) {
+        this.getCanvas().style.cursor = '';
+        // this.setFilter("council-hover", ["==", "districts", ""]);
     });
   }
   static getMap(){

@@ -9,10 +9,10 @@ const turf = require('@turf/simplify');
 const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
-  constructor(map, router, layerTypes) {
+  constructor(map, router, dataSouresInfo) {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
-    this.layerTypes = layerTypes;
+    this.dataSouresInfo = dataSouresInfo;
     this.panel = new Panel();
     this.map = new Map(map);
     this.router = new Router(router);
@@ -54,8 +54,8 @@ export default class Controller {
     this.map.currentState.layers.forEach(function(layer){
       // console.log(layer.id);
       // console.log(JSUtilities.inArray(controller.layerTypes.dataSets, layer.id));
-      (JSUtilities.inArray(controller.layerTypes.boundaries, layer.id)) ? boundaries += layer.id : 0;
-      (JSUtilities.inArray(controller.layerTypes.dataSets, layer.id)) ? dataList += layer.id + ',' : 0;
+      (JSUtilities.inArray(controller.dataSouresInfo.boundaries, layer.id)) ? boundaries += layer.id : 0;
+      (JSUtilities.inArray(controller.dataSouresInfo.dataSets, layer.id)) ? dataList += layer.id + ',' : 0;
       // console.log(dataList);
     });
     // console.log(dataList);
@@ -86,7 +86,7 @@ export default class Controller {
                 fetch(url)
                 .then((resp) => resp.json()) // Transform the data into json
                 .then(function(data) {
-                  // console.log(data);
+                  console.log(data);
                   let dataObj= {title: "District " + tempPolygon, boarded: null, needBoarding: null};
                   let dataSetsArr = tempDataSets.split(',');
                   if(dataSetsArr.length > 2){
@@ -129,9 +129,9 @@ export default class Controller {
           .then((resp) => resp.json()) // Transform the data into json
           .then(function(data) {
             // console.log(data);
-            let dataObj= {title: "City of Detroit", boarded: 0, needBoarding: 0};
+            let dataObj= {title: "City of Detroit", boarded: 0};
             data.features.forEach(function(item){
-              (item.properties.property_secure === 'yes') ? dataObj.boarded++ : dataObj.needBoarding++;
+              (item.properties.property_secure === 'yes') ? dataObj.boarded++ : 0;
             });
             controller.panel.createView(view, dataObj, controller);
           });
@@ -146,7 +146,7 @@ export default class Controller {
           // console.log(data);
           let dataObj = {title: "FILTERS", data: data};
           controller.panel.createView(view, dataObj, controller);
-        }) 
+        })
         break;
       case 'TOOLS':
         // console.log('creating tools data');
@@ -187,41 +187,44 @@ export default class Controller {
           property = "no";
         }
         let filter = ["in",'parcelno'];
-        const layerURL = 'js/layers.json';
-        fetch(layerURL)
-        .then((resp) => resp.json()) // Transform the data into json
-        .then(function(data) {
-          // console.log(data);
-          fetch(data.urls[id])
-          .then((resp) => resp.json()) // Transform the data into json
-          .then(function(data) {
-            // console.log(data);
-            data.features.forEach(function(property){
-              if(id === "boarded"){
-                (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-              }else{
-                (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-              }
+        // console.log(controller.dataSouresInfo);
+        // console.log(id);
+        controller.dataSouresInfo.sources.forEach(function(source){
+          // console.log(source.id);
+          if(source.id === id){
+            fetch(source.data)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function(data) {
+              console.log(data);
+              data.features.forEach(function(property){
+                if(id === "boarded"){
+                  (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+                }else{
+                  (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+                }
+              });
+              console.log(filter);
+              controller.map.addLayers([{
+                "id": id,
+                "type": "fill",
+                "source": "parcels",
+                'source-layer': 'parcelsgeojson',
+                'filter': filter,
+                "paint": {
+                  "fill-color": color,
+                  "fill-opacity":0.5
+                },
+                "event": true
+              }], controller);
+              console.log(controller.map.currentState);
+              let tempDataSet = '';
+              controller.map.currentState.layers.forEach(function(layer){
+                if(JSUtilities.inArrayByProperty(controller.dataSouresInfo.dataSets, "id", layer.id)) {tempDataSet += layer.id + ','};
+              });
+              console.log(tempDataSet);
+              controller.router.updateURLParams({dataSets: tempDataSet});
             });
-            // console.log(filter);
-            controller.map.addLayers([{
-              "id": id,
-              "type": "fill",
-              "source": "parcels",
-              'source-layer': 'parcelsgeojson',
-              'filter': filter,
-              "paint": {
-                "fill-color": color,
-                "fill-opacity":0.5
-              }
-            }], controller);
-            // console.log(controller.map.currentState);
-            let tempDataSet = '';
-            controller.map.currentState.layers.forEach(function(layer){
-              (JSUtilities.inArray(controller.layerTypes.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
-            });
-            controller.router.updateURLParams({dataSets: tempDataSet});
-          });
+          }
         });
       }
     }else{
@@ -230,7 +233,7 @@ export default class Controller {
         controller.map.removeLayer(id, controller);
         let tempDataSet = '';
         controller.map.currentState.layers.forEach(function(layer){
-          (JSUtilities.inArray(controller.layerTypes.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
+          (JSUtilities.inArray(controller.dataSouresInfo.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
         });
         controller.router.updateURLParams({dataSets: tempDataSet});
         // console.log(controller.map.currentState);
@@ -242,13 +245,13 @@ export default class Controller {
   checkLayerType(id, value, controller){
     // console.log(id);
     switch (true) {
-      case JSUtilities.inArray(controller.layerTypes.boundaries,id):
+      case JSUtilities.inArray(controller.dataSouresInfo.boundaries,id):
         // console.log('layer is the type boundary');
         controller.router.updateURLParams({polygon: value.properties.districts});
         controller.currentPolygon = value;
         (controller.panel.currentView === 'STAT') ? controller.createPanelData('STAT', controller): 0;
         break;
-      case JSUtilities.inArray(controller.layerTypes.dataSets,id):
+      case JSUtilities.inArray(controller.dataSouresInfo.dataSets,id):
         // console.log('layer is the type data set');
         break;
       default:

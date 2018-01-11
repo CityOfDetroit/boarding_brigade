@@ -9,14 +9,13 @@ export default class JSUtilities {
     return (array.indexOf(item) != -1);
   }
   static inArrayByProperty(array, property, value){
-    let breakException = {};
     let result = false;
-    array.forEach(function(item){
-      if(item[property] === value){
+    for (var i = 0; i < array.length; i++) {
+      if(array[i][property] === value){
         result = true;
-        throw breakException;
+        break;
       }
-    });
+    }
     return result;
   }
 }
