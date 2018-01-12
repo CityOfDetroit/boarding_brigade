@@ -1,9 +1,9 @@
 # Boarding Brigade
 Help keep track of the home boarding program for the City of Detroit.
 
-#Install
+# Install
 Clone the project
 run `npm install` inside the project folder
 
-#Development
+# Develoment
 run `gulp` to load the project locally under "https://localhost:3000"
