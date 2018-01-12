@@ -8,52 +8,36 @@ export default class Panel {
     this.currentView = null;
     this.views = {
       STAT: {},
-      LAYER: {},
+      FILTERS: {},
       SET: {},
       FORM: {}
     };
   }
-  createStats(view, data, controller){
+  createStats(view, data){
     let markUp = "";
     let breadcrumbs = "";
-    switch (true) {
-      case (data.boarded === null && data.needBoarding === null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
-                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
-        markUp = `
-        <article class="data-sets-boundaries">
-          <div>
-            <p>No data sets selected.</p>
-          </div>
-        </article>`;
-        break;
-      case (data.boarded === null && data.needBoarding != null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
-                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
-        markUp = `
+    console.log(data);
+    console.log(view);
+    if(data.dataSets.length){
+      data.dataSets.forEach(function(data){
+        markUp += `
         <div class="item">
-          <h2>${controller.panel.views[view].needBoarding}<br><span>NEED BOARDING</span></h2>
+          <h2>${data.numbers}<br><span>${data.name}</span></h2>
         </div>`;
-        break;
-      case (data.boarded != null && data.needBoarding === null):
-        breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
-                      <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
-        markUp = `
-        <div class="item">
-          <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
-        </div>`;
-        break;
-      default:
-        if(controller.router.getQueryVariable('polygon') != 'city'){
-          breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
-                        <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
-        }else{
-          breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>`;
-        }
-        markUp = `
-        <div class="item">
-          <h2>${controller.panel.views[view].boarded}<br><span>BOARDED</span></h2>
-        </div>`;
+      });
+    }else{
+      markUp = `
+      <article class="data-sets-boundaries">
+        <div>
+          <p>No data sets selected.</p>
+        </div>
+      </article>`;
+    }
+    if(data.title === "City of Detroit"){
+      breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>`;
+    }else{
+      breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
+                    <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
     }
     return [markUp, breadcrumbs];
   }
@@ -69,7 +53,7 @@ export default class Panel {
     switch (view) {
       case 'STAT':
         // console.log('creating stats view');
-        let tempMarkup = this.createStats(view, data, controller);
+        let tempMarkup = this.createStats(view, data);
         tempHTML = `
           <article class="title">
             <h1>${controller.panel.title} : stats</h1>

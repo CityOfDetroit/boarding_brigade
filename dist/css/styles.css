@@ -434,7 +434,7 @@ img {
       display: flex;
       flex-wrap: wrap; }
       .nav .panel-content .highlights .item {
-        flex: 1;
+        width: 100%;
         padding: 1em; }
         .nav .panel-content .highlights .item h2 {
           margin: auto;
@@ -583,6 +583,8 @@ ul {
     left: calc(-60vw - 5em);
     width: 60vw;
     height: 100vh; }
+    .nav .panel-content .highlights .item {
+      width: 33.33334%; }
   .filter {
     flex: 1;
     display: flex; }

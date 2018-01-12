@@ -306,7 +306,7 @@ img{width: 100%;}
       flex-wrap: wrap;
 
       .item{
-        flex: 1;
+        width: 100%;
         padding: 1em;
 
         h2{
@@ -502,6 +502,16 @@ ul {
   	left: calc(-60vw - 5em);
   	width: 60vw;
   	height: 100vh;
+
+    .panel-content{
+
+      .highlights{
+
+        .item{
+          width: 33.33334%;
+        }
+      }
+    }
   }
 	.filter{
 		flex: 1;

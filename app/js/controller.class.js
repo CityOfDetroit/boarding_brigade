@@ -3,6 +3,7 @@ import Map from './map.class.js';
 import Panel from './panel.class.js';
 import Router from './router.class.js';
 import JSUtilities from './utilities.class.js';
+import DataManager from './data-manager.class.js';
 import mapboxgl from 'mapbox-gl';
 const moment = require('moment');
 const turf = require('@turf/simplify');
@@ -13,6 +14,7 @@ export default class Controller {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
     this.dataSouresInfo = dataSouresInfo;
+    this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
     this.panel = new Panel();
     this.map = new Map(map);
     this.router = new Router(router);
@@ -71,92 +73,7 @@ export default class Controller {
         document.getElementById('initial-loader-overlay').className = 'active';
         // console.log('creating stats data');
         let url = null;
-        let tempBoundary = controller.router.getQueryVariable('boundary');
-        let tempDataSets = controller.router.getQueryVariable('dataSets');
-        let tempPolygon = controller.router.getQueryVariable('polygon');
-        console.log(tempPolygon);
-        if(!tempPolygon){
-          console.log(tempBoundary);
-          switch (tempBoundary) {
-            case "council":
-              let simplePolygon = turf(controller.currentPolygon, 0.005, false);
-              // console.log(simplePolygon);
-              let arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
-              url = 'https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=&objectIds=&time=&geometry=' + encodeURI(JSON.stringify(arcsimplePolygon))+ '&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=';
-              fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                console.log(data);
-                let dataObj= {title: "District " + tempPolygon, boarded: null, needBoarding: null};
-                let dataSetsArr = tempDataSets.split(',');
-                if(dataSetsArr.length > 2){
-                  // console.log('multiple data sets');
-                  let checker = [];
-                  dataSetsArr.forEach(function(set){
-                    (set != '') ? checker.push(set) : 0;
-                  });
-                  checker.forEach(function(check){
-                    let tempCheck = null;
-                    dataObj[check] = 0;
-                    (check === 'boarded') ? tempCheck = 'yes' : tempCheck = 'no';
-                    data.features.forEach(function(item){
-                      (item.properties.property_secure === tempCheck) ? dataObj[check]++ : 0;
-                    });
-                  });
-                }else{
-                  // console.log('only one data set');
-                  let checker = null;
-                  dataObj[dataSetsArr[0]] = 0;
-                  (dataSetsArr[0] === 'boarded') ? checker = 'yes' : checker = 'no';
-                  data.features.forEach(function(item){
-                    (item.properties.property_secure === checker) ? dataObj[dataSetsArr[0]]++ : 0;
-                  });
-                }
-                controller.panel.createView(view, dataObj, controller);
-              });
-              break;
-            case "neighborhood":
-              simplePolygon = turf(controller.currentPolygon, 0.005, false);
-              // console.log(simplePolygon);
-              arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
-              break;
-            default:
-              let dataObj = {title: "City of Detroit"};
-              let pBoarded = new Promise((resolve, reject) => {
-                let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+%3E+%27" + controller.defaultSettings.startDate + "%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
-                return fetch(url)
-                .then((resp) => resp.json()) // Transform the data into json
-                .then(function(data) {
-                  console.log({"boarded": data.features.length});
-                  resolve({"name" : "boarded", "numbers" : data.features.length, "data": data});
-                })
-              });
-              let pBuildingPermits = new Promise((resolve, reject) => {
-                let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?$where=permit_issued > '" + controller.defaultSettings.startDate + "'";
-                return fetch(url)
-                .then((resp) => resp.json()) // Transform the data into json
-                .then(function(data) {
-                  console.log({"buildingPermits": data.length});
-                  resolve({"name": "buildingPermits", "numbers": data.length, "data": data});
-                });
-              });
-              Promise.all([pBoarded, pBuildingPermits]).then(values => {
-                  console.log(values); //one, two
-                  let dataSets = [];
-                  values.forEach(function(value) {
-                    (value != null) ? dataSets.push(value) : 0;
-                  });
-                  dataObj.dataSets = dataSets;
-                  console.log(dataObj);
-                  controller.panel.createView(view, dataObj, controller);
-              }).catch(reason => {
-                console.log(reason);
-              });
-          }
-        }else{
-          // NOTE: Add functions for quering manually created polygons
-          console.log("custom polygon");
-        }
+        controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);  
         break;
       case 'FILTERS':
         // console.log('creating layers data');
