@@ -448,7 +448,12 @@ img {
             display: block;
             font-size: .3em; }
     .nav .panel-content .chart-section {
-      display: flex; }
+      display: flex;
+      flex-wrap: wrap; }
+      .nav .panel-content .chart-section h2 {
+        text-transform: uppercase;
+        text-align: center;
+        color: #fff; }
       .nav .panel-content .chart-section #myChart, .nav .panel-content .chart-section div {
         flex: 1; }
     .nav .panel-content .data-sets-boundaries {

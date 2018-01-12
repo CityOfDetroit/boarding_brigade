@@ -328,6 +328,13 @@ img{width: 100%;}
 
     .chart-section{
       display: flex;
+      flex-wrap: wrap;
+
+      h2{
+        text-transform: uppercase;
+        text-align: center;
+        color: $white;
+      }
 
       #myChart, div{
         flex: 1;

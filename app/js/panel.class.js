@@ -12,6 +12,8 @@ export default class Panel {
       SET: {},
       FORM: {}
     };
+    this.ctx = {};
+    this.charts = {};
   }
   createStats(view, data){
     let markUp = "";
@@ -53,6 +55,7 @@ export default class Panel {
     switch (view) {
       case 'STAT':
         // console.log('creating stats view');
+        let chartingItems = [];
         let tempMarkup = this.createStats(view, data);
         tempHTML = `
           <article class="title">
@@ -68,56 +71,71 @@ export default class Panel {
           <article class="highlights">
             ${tempMarkup[0]}
           </article>
-          <article class="chart-section">
-            <div>
-              <canvas id="myChart" width="400" height="300"></canvas>
-            </div>
-            <div></div>
-          </article>
         `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
+        data.dataSets.forEach(function(set){
+          switch (true) {
+            case set.id === "911":
+              chartingItems.push(set);
+              break;
+            case set.id === "crime":
+              chartingItems.push(set);
+              break;
+            default:
+
+          }
+        });
+        console.log(chartingItems);
+        if(chartingItems.length){
+          tempHTML += `<article class="chart-section">`;
+          chartingItems.forEach(function(item){
+            tempHTML += `
+              <div>
+                <h2>${item.id}</h2>
+                <canvas id="${item.id}-chart" width="300" height="200"></canvas>
+              </div>
+            `;
+          });
+          tempHTML += `</article>`;
+          document.querySelector('.panel-content').innerHTML = tempHTML;
+          let rawChartData = controller.panel.buildChartData(chartingItems);
+          let cleanChartData = {};
+          for(let chart in rawChartData){
+            cleanChartData[chart] = {"labels":[],"data":[],"color":[]};
+            for(let value in rawChartData[chart]){
+              cleanChartData[chart].labels.push(value);
+              cleanChartData[chart].data.push(rawChartData[chart][value]);
+              cleanChartData[chart].color.push(JSUtilities.dynamicColors());
+            }
+          }
+          console.log(cleanChartData);
+          for (var chart in cleanChartData) {
+            console.log(chart);
+            console.log(cleanChartData[chart]);
+            controller.panel.ctx[chart] = document.getElementById(chart + "-chart");
+            controller.panel.charts[chart] = new Chart(controller.panel.ctx[chart], {
+                type: 'pie',
+                data: {
+                    labels: cleanChartData[chart].labels,
+                    datasets: [{
+                        label: '# of ' + chart,
+                        data: cleanChartData[chart].data,
+                        backgroundColor: cleanChartData[chart].color,
+                        borderColor: cleanChartData[chart].color
+                    }]
+                },
+                options: {
+                  legend: {
+                      display: false
+                  }
+                }
+             });
+          }
+        }
         let breadcrumbs = document.querySelectorAll('.cf a');
         breadcrumbs.forEach(function(bread){
           bread.addEventListener('click', function(e){
             controller.loadPrevious(e, controller);
           });
-        });
-        let ctx = document.getElementById("myChart");
-        let myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
         });
         document.getElementById('initial-loader-overlay').className = '';
         break;
@@ -306,5 +324,28 @@ export default class Panel {
       default:
         console.log('invalid view reverting back');
     }
+  }
+  buildChartData(data){
+    let chartData = {};
+    data.forEach(function(set){
+      chartData[set.id] = {};
+      set.data.forEach(function(item){
+        if(set.id === "crime"){
+          if(!chartData[set.id].hasOwnProperty(item.offense_category)){
+            chartData[set.id][item.offense_category] = 1;
+          }else{
+            chartData[set.id][item.offense_category]++;
+          }
+        }else{
+          if (!chartData[set.id].hasOwnProperty(item.calldescription)) {
+            chartData[set.id][item.calldescription] = 1;
+          }else{
+            chartData[set.id][item.calldescription]++;
+          }
+        }
+      });
+    });
+    console.log(chartData);
+    return chartData;
   }
 }

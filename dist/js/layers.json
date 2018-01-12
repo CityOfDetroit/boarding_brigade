@@ -17,8 +17,18 @@
     },
     {
       "id": "boarded",
-      "name": "Boarded",
+      "name": "Boarded Properties",
       "departments": ["GSD"]
+    },
+    {
+      "id": "crime",
+      "name": "Crimes",
+      "departments": ["DPD"]
+    },
+    {
+      "id": "fire",
+      "name": "Fire Incidents",
+      "departments": ["DFD"]
     },
     {
       "id": "permits",

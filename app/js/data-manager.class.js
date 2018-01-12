@@ -73,7 +73,7 @@ export default class DataManager {
         case "city":
           let dataObj = {title: "City of Detroit"};
           let tempDataSets = null;
-          (!dataSets) ? tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911"] : tempDataSets = dataSets;
+          (!dataSets) ? tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911","crime","fire","green-lights"] : tempDataSets = dataSets;
 
           let pBoarded = new Promise((resolve, reject) => {
             let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+%3E+%27" + controller.defaultSettings.startDate + "%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
@@ -81,7 +81,7 @@ export default class DataManager {
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
-                resolve({"id" : "boarded", "name": "BOARDED", "numbers" : data.features.length, "data": data});
+                resolve({"id" : "boarded", "name": "BOARDED PROPERTIES", "numbers" : data.features.length.toLocaleString(), "data": data});
               });
             }else{
               return null;
@@ -93,7 +93,7 @@ export default class DataManager {
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
-                resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.length, "data": data});
+                resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
               return null;
@@ -105,7 +105,7 @@ export default class DataManager {
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
-                resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length, "data": data});
+                resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
               return null;
@@ -117,7 +117,7 @@ export default class DataManager {
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
-                resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length, "data": data});
+                resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
               return null;
@@ -129,7 +129,7 @@ export default class DataManager {
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
-                resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length, "data": data});
+                resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
               return null;
@@ -147,7 +147,43 @@ export default class DataManager {
               return null;
             }
           });
-          Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pCommDemos, p911]).then(values => {
+          let pCrime = new Promise((resolve, reject) => {
+            let url = "https://data.detroitmi.gov/resource/Crime_Incidents.json?$where=incident_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            if(JSUtilities.inArray(tempDataSets, "crime")){
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "crime", "name": "CRIMES", "numbers": data.length.toLocaleString(), "data": data});
+              });
+            }else{
+              return null;
+            }
+          });
+          let pFire = new Promise((resolve, reject) => {
+            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            if(JSUtilities.inArray(tempDataSets, "fire")){
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.length.toLocaleString(), "data": data});
+              });
+            }else{
+              return null;
+            }
+          });
+          let pGreenlight = new Promise((resolve, reject) => {
+            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            if(JSUtilities.inArray(tempDataSets, "green-lights")){
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.length.toLocaleString(), "data": data});
+              });
+            }else{
+              return null;
+            }
+          });
+          Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pCommDemos, p911, pCrime, pFire, pGreenlight]).then(values => {
               console.log(values); //one, two
               let dataSets = [];
               values.forEach(function(value) {
