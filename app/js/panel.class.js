@@ -116,35 +116,6 @@ export default class Panel {
               cleanChartData[chart].color.push(JSUtilities.dynamicColors());
             }
           }
-          // controller.panel.ctx["crime"] = document.getElementById("crime-chart");
-          // controller.panel.charts["crime"] = new Chart(controller.panel.ctx["crime"], {
-          //     type: 'horizontalBar',
-          //     data: {
-          //         labels: cleanChartData["crime"].labels,
-          //         datasets: [{
-          //             data: cleanChartData["crime"].data,
-          //             backgroundColor: "#E48F22",
-          //             borderColor: "#E48F22"
-          //         }]
-          //     },
-          //     options: {
-          //       legend: {
-          //           display: false
-          //       },
-          //       scales: {
-          //           yAxes: [{
-          //               ticks: {
-          //                   fontColor: "white"
-          //               }
-          //           }],
-          //           xAxes: [{
-          //               ticks: {
-          //                   fontColor: "white"
-          //               }
-          //           }]
-          //       }
-          //     }
-          //  });
           console.log(cleanChartData);
           for (var chart in cleanChartData) {
             console.log(chart);
@@ -185,6 +156,8 @@ export default class Panel {
                 }
              });
           }
+        }else{
+          document.querySelector('.panel-content').innerHTML = tempHTML;
         }
         let breadcrumbs = document.querySelectorAll('.cf a');
         breadcrumbs.forEach(function(bread){
@@ -292,7 +265,7 @@ export default class Panel {
         let layerBtns = document.querySelectorAll('.layer-btn');
         layerBtns.forEach(function(btn){
           btn.addEventListener('click', function(ev){
-            // console.log(ev);
+            console.log(ev);
             // console.log(ev.target.attributes[1].nodeValue);
             if(ev.target.className === 'layer-btn radio'){
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){
@@ -302,12 +275,12 @@ export default class Panel {
                 // controller.layerAddRemove(ev.target.attributes[1].nodeValue,controller);
               }
             }else{
-              // console.log(document.getElementById(ev.target.attributes[1].nodeValue).checked);
+              console.log(document.getElementById(ev.target.attributes[1].nodeValue).checked);
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){
-                // console.log('unchecking');
+                console.log('unchecking');
                 controller.layerAddRemove(ev.target.attributes[1].nodeValue,'remove',controller);
               }else{
-                // console.log('checking');
+                console.log('checking');
                 controller.layerAddRemove(ev.target.attributes[1].nodeValue,'add',controller);
               }
             }

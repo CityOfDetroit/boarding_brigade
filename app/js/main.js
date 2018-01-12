@@ -89,7 +89,8 @@ import Connector from './connector.class.js';
       dataSets: '',
       polygon: ''
     },
-    json);
+    json,
+    ["#feebe2","#fbb4b9","#f768a1","#c51b8a","#7a0177"]);
   })
   .catch(function(error) { console.log(error); });
   const buttons = document.querySelectorAll('.tab-btn');

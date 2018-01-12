@@ -10,10 +10,11 @@ const turf = require('@turf/simplify');
 const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
-  constructor(map, router, dataSouresInfo) {
+  constructor(map, router, dataSouresInfo, palette) {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
     this.dataSouresInfo = dataSouresInfo;
+    this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
     this.panel = new Panel();
     this.map = new Map(map);
@@ -73,7 +74,7 @@ export default class Controller {
         document.getElementById('initial-loader-overlay').className = 'active';
         // console.log('creating stats data');
         let url = null;
-        controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);  
+        controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);
         break;
       case 'FILTERS':
         // console.log('creating layers data');
@@ -115,6 +116,7 @@ export default class Controller {
         // console.log('layer already exist');
       }else{
         // console.log('adding');
+        console.log(controller.router.getQueryVariable('dataSets'));
         let color = null;
         let property = null;
         if(id === "boarded"){

@@ -73,30 +73,37 @@ export default class DataManager {
         case "city":
           let dataObj = {title: "City of Detroit"};
           let tempDataSets = null;
-          (!dataSets) ? tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911","crime","fire","green-lights"] : tempDataSets = dataSets;
-
+          if(!dataSets) {
+            tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911","crime","fire","green-lights"];
+          }else{
+            tempDataSets = dataSets.split(",");
+            tempDataSets.pop();
+          }
+          console.log(tempDataSets);
           let pBoarded = new Promise((resolve, reject) => {
             let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+%3E+%27" + controller.defaultSettings.startDate + "%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
             if(JSUtilities.inArray(tempDataSets, "boarded")){
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
+                console.log(data);
                 resolve({"id" : "boarded", "name": "BOARDED PROPERTIES", "numbers" : data.features.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              return resolve(null);
             }
           });
           let pBuildingPermits = new Promise((resolve, reject) => {
             let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?$where=permit_issued > '" + controller.defaultSettings.startDate + "'";
-            if(JSUtilities.inArray(tempDataSets, "boarded")){
+            if(JSUtilities.inArray(tempDataSets, "permits")){
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
               .then(function(data) {
                 resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pTotalPropertySales = new Promise((resolve, reject) => {
@@ -108,7 +115,8 @@ export default class DataManager {
                 resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pBlight = new Promise((resolve, reject) => {
@@ -120,7 +128,8 @@ export default class DataManager {
                 resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pCommDemos = new Promise((resolve, reject) => {
@@ -132,7 +141,8 @@ export default class DataManager {
                 resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let p911 = new Promise((resolve, reject) => {
@@ -144,7 +154,8 @@ export default class DataManager {
                 resolve({"id": "911", "name": "911 CALLS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pCrime = new Promise((resolve, reject) => {
@@ -156,7 +167,8 @@ export default class DataManager {
                 resolve({"id": "crime", "name": "CRIMES", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pFire = new Promise((resolve, reject) => {
@@ -168,7 +180,8 @@ export default class DataManager {
                 resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           let pGreenlight = new Promise((resolve, reject) => {
@@ -180,7 +193,8 @@ export default class DataManager {
                 resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.length.toLocaleString(), "data": data});
               });
             }else{
-              return null;
+              console.log('returning null');
+              return resolve(null);
             }
           });
           Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pCommDemos, p911, pCrime, pFire, pGreenlight]).then(values => {
