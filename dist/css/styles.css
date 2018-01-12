@@ -449,7 +449,8 @@ img {
             font-size: .3em; }
     .nav .panel-content .chart-section {
       display: flex;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      padding: 1em; }
       .nav .panel-content .chart-section h2 {
         text-transform: uppercase;
         text-align: center;

@@ -91,9 +91,18 @@ export default class Panel {
             tempHTML += `
               <div>
                 <h2>${item.id}</h2>
-                <canvas id="${item.id}-chart" width="300" height="200"></canvas>
+                <canvas id="${item.id}-chart"`;
+            if(item.id === "crime"){
+              tempHTML += `
+                width="400" height="250"></canvas>
               </div>
-            `;
+              `;
+            }else{
+              tempHTML += `
+                width="400" height="1200"></canvas>
+              </div>
+              `;
+            }
           });
           tempHTML += `</article>`;
           document.querySelector('.panel-content').innerHTML = tempHTML;
@@ -107,25 +116,71 @@ export default class Panel {
               cleanChartData[chart].color.push(JSUtilities.dynamicColors());
             }
           }
+          // controller.panel.ctx["crime"] = document.getElementById("crime-chart");
+          // controller.panel.charts["crime"] = new Chart(controller.panel.ctx["crime"], {
+          //     type: 'horizontalBar',
+          //     data: {
+          //         labels: cleanChartData["crime"].labels,
+          //         datasets: [{
+          //             data: cleanChartData["crime"].data,
+          //             backgroundColor: "#E48F22",
+          //             borderColor: "#E48F22"
+          //         }]
+          //     },
+          //     options: {
+          //       legend: {
+          //           display: false
+          //       },
+          //       scales: {
+          //           yAxes: [{
+          //               ticks: {
+          //                   fontColor: "white"
+          //               }
+          //           }],
+          //           xAxes: [{
+          //               ticks: {
+          //                   fontColor: "white"
+          //               }
+          //           }]
+          //       }
+          //     }
+          //  });
           console.log(cleanChartData);
           for (var chart in cleanChartData) {
             console.log(chart);
             console.log(cleanChartData[chart]);
             controller.panel.ctx[chart] = document.getElementById(chart + "-chart");
             controller.panel.charts[chart] = new Chart(controller.panel.ctx[chart], {
-                type: 'pie',
+                type: 'horizontalBar',
                 data: {
                     labels: cleanChartData[chart].labels,
                     datasets: [{
-                        label: '# of ' + chart,
                         data: cleanChartData[chart].data,
-                        backgroundColor: cleanChartData[chart].color,
-                        borderColor: cleanChartData[chart].color
+                        backgroundColor: "#E48F22",
+                        borderColor: "#E48F22"
                     }]
                 },
                 options: {
                   legend: {
                       display: false
+                  },
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              fontColor: "white"
+                          },
+                          gridLines: {
+                            color: 'rgba(255,255,255,.25)'
+                          }
+                      }],
+                      xAxes: [{
+                          ticks: {
+                              fontColor: "white"
+                          },
+                          gridLines: {
+                            color: 'rgba(255,255,255,.25)'
+                          }
+                      }]
                   }
                 }
              });
