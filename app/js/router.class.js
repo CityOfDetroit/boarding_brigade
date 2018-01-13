@@ -54,7 +54,13 @@ export default class Router {
       var pair = vars[i].split("=");
       if (pair[0] == variable) {
         if (pair[1] !== '') {
-          return pair[1];
+          let arr = pair[1].split(",");
+          arr.pop();
+          if(arr.length){
+            return arr;
+          }else{
+            return pair[1];
+          }
         }
       }
     }

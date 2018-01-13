@@ -115,15 +115,39 @@ export default class Controller {
       if(controller.map.map.getLayer(id)){
         // console.log('layer already exist');
       }else{
-        // console.log('adding');
-        console.log(controller.router.getQueryVariable('dataSets'));
+        // console.log('adding')
+        let layerList = controller.router.getQueryVariable("dataSets");
+        console.log(layerList);
         let color = null;
         let property = null;
+        switch (true) {
+          case !layerList:
+            color = "#fbb4b9";
+            document.getElementById('legend').innerHTML = `
+              <strong>DATA</strong>
+              <div class="color">
+                <span style="background: #fbb4b9;"></span>
+              </div>
+              <div class="text">
+                <label>${id}</label>
+              </div>
+            `;
+            break;
+          case layerList.length === 1:
+            color = "#f768a1";
+            break;
+          case layerList.length === 2:
+            color = "#c51b8a";
+            break;
+          case layerList.length === 3:
+            color = "#7a0177";
+            break;
+          default:
+            console.log("too many datasets");
+        }
         if(id === "boarded"){
-          color = "#00a0db";
           property = "yes";
         }else{
-          color = "#db9700";
           property = "no";
         }
         let filter = ["in",'parcelno'];

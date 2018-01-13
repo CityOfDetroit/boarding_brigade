@@ -624,6 +624,48 @@ ul {
   top: 1em;
   right: 3em;
 }
+#legend{
+  position: absolute;
+  bottom: 2em;
+  right: 6em;
+  width: 20em;
+  z-index: 2;
+
+  strong{
+    background-color: rgba(255,255,255,.7);
+  }
+
+  .color{
+    display: flex;
+    height: 1em;
+
+    span{
+      width: 25%;
+    }
+  }
+
+  .text{
+    display: flex;
+
+    label{
+      width: 25%;
+      font-size: .65em;
+      background-color: rgba(255,255,255,.7);
+    }
+  }
+}
+
+.legend label,
+
+.legend span {
+  background-color: rgba(255,255,255,.7);
+  display:block;
+  float:left;
+  height:15px;
+  width:20%;
+  text-align:center;
+  font-size:.75em;
+}
 main {
 	position: relative;
 	display: flex;

@@ -71,6 +71,7 @@ export default class DataManager {
           break;
 
         case "city":
+          console.log("city");
           let dataObj = {title: "City of Detroit"};
           let tempDataSets = null;
           if(!dataSets) {
