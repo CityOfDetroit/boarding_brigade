@@ -145,51 +145,49 @@ export default class Controller {
           default:
             console.log("too many datasets");
         }
-        if(id === "boarded"){
-          property = "yes";
-        }else{
-          property = "no";
+        let tempNewLayer = null
+        try {
+          controller.dataManager.createLayer(id, color, controller);
+        } catch (e) {
+          console.log("Error: " + e);
         }
-        let filter = ["in",'parcelno'];
-        // console.log(controller.dataSouresInfo);
-        // console.log(id);
-        controller.dataSouresInfo.sources.forEach(function(source){
-          // console.log(source.id);
-          if(source.id === id){
-            fetch(source.data)
-            .then((resp) => resp.json()) // Transform the data into json
-            .then(function(data) {
-              console.log(data);
-              data.features.forEach(function(property){
-                if(id === "boarded"){
-                  (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-                }else{
-                  (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-                }
-              });
-              console.log(filter);
-              controller.map.addLayers([{
-                "id": id,
-                "type": "fill",
-                "source": "parcels",
-                'source-layer': 'parcelsgeojson',
-                'filter': filter,
-                "paint": {
-                  "fill-color": color,
-                  "fill-opacity":0.5
-                },
-                "event": true
-              }], controller);
-              console.log(controller.map.currentState);
-              let tempDataSet = '';
-              controller.map.currentState.layers.forEach(function(layer){
-                if(JSUtilities.inArrayByProperty(controller.dataSouresInfo.dataSets, "id", layer.id)) {tempDataSet += layer.id + ','};
-              });
-              console.log(tempDataSet);
-              controller.router.updateURLParams({dataSets: tempDataSet});
-            });
-          }
-        });
+      //   controller.dataSouresInfo.sources.forEach(function(source){
+      //     // console.log(source.id);
+      //     if(source.id === id){
+      //       fetch(source.data)
+      //       .then((resp) => resp.json()) // Transform the data into json
+      //       .then(function(data) {
+      //         console.log(data);
+      //         data.features.forEach(function(property){
+      //           if(id === "boarded"){
+      //             (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+      //           }else{
+      //             (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+      //           }
+      //         });
+      //         console.log(filter);
+      //         controller.map.addLayers([{
+      //           "id": id,
+      //           "type": "fill",
+      //           "source": "parcels",
+      //           'source-layer': 'parcelsgeojson',
+      //           'filter': filter,
+      //           "paint": {
+      //             "fill-color": color,
+      //             "fill-opacity":0.5
+      //           },
+      //           "event": true
+      //         }], controller);
+      //         console.log(controller.map.currentState);
+      //         let tempDataSet = '';
+      //         controller.map.currentState.layers.forEach(function(layer){
+      //           if(JSUtilities.inArrayByProperty(controller.dataSouresInfo.dataSets, "id", layer.id)) {tempDataSet += layer.id + ','};
+      //         });
+      //         console.log(tempDataSet);
+      //         controller.router.updateURLParams({dataSets: tempDataSet});
+      //       });
+      //     }
+      //   });
       }
     }else{
       if(controller.map.map.getLayer(id)){
