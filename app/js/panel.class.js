@@ -21,12 +21,14 @@ export default class Panel {
     console.log(data);
     console.log(view);
     if(data.dataSets.length){
+      (data.dataSets.length > 3) ? markUp += `<article class="highlights lots">` : markUp += `<article class="highlights">`;
       data.dataSets.forEach(function(data){
         markUp += `
         <div class="item">
           <h2>${data.numbers}<br><span>${data.name}</span></h2>
         </div>`;
       });
+      markUp += `</article>`;
     }else{
       markUp = `
       <article class="data-sets-boundaries">
@@ -68,9 +70,7 @@ export default class Panel {
               </ul>
             </article>
           </section>
-          <article class="highlights">
-            ${tempMarkup[0]}
-          </article>
+          ${tempMarkup[0]}
         `;
         data.dataSets.forEach(function(set){
           switch (true) {
@@ -175,7 +175,6 @@ export default class Panel {
         let tempDataSets = '';
         if(controller.router.getQueryVariable('dataSets')){
           tempDataSets = controller.router.getQueryVariable('dataSets');
-          tempDataSets = tempDataSets.split(',');
         }
         if(Array.isArray(tempDataSets)){
           tempDataSets.forEach(function(set){
@@ -265,7 +264,7 @@ export default class Panel {
         let layerBtns = document.querySelectorAll('.layer-btn');
         layerBtns.forEach(function(btn){
           btn.addEventListener('click', function(ev){
-            console.log(ev);
+            // console.log(ev);
             // console.log(ev.target.attributes[1].nodeValue);
             if(ev.target.className === 'layer-btn radio'){
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){

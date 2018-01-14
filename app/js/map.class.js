@@ -152,16 +152,17 @@ export default class Map {
   }
   addSources(sources, controller){
     sources.forEach(function(source){
-      controller.map.currentState.sources.push(source);
       let tempSource = {
         type: source.type
       };
       (source.data === undefined) ? 0: tempSource.data = source.data;
       (source.url === undefined) ? 0: tempSource.url = source.url;
       if(controller.map.map.getSource(source.id) === undefined){
-        controller.map.map.addSource(this.currentState.sources[i].id, tempSource);
+        controller.map.currentState.sources.push(source);
+        controller.map.map.addSource(source.id, tempSource);
       }
     });
+    return 0
   }
   addLayers(layers, controller){
     // console.log(layers);

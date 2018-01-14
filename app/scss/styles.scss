@@ -516,7 +516,15 @@ ul {
       .highlights{
 
         .item{
-          width: 33.33334%;
+          flex: 1;
+        }
+      }
+
+      .highlights.lots{
+
+        .item{
+          flex: none;
+          width: 33.3333334%;
         }
       }
     }

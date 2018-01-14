@@ -110,112 +110,350 @@ export default class DataManager {
           let pBuildingPermits = new Promise((resolve, reject) => {
             let url = "https://data.detroitmi.gov/resource/but4-ky7y.geojson?$where=permit_issued > '" + controller.defaultSettings.startDate + "'";
             if(JSUtilities.inArray(tempDataSets, "permits")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                console.log(data);
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
                 let layer = [{
                   "id": id,
-                  "source": data,
+                  "source": id,
                   "type": "circle",
                   "paint": {
-                      "circle-radius": 10,
+                      "circle-radius": 6,
                       "circle-color": color
                   }
                 }];
                 resolve(layer);
-              });
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pTotalPropertySales = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/9xku-658c.json?$where=sale_date > '" + controller.defaultSettings.startDate + "'";
+            let url = "https://data.detroitmi.gov/resource/9xku-658c.geojson?$where=sale_date > '" + controller.defaultSettings.startDate + "'";
             if(JSUtilities.inArray(tempDataSets, "total-property-sales")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pBlight = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?$where=violation_date > '" + controller.defaultSettings.startDate + "'";
+            let url = "https://data.detroitmi.gov/resource/s7hj-n86v.geojson?$where=violation_date > '" + controller.defaultSettings.startDate + "'";
             if(JSUtilities.inArray(tempDataSets, "blight-tickets")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pCommDemos = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/niaj-6fdd.json?$where=demo_date > '" + controller.defaultSettings.startDate + "'";
+            let url = "https://data.detroitmi.gov/resource/niaj-6fdd.geojson?$where=demo_date > '" + controller.defaultSettings.startDate + "'";
             if(JSUtilities.inArray(tempDataSets, "commercial-demos")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let p911 = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/Calls911.json?$where=call_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.geojson?$where=call_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "911")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "911", "name": "911 CALLS", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pCrime = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/Crime_Incidents.json?$where=incident_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/9i6z-cm98.geojson?$where=incident_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "crime")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "crime", "name": "CRIMES", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pFire = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.geojson?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "fire")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
             }
           });
           let pGreenlight = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/pav4-mvgv.geojson?$where=call_date > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "green-lights")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.length.toLocaleString(), "data": data});
-              });
+              if(controller.map.map.getSource(id)){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource(id).setData(data);
+                  let layer = [{
+                    "id": id,
+                    "source": id,
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": color
+                    }
+                  }];
+                  resolve(layer);
+                });
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": id,
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": id,
+                  "source": id,
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             }else{
               console.log('returning null');
               return resolve(null);
@@ -301,11 +539,11 @@ export default class DataManager {
           console.log("city");
           let dataObj = {title: "City of Detroit"};
           let tempDataSets = null;
+          console.log(dataSets);
           if(!dataSets) {
             tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911","crime","fire","green-lights"];
           }else{
-            tempDataSets = dataSets.split(",");
-            tempDataSets.pop();
+            tempDataSets = dataSets;
           }
           console.log(tempDataSets);
           let pBoarded = new Promise((resolve, reject) => {
@@ -374,7 +612,7 @@ export default class DataManager {
             }
           });
           let p911 = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/Calls911.json?$where=call_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.json?$where=call_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "911")){
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json
@@ -387,7 +625,7 @@ export default class DataManager {
             }
           });
           let pCrime = new Promise((resolve, reject) => {
-            let url = "https://data.detroitmi.gov/resource/Crime_Incidents.json?$where=incident_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
+            let url = "https://data.detroitmi.gov/resource/9i6z-cm98.json?$where=incident_timestamp > '" + controller.defaultSettings.startDate + "'&$limit=50000";
             if(JSUtilities.inArray(tempDataSets, "crime")){
               return fetch(url)
               .then((resp) => resp.json()) // Transform the data into json

@@ -6,11 +6,6 @@
       "departments": ["DPD"]
     },
     {
-      "id": "auction-sales",
-      "name": "Auction Sales",
-      "departments": ["DLBA"]
-    },
-    {
       "id": "blight-tickets",
       "name": "Blight Tickets",
       "departments": ["DAH"]
@@ -44,16 +39,6 @@
       "id": "green-lights",
       "name": "Green Lights",
       "departments": ["DPD"]
-    },
-    {
-      "id": "improve-det",
-      "name": "Improve Detroit Issues",
-      "departments": ["DOIT"]
-    },
-    {
-      "id": "lot-sales",
-      "name": "Side Lot Sales",
-      "departments": ["DLBA"]
     },
     {
       "id": "total-property-sales",
