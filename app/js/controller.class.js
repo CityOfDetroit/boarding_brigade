@@ -116,78 +116,43 @@ export default class Controller {
         // console.log('layer already exist');
       }else{
         // console.log('adding')
-        let layerList = controller.router.getQueryVariable("dataSets");
+        let colorList = ["#da3448","#900818","#4891dd","#084a8e"];
+        let layerList = document.querySelectorAll('#legend .color span');
         console.log(layerList);
         let color = null;
         let property = null;
-        switch (true) {
-          case !layerList:
-            color = "#fbb4b9";
-            document.getElementById('legend').innerHTML = `
-              <strong>DATA</strong>
-              <div class="color">
-                <span style="background: #fbb4b9;"></span>
-              </div>
-              <div class="text">
-                <label>${id}</label>
-              </div>
-            `;
-            break;
-          case layerList.length === 1:
-            color = "#f768a1";
-            break;
-          case layerList.length === 2:
-            color = "#c51b8a";
-            break;
-          case layerList.length === 3:
-            color = "#7a0177";
-            break;
-          default:
-            console.log("too many datasets");
+        if(layerList.length){
+          let usedColors = [];
+          layerList.forEach(function(item){
+            usedColors.push(item.getAttribute('data-color'));
+          });
+          console.log(usedColors);
+          colorList.forEach(function(item){
+            if(color === null){
+              console.log('still need color');
+              if(!usedColors.includes(item)){
+                console.log(!usedColors.includes(item));
+                console.log(item);
+                color = item;
+              }
+            }
+          });
+        }else{
+          color = "#da3448";
         }
+        console.log(color);
+        let tempColor = document.querySelector('#legend .color').innerHTML;
+        tempColor += `<span data-id="${id}" data-color="${color}" style="background: ${color}"></span>`;
+        let tempLegend = document.querySelector('#legend .text').innerHTML;
+        tempLegend += `<label data-id="${id}">${id}</label>`;
+        document.querySelector('#legend .text').innerHTML = tempLegend;
+        document.querySelector('#legend .color').innerHTML = tempColor;
         let tempNewLayer = null
         try {
           controller.dataManager.createLayer(id, color, controller);
         } catch (e) {
           console.log("Error: " + e);
         }
-      //   controller.dataSouresInfo.sources.forEach(function(source){
-      //     // console.log(source.id);
-      //     if(source.id === id){
-      //       fetch(source.data)
-      //       .then((resp) => resp.json()) // Transform the data into json
-      //       .then(function(data) {
-      //         console.log(data);
-      //         data.features.forEach(function(property){
-      //           if(id === "boarded"){
-      //             (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-      //           }else{
-      //             (property.properties.property_secure === "no" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
-      //           }
-      //         });
-      //         console.log(filter);
-      //         controller.map.addLayers([{
-      //           "id": id,
-      //           "type": "fill",
-      //           "source": "parcels",
-      //           'source-layer': 'parcelsgeojson',
-      //           'filter': filter,
-      //           "paint": {
-      //             "fill-color": color,
-      //             "fill-opacity":0.5
-      //           },
-      //           "event": true
-      //         }], controller);
-      //         console.log(controller.map.currentState);
-      //         let tempDataSet = '';
-      //         controller.map.currentState.layers.forEach(function(layer){
-      //           if(JSUtilities.inArrayByProperty(controller.dataSouresInfo.dataSets, "id", layer.id)) {tempDataSet += layer.id + ','};
-      //         });
-      //         console.log(tempDataSet);
-      //         controller.router.updateURLParams({dataSets: tempDataSet});
-      //       });
-      //     }
-      //   });
       }
     }else{
       if(controller.map.map.getLayer(id)){
@@ -199,6 +164,22 @@ export default class Controller {
         });
         controller.router.updateURLParams({dataSets: tempDataSet});
         // console.log(controller.map.currentState);
+        let tempColors = document.querySelectorAll('#legend .color span');
+        let tempLegend = document.querySelectorAll('#legend .text label');
+        let newTempColors = "";
+        let newTempLegend = "";
+        console.log(tempColors);
+        console.log(tempLegend);
+        tempColors.forEach(function(color){
+          (color.getAttribute('data-id') != id) ? newTempColors += `<span data-id="${color.getAttribute('data-id')}" data-color="${color.getAttribute('data-color')}" style="background: ${color.getAttribute('data-color')}"></span>` : 0;
+        });
+        tempLegend.forEach(function(legend){
+          (legend.getAttribute('data-id') != id) ? newTempLegend += `<label data-id="${legend.getAttribute('data-id')}">${legend.getAttribute('data-id')}</label>`: 0;
+        });
+        console.log(newTempColors);
+        console.log(newTempLegend);
+        document.querySelector('#legend .text').innerHTML = newTempLegend;
+        document.querySelector('#legend .color').innerHTML = newTempColors;
       }else{
         console.log('layer does not exist');
       }
