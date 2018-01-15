@@ -139,15 +139,30 @@ export default class Map {
     }
   }
   removeLayer(layer, controller){
-    try {
-      if(controller.map.map.getLayer(layer) != undefined){
+    if(Array.isArray(layer)){
+      console.log(layer);
+      try {
+        if(controller.map.map.getLayer(layer[0]) != undefined){
+          controller.map.map.removeLayer(layer[0]);
+          for (var x = 0; x < controller.map.currentState.layers.length; x++) {
+            (controller.map.currentState.layers[x].id === layer[0]) ? controller.map.currentState.layers.splice(x, 1) : 0;
+          }
+          controller.map.removeEvent(layer[0],controller);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }else{
+      try {
+        if(controller.map.map.getLayer(layer) != undefined){
           controller.map.map.removeLayer(layer);
           for (var x = 0; x < controller.map.currentState.layers.length; x++) {
             (controller.map.currentState.layers[x].id === layer) ? controller.map.currentState.layers.splice(x, 1) : 0;
           }
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }
   addSources(sources, controller){
@@ -167,6 +182,7 @@ export default class Map {
   addLayers(layers, controller){
     // console.log(layers);
     layers.forEach(function(layer){
+      console.log(layer);
       controller.map.currentState.layers.push(layer);
       let tempLayer = {
         id: layer.id,
@@ -187,6 +203,11 @@ export default class Map {
       }
     });
   }
+  removeEvent(layer, controller){
+    console.log(layer);
+    controller.map.map.off('click', layer);
+    controller.map.map.off('mousemove', layer);
+  }
   addEvent(layer, controller){
     controller.map.map.on('click', layer.id, function (e, parent = this) {
       let features = this.queryRenderedFeatures(e.point, {
@@ -201,15 +222,32 @@ export default class Map {
     });
 
     // Change the cursor to a pointer when the mouse is over the places layer.
-    controller.map.map.on('mouseenter', layer.id, function (e, parent = this) {
-        this.getCanvas().style.cursor = 'pointer';
-        // this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
-    });
+    controller.map.map.on('mousemove', layer.id, function (e, parent = this) {
+      this.getCanvas().style.cursor = 'pointer';
+      switch (layer.id) {
+        case "council":
+          let features = this.queryRenderedFeatures(e.point, {
+            layers: ["council"]
+          });
+          if (features.length) {
+            this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
+          }else{
+            this.setFilter("council-hover", ["==", "districts", ""]);
+          }
+          break;
+        case "neighborhood":
+          features = this.queryRenderedFeatures(e.point, {
+            layers: ["neighborhood"]
+          });
+          if (features.length) {
+            this.setFilter("neighborhood-hover", ["==", "name", features[0].properties.name]);
+          }else{
+            this.setFilter("neighborhood-hover", ["==", "name", ""]);
+          }
+          break;
+        default:
 
-    // Change it back to a pointer when it leaves.
-    controller.map.map.on('mouseleave', layer.id, function (e, parent = this) {
-        this.getCanvas().style.cursor = '';
-        // this.setFilter("council-hover", ["==", "districts", ""]);
+      }
     });
   }
   static getMap(){

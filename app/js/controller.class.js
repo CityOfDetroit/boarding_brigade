@@ -106,6 +106,109 @@ export default class Controller {
         console.log('invalid view reverting back');
     }
   }
+  boundaryAddRemove(id, controller){
+    console.log(id);
+    console.log(controller.router.getQueryVariable('boundary'));
+    let oldBoundary = controller.router.getQueryVariable('boundary');
+    if(oldBoundary != 'city'){
+      let tempLayers = [[oldBoundary],oldBoundary+"-borders",oldBoundary+"-hover",oldBoundary+"-labels"];
+      tempLayers.forEach(function(layer){
+        controller.map.removeLayer(layer, controller);
+      });
+    }
+    if(id === 'city'){
+      controller.router.updateURLParams({boundary: id});
+    }else{
+      let tempLayers = [{
+          "id": id,
+          "type": "fill",
+          "source": id,
+          "maxzoom": 14,
+          "layout": {},
+          "paint": {
+            "fill-color": '#9FD5B3',
+            "fill-opacity": 0
+          },
+          "event": true
+        },
+        {
+          "id": id + "-borders",
+          "type": "line",
+          "source": id,
+          "maxzoom": 14,
+          "layout": {},
+          "paint": {
+            "line-color": "#004544",
+            "line-width": 3
+          }
+      }];
+      switch (id) {
+        case "council":
+          tempLayers.push({
+            "id": id + "-hover",
+            "type": "fill",
+            "source": id,
+            "maxzoom": 14,
+            "layout": {},
+            "paint": {
+              "fill-color": '#23A696',
+              "fill-opacity": .3
+            },
+            "filter": ["==", "districts", ""]
+          });
+          tempLayers.push({
+            'id': id + "-labels",
+            'type': "symbol",
+            'source': id + "-labels",
+            "maxzoom": 14,
+            'layout': {
+              "text-font": ["Mark SC Offc Pro Bold"],
+              "text-field": "District " + "{districts}",
+              "symbol-placement": "point",
+              "text-size": 22
+            },
+            'paint': {
+              'text-color': '#004544'
+            }
+          });
+          break;
+        case "neighborhood":
+          tempLayers.push({
+            "id": id + "-hover",
+            "type": "fill",
+            "source": id,
+            "maxzoom": 14,
+            "layout": {},
+            "paint": {
+              "fill-color": '#23A696',
+              "fill-opacity": .3
+            },
+            "filter": ["==", "name", ""]
+          });
+          tempLayers.push({
+            'id': id + "-labels",
+            'type': "symbol",
+            'source': id + "-labels",
+            "maxzoom": 14,
+            'layout': {
+              "text-font": ["Mark SC Offc Pro Bold"],
+              "text-field": "{name}",
+              "symbol-placement": "point",
+              "text-size": 22
+            },
+            'paint': {
+              'text-color': '#004544'
+            }
+          });
+          break;
+        default:
+
+      }
+      console.log(tempLayers);
+      controller.router.updateURLParams({boundary: id});
+      controller.map.addLayers(tempLayers,controller);
+    }
+  }
   layerAddRemove(id, actionType, controller){
     // console.log(id);
     // console.log(controller);

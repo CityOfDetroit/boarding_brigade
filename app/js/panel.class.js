@@ -271,7 +271,7 @@ export default class Panel {
                 console.log('radio already checked');
               }else{
                 console.log('switching active radio');
-                // controller.layerAddRemove(ev.target.attributes[1].nodeValue,controller);
+                controller.boundaryAddRemove(ev.target.attributes[1].nodeValue, controller);
               }
             }else{
               console.log(document.getElementById(ev.target.attributes[1].nodeValue).checked);
