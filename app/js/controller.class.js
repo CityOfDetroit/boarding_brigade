@@ -112,56 +112,68 @@ export default class Controller {
     // console.log(document.getElementById(id));
     if(actionType === 'add'){
       // console.log('add layer');
-      if(controller.map.map.getLayer(id)){
-        // console.log('layer already exist');
-      }else{
-        // console.log('adding')
-        let colorList = ["#da3448","#900818","#4891dd","#084a8e"];
-        let layerList = document.querySelectorAll('#legend .color span');
-        console.log(layerList);
-        let color = null;
-        let property = null;
-        if(layerList.length){
-          let usedColors = [];
-          layerList.forEach(function(item){
-            usedColors.push(item.getAttribute('data-color'));
-          });
-          console.log(usedColors);
-          colorList.forEach(function(item){
-            if(color === null){
-              console.log('still need color');
-              if(!usedColors.includes(item)){
-                console.log(!usedColors.includes(item));
-                console.log(item);
-                color = item;
-              }
-            }
-          });
+      if(!controller.router.getQueryVariable('dataSets') ||  controller.router.getQueryVariable('dataSets').length < 4){
+        if(controller.map.map.getLayer(id)){
+          // console.log('layer already exist');
         }else{
-          color = "#da3448";
+          // console.log('adding')
+          let colorList = ["#da3448","#900818","#4891dd","#084a8e"];
+          let layerList = document.querySelectorAll('#legend .color span');
+          console.log(layerList);
+          let color = null;
+          let property = null;
+          if(layerList.length){
+            let usedColors = [];
+            layerList.forEach(function(item){
+              usedColors.push(item.getAttribute('data-color'));
+            });
+            console.log(usedColors);
+            colorList.forEach(function(item){
+              if(color === null){
+                console.log('still need color');
+                if(!usedColors.includes(item)){
+                  console.log(!usedColors.includes(item));
+                  console.log(item);
+                  color = item;
+                }
+              }
+            });
+          }else{
+            color = "#da3448";
+          }
+          console.log(color);
+          let tempColor = document.querySelector('#legend .color').innerHTML;
+          tempColor += `<span data-id="${id}" data-color="${color}" style="background: ${color}"></span>`;
+          let tempLegend = document.querySelector('#legend .text').innerHTML;
+          tempLegend += `<label data-id="${id}">${id}</label>`;
+          document.querySelector('#legend .text').innerHTML = tempLegend;
+          document.querySelector('#legend .color').innerHTML = tempColor;
+          let tempNewLayer = null
+          try {
+            controller.dataManager.createLayer(id, color, controller);
+          } catch (e) {
+            console.log("Error: " + e);
+          }
         }
-        console.log(color);
-        let tempColor = document.querySelector('#legend .color').innerHTML;
-        tempColor += `<span data-id="${id}" data-color="${color}" style="background: ${color}"></span>`;
-        let tempLegend = document.querySelector('#legend .text').innerHTML;
-        tempLegend += `<label data-id="${id}">${id}</label>`;
-        document.querySelector('#legend .text').innerHTML = tempLegend;
-        document.querySelector('#legend .color').innerHTML = tempColor;
-        let tempNewLayer = null
-        try {
-          controller.dataManager.createLayer(id, color, controller);
-        } catch (e) {
-          console.log("Error: " + e);
-        }
+      }else{
+        document.querySelector('#alert-overlay div').innerText = "Too many datasets selected. Please remove one before proceding.";
+        console.log(document.querySelector("input#" + id).checked);
+        document.querySelector("input#" + id).checked = false;
+        document.getElementById('alert-overlay').className = "active";
       }
     }else{
       if(controller.map.map.getLayer(id)){
         // console.log('removing layer');
         controller.map.removeLayer(id, controller);
         let tempDataSet = '';
+        controller.map.currentState.layers = controller.router.getQueryVariable('dataSets');
         controller.map.currentState.layers.forEach(function(layer){
-          (JSUtilities.inArray(controller.dataSouresInfo.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
+          console.log(layer);
+          if(layer != id){tempDataSet += `${layer},`;}
         });
+        // controller.map.currentState.layers.forEach(function(layer){
+        //   (JSUtilities.inArray(controller.dataSouresInfo.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
+        // });
         controller.router.updateURLParams({dataSets: tempDataSet});
         // console.log(controller.map.currentState);
         let tempColors = document.querySelectorAll('#legend .color span');
@@ -243,5 +255,8 @@ export default class Controller {
       default:
         // console.log("Hydrant view can't go back");
     }
+  }
+  closeAlert(ev){
+    (ev.target.parentNode.parentNode.id === 'alert-overlay') ? document.getElementById('alert-overlay').className = '': document.getElementById('drill-down-overlay').className = '';
   }
 }
