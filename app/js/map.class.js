@@ -4,7 +4,7 @@ var MapboxGeocoder = require('mapbox-gl-geocoder');
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eW9mZGV0cm9pdCIsImEiOiJjajd3MGlodXIwZ3piMnhudmlzazVnNm44In0.BL29_7QRvcnOrVuXX_hD9A';
 const detroitBBox = [-83.3437,42.2102,-82.8754,42.5197];
 export default class Map {
-  constructor(init) {
+  constructor(init, controller) {
     if(init.geocoder){
       this.geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
@@ -33,6 +33,8 @@ export default class Map {
       keyboard: true
     });
     this.map.tempLayerEvent = null;
+    this.map.tempFeautures = null;
+    this.map.appController = controller;
     if(init.controls){
       this.map.addControl(new mapboxgl.NavigationControl());
     }
@@ -218,8 +220,6 @@ export default class Map {
         });
         if (features.length) {
           this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
-        }else{
-
         }
         break;
       case "neighborhood":
@@ -228,7 +228,6 @@ export default class Map {
         });
         if (features.length) {
           this.setFilter("neighborhood-hover", ["==", "name", features[0].properties.name]);
-        }else{
         }
         break;
       default:
@@ -257,7 +256,8 @@ export default class Map {
     });
     if (features.length) {
       console.log(features);
-      // controller.checkLayerType(features[0].layer.id,features[0],controller);
+      console.log(this.appController);
+      this.appController.checkLayerType(features[0].layer.id,features[0],this.appController);
     }else{
       console.log('No features');
     }
@@ -265,7 +265,6 @@ export default class Map {
   addEvent(layer, controller){
     controller.map.map.tempLayerEvent = layer;
     controller.map.map.on('click', layer.id, controller.map.addClickFunction);
-
     // Change the cursor to a pointer when the mouse is over the places layer.
     controller.map.map.on('mousemove', layer.id, controller.map.addMouseMoveFunction);
 

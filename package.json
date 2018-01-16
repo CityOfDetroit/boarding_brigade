@@ -27,6 +27,7 @@
     "mapbox-gl-geocoder": "^2.0.1",
     "moment": "^2.20.1",
     "terraformer-arcgis-parser": "^1.0.5",
+    "terraformer-wkt-parser": "^1.1.2",
     "vinyl-source-stream": "^1.1.2"
   },
   "dependencies": {

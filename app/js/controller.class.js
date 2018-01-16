@@ -6,8 +6,6 @@ import JSUtilities from './utilities.class.js';
 import DataManager from './data-manager.class.js';
 import mapboxgl from 'mapbox-gl';
 const moment = require('moment');
-const turf = require('@turf/simplify');
-const arcGIS = require('terraformer-arcgis-parser');
 const GeoJSON = require('geojson');
 export default class Controller {
   constructor(map, router, dataSouresInfo, palette) {
@@ -17,7 +15,7 @@ export default class Controller {
     this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
     this.panel = new Panel();
-    this.map = new Map(map);
+    this.map = new Map(map, this);
     this.router = new Router(router);
     this.initialLoad();
   }
@@ -300,20 +298,25 @@ export default class Controller {
       }
     }
   }
+  reloadLayers(){
+    // NOTE: reload layers if any data set is already selected
+  }
   checkLayerType(id, value, controller){
-    // console.log(id);
-    switch (true) {
-      case JSUtilities.inArray(controller.dataSouresInfo.boundaries,id):
-        // console.log('layer is the type boundary');
-        controller.router.updateURLParams({polygon: value.properties.districts});
+    console.log(id);
+    console.log(value);
+    switch (id) {
+      case "council":
+        controller.router.updateURLParams({polygon: "district" + value.properties.districts});
         controller.currentPolygon = value;
         (controller.panel.currentView === 'STAT') ? controller.createPanelData('STAT', controller): 0;
         break;
-      case JSUtilities.inArray(controller.dataSouresInfo.dataSets,id):
-        // console.log('layer is the type data set');
+      case "neighborhood":
+        controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});
+        controller.currentPolygon = value;
+        (controller.panel.currentView === 'STAT') ? controller.createPanelData('STAT', controller): 0;
         break;
       default:
-        console.log('no type find');
+        console.log('this layer is a feature not a boundary');
     }
   }
   loadPrevious(prev, controller){

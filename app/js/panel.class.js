@@ -41,7 +41,7 @@ export default class Panel {
       breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>`;
     }else{
       breadcrumbs = `<li><a href="#"><span>1</span><span class="breadcrumb-title">City</span></a></li>
-                    <li><a href="#"><span>2</span><span class="breadcrumb-title">${controller.panel.title}</span></a></li>`;
+                    <li><a href="#"><span>2</span><span class="breadcrumb-title">${data.title}</span></a></li>`;
     }
     return [markUp, breadcrumbs];
   }
