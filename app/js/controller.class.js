@@ -111,10 +111,10 @@ export default class Controller {
     console.log(controller.router.getQueryVariable('boundary'));
     let oldBoundary = controller.router.getQueryVariable('boundary');
     if(oldBoundary != 'city'){
-      let tempLayers = [[oldBoundary],oldBoundary+"-borders",oldBoundary+"-hover",oldBoundary+"-labels"];
-      tempLayers.forEach(function(layer){
-        controller.map.removeLayer(layer, controller);
-      });
+      controller.map.removeLayer(oldBoundary, controller);
+      controller.map.removeLayer(oldBoundary+"-borders", controller);
+      controller.map.removeLayer(oldBoundary+"-hover", controller);
+      controller.map.removeLayer(oldBoundary+"-labels", controller);
     }
     if(id === 'city'){
       controller.router.updateURLParams({boundary: id});

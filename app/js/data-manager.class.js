@@ -86,21 +86,25 @@ export default class DataManager {
                 console.log(data);
                 let filter = ["in",'parcelno'];
                 data.features.forEach(function(property){
-                  (property.properties.property_secure === "yes" && property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+                  (property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
                 });
                 console.log(filter);
-                let layer = [{
-                  "id": id,
-                  "type": "fill",
-                  "source": "parcels",
-                  'source-layer': 'parcelsgeojson',
-                  'filter': filter,
-                  "paint": {
-                    "fill-color": color,
-                    "fill-opacity":0.5
-                  },
-                  "event": true
-                }];
+                let layer = [
+                  {
+                    "id": id,
+                    "type": "fill",
+                    "source": "parcels",
+                    "filter": filter,
+                    "layout": {
+                    },
+                    "paint": {
+                         "fill-color":color,
+                         "fill-opacity":1
+                    },
+                    'source-layer': 'parcelsgeojson',
+                    "event": true
+                   }
+                 ];
                 resolve(layer);
               });
             }else{

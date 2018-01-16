@@ -32,6 +32,7 @@ export default class Map {
       zoom: init.zoom, // starting zoom
       keyboard: true
     });
+    this.map.tempLayerEvent = null;
     if(init.controls){
       this.map.addControl(new mapboxgl.NavigationControl());
     }
@@ -143,11 +144,11 @@ export default class Map {
       console.log(layer);
       try {
         if(controller.map.map.getLayer(layer[0]) != undefined){
-          controller.map.map.removeLayer(layer[0]);
+          controller.map.removeEvent(layer[0],controller);
           for (var x = 0; x < controller.map.currentState.layers.length; x++) {
             (controller.map.currentState.layers[x].id === layer[0]) ? controller.map.currentState.layers.splice(x, 1) : 0;
           }
-          controller.map.removeEvent(layer[0],controller);
+          controller.map.map.removeLayer(layer);
         }
       } catch (e) {
         console.log(e);
@@ -205,50 +206,70 @@ export default class Map {
   }
   removeEvent(layer, controller){
     console.log(layer);
-    controller.map.map.off('click', layer);
-    controller.map.map.off('mousemove', layer);
+    console.log(controller.map.map.off('click', layer, addClickFunction));
+    controller.map.map.off('mousemove', layer, addMouseMoveFunction);
+    controller.map.map.off('mouseleave', layer, addMouseLeaveFunction);
+  }
+  addMouseMoveFunction(e , parent = this){
+    switch (this.tempLayerEvent.id) {
+      case "council":
+        let features = this.queryRenderedFeatures(e.point, {
+          layers: ["council"]
+        });
+        if (features.length) {
+          this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
+        }else{
+
+        }
+        break;
+      case "neighborhood":
+        features = this.queryRenderedFeatures(e.point, {
+          layers: ["neighborhood"]
+        });
+        if (features.length) {
+          this.setFilter("neighborhood-hover", ["==", "name", features[0].properties.name]);
+        }else{
+        }
+        break;
+      default:
+
+    }
+    this.getCanvas().style.cursor = 'pointer';
+  }
+  addMouseLeaveFunction(e, parent = this){
+    switch (this.tempLayerEvent.id) {
+      case "council":
+        this.setFilter("council-hover", ["==", "districts", ""]);
+        this.getCanvas().style.cursor = '';
+        break;
+      case "neighborhood":
+        this.setFilter("neighborhood-hover", ["==", "name", ""]);
+        this.getCanvas().style.cursor = '';
+        break;
+      default:
+
+    }
+
+  }
+  addClickFunction(e, parent = this){
+    let features = this.queryRenderedFeatures(e.point, {
+      layers: [this.tempLayerEvent.id]
+    });
+    if (features.length) {
+      console.log(features);
+      // controller.checkLayerType(features[0].layer.id,features[0],controller);
+    }else{
+      console.log('No features');
+    }
   }
   addEvent(layer, controller){
-    controller.map.map.on('click', layer.id, function (e, parent = this) {
-      let features = this.queryRenderedFeatures(e.point, {
-        layers: [layer.id]
-      });
-      if (features.length) {
-        console.log(features);
-        // controller.checkLayerType(features[0].layer.id,features[0],controller);
-      }else{
-        console.log('No features');
-      }
-    });
+    controller.map.map.tempLayerEvent = layer;
+    controller.map.map.on('click', layer.id, controller.map.addClickFunction);
 
     // Change the cursor to a pointer when the mouse is over the places layer.
-    controller.map.map.on('mousemove', layer.id, function (e, parent = this) {
-      this.getCanvas().style.cursor = 'pointer';
-      switch (layer.id) {
-        case "council":
-          let features = this.queryRenderedFeatures(e.point, {
-            layers: ["council"]
-          });
-          if (features.length) {
-            this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
-          }else{
-            this.setFilter("council-hover", ["==", "districts", ""]);
-          }
-          break;
-        case "neighborhood":
-          features = this.queryRenderedFeatures(e.point, {
-            layers: ["neighborhood"]
-          });
-          if (features.length) {
-            this.setFilter("neighborhood-hover", ["==", "name", features[0].properties.name]);
-          }else{
-            this.setFilter("neighborhood-hover", ["==", "name", ""]);
-          }
-          break;
-        default:
+    controller.map.map.on('mousemove', layer.id, controller.map.addMouseMoveFunction);
 
-      }
-    });
+    controller.map.map.on('mouseleave', layer.id, controller.map.addMouseLeaveFunction);
   }
   static getMap(){
     return this.map;
