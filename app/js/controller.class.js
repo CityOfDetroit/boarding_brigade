@@ -318,7 +318,12 @@ export default class Controller {
       case "neighborhood":
         controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});
         controller.currentPolygon = value;
-        (controller.panel.currentView === 'STAT') ? controller.createPanelData('STAT', controller): 0;
+        if(controller.panel.currentView === 'STAT') {
+          controller.createPanelData('STAT', controller);
+          controller.dataManager.createLayer(null,"#000000", controller);
+        }else{
+          controller.dataManager.createLayer(null,"#000000", controller);
+        }
         break;
       default:
         console.log('this layer is a feature not a boundary');
