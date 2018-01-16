@@ -308,7 +308,12 @@ export default class Controller {
       case "council":
         controller.router.updateURLParams({polygon: "district" + value.properties.districts});
         controller.currentPolygon = value;
-        (controller.panel.currentView === 'STAT') ? controller.createPanelData('STAT', controller): 0;
+        if(controller.panel.currentView === 'STAT') {
+          controller.createPanelData('STAT', controller);
+          controller.dataManager.createLayer(null,"#000000", controller);
+        }else{
+          controller.dataManager.createLayer(null,"#000000", controller);
+        }
         break;
       case "neighborhood":
         controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});

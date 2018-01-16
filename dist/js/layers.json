@@ -56,11 +56,6 @@
       "id": "council",
       "name": "Council Districts",
       "departments": ["All"]
-    },
-    {
-      "id": "neighborhood",
-      "name": "Neighborhoods",
-      "departments": ["All"]
     }
   ],
   "sources": [
