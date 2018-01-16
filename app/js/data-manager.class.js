@@ -479,23 +479,22 @@ export default class DataManager {
             if(value != null){ tempNewLayer = value; }
           });
           console.log(tempNewLayer);
-          controller.map.addLayers(tempNewLayer, controller);
-          console.log(controller.map.currentState);
-          let tempDataSet = '';
-          if(controller.router.getQueryVariable('dataSets')){
-            controller.map.currentState.layers = controller.router.getQueryVariable('dataSets');
-          }else{
-            controller.map.currentState.layers = [];
+          if(tempNewLayer != null){
+            controller.map.addLayers(tempNewLayer, controller);
+            console.log(controller.map.currentState);
+            let tempDataSet = '';
+            if(controller.router.getQueryVariable('dataSets')){
+              controller.map.currentState.layers = controller.router.getQueryVariable('dataSets');
+            }else{
+              controller.map.currentState.layers = [];
+            }
+            controller.map.currentState.layers.push(id);
+            controller.map.currentState.layers.forEach(function(layer){
+              tempDataSet += `${layer},`;
+            });
+            console.log(tempDataSet);
+            controller.router.updateURLParams({dataSets: tempDataSet});
           }
-          controller.map.currentState.layers.push(id);
-          controller.map.currentState.layers.forEach(function(layer){
-            tempDataSet += `${layer},`;
-          });
-          // controller.map.currentState.layers.forEach(function(layer){
-          //   if(JSUtilities.inArrayByProperty(controller.dataSouresInfo.dataSets, "id", layer.id)) {tempDataSet += layer.id + ','};
-          // });
-          console.log(tempDataSet);
-          controller.router.updateURLParams({dataSets: tempDataSet});
       }).catch(reason => {
         console.log(reason);
       });
