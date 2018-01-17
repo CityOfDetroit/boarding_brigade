@@ -269,16 +269,18 @@ img{width: 100%;}
 	height: 100vh;
 	margin: 0;
 	padding: 0;
-	background-color: $color-1;
+	background-color: $white;
 	transition: left $base-duration ease;
 	z-index: 5;
 
-  .panel-container{
+  #panel-container{
     position: relative;
+    display:flex;
   }
 
   .panel-content{
-    height: 100vh;
+    height: calc(100vh - 4em);
+    flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
 
@@ -378,14 +380,11 @@ img{width: 100%;}
   }
 
   .panel-tabs{
-    position: absolute;
-    width: 3.5em;
-    top: 0;
-    right: -3.5em;
+    width: 4em;
     background-color: $color-3;
   }
   .tab-btn{
-    padding: .25em .75em;
+    padding: 1.5em;
     font-size: .6vw;
     font-weight: bold;
     text-align: center;
@@ -427,18 +426,18 @@ img{width: 100%;}
 }
 
 header{
-	position: fixed;
 	z-index: 3;
 	background: $color-1;
 	width: 100%;
 	display: flex;
-	height: 5em;
-	box-shadow: 0px 2px 5px 0px rgba($color-3, .5);
-
-	h1{
-		margin: auto;
-		text-align: center;
-	}
+	height: 4em;
+}
+.logo{
+  width: 4em;
+}
+#top-filters{
+  flex: 1;
+  display: flex;
 }
 .search{
 	width: 3em;
@@ -494,23 +493,9 @@ ul {
   color: $color-1;
   cursor: pointer;
 }
-
-.logo{
-  position: absolute;
-  bottom: 1.5em;
-  right: 1em;
-  width: 4em;
-  z-index: 3;
-}
 // ====================== mobile end ========================
 @media all and (min-width: 401px) {
   .nav {
-  	position: fixed;
-  	top: 0;
-  	left: calc(-60vw - 5em);
-  	width: 60vw;
-  	height: 100vh;
-
     .panel-content{
 
       .highlights{

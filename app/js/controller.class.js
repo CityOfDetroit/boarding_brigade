@@ -62,13 +62,13 @@ export default class Controller {
     });
     // console.log(dataList);
     this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
-    this.createPanelData('STAT', this);
+    this.createPanelData('DASH', this);
   }
   createPanelData(view, controller){
     console.log(view);
     // console.log(controller);
     switch (view) {
-      case 'STAT':
+      case 'DASH':
         document.getElementById('initial-loader-overlay').className = 'active';
         // console.log('creating stats data');
         let url = null;
@@ -306,8 +306,8 @@ export default class Controller {
       case "council":
         controller.router.updateURLParams({polygon: "district" + value.properties.districts});
         controller.currentPolygon = value;
-        if(controller.panel.currentView === 'STAT') {
-          controller.createPanelData('STAT', controller);
+        if(controller.panel.currentView === 'DASH') {
+          controller.createPanelData('DASH', controller);
           controller.dataManager.createLayer(null,"#000000", controller);
         }else{
           controller.dataManager.createLayer(null,"#000000", controller);
@@ -333,8 +333,8 @@ export default class Controller {
       case "neighborhood":
         controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});
         controller.currentPolygon = value;
-        if(controller.panel.currentView === 'STAT') {
-          controller.createPanelData('STAT', controller);
+        if(controller.panel.currentView === 'DASH') {
+          controller.createPanelData('DASH', controller);
           controller.dataManager.createLayer(null,"#000000", controller);
         }else{
           controller.dataManager.createLayer(null,"#000000", controller);
@@ -377,11 +377,11 @@ export default class Controller {
       case 'CITY':
         // console.log('reloading city stats');
         controller.router.updateURLParams({polygon: 'city'});
-        controller.createPanelData('STAT', controller)
+        controller.createPanelData('DASH', controller)
         break;
       case 'DISTRICT':
         // console.log('reloading district stats');
-        controller.createPanelData('STAT', controller)
+        controller.createPanelData('DASH', controller)
         break;
       default:
         // console.log("Hydrant view can't go back");

@@ -43,19 +43,29 @@
       <div></div>
     </article>
   </section>
-  <input type="checkbox" id="menu" checked/>
-  <label for="menu" class="menu">
+
+  <!-- NOTE: hidding menu -->
+  <!-- <label for="menu" class="menu">
     <span></span>
     <span></span>
     <span></span>
     MENU
-  </label>
+  </label> -->
+  <input type="checkbox" id="menu" checked/>
   <nav class="nav">
+    <header>
+      <article class="logo">
+        <img src="img/logo-220x220.jpg" alt="City of Detroit">
+      </article>
+      <section id="top-filters">
+        
+      </section>
+    </header>
   	<section id="panel-container">
   	  <article class="panel-tabs">
   	    <div class="tab-btn active">
-  	      <img src="img/bars.png" alt="stats">
-          <span>STAT</span>
+  	      <img src="img/gauge.png" alt="dashboard">
+          <span>DASH</span>
   	    </div>
         <div class="tab-btn">
   	      <img src="img/filter.png" alt="filters">
@@ -81,17 +91,14 @@
   <main>
     <section class="map-panel">
       <article id="map"></article>
+      <article id='legend'>
+        <strong>DATA</strong>
+        <div class="color"></div>
+        <div class="text"></div>
+      </article>
+      <article id="geocoder"></article>
     </section>
   </main>
-  <article id='legend'>
-    <strong>DATA</strong>
-    <div class="color"></div>
-    <div class="text"></div>
-  </article>
-  <article class="logo">
-    <img src="img/logo-220x220.jpg" alt="City of Detroit">
-  </article>
-  <article id="geocoder"></article>
   <script src="js/app.main.js"></script>
 </body>
 </html>

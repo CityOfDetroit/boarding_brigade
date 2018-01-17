@@ -2,12 +2,13 @@
 import flatpickr from "flatpickr";
 import JSUtilities from './utilities.class.js';
 import Chart from 'chart.js';
+const moment = require('moment');
 export default class Panel {
   constructor() {
     this.title = null;
     this.currentView = null;
     this.views = {
-      STAT: {},
+      DASH: {},
       FILTERS: {},
       SET: {},
       FORM: {}
@@ -54,24 +55,27 @@ export default class Panel {
       console.log('No data');
     }
     let tempHTML = '';
+    let readStartDate = moment(controller.defaultSettings.startDate).format('MMM DD,YYYY');
+    let readEndDate = moment(controller.defaultSettings.endDate).format('MMM DD,YYYY');
     switch (view) {
-      case 'STAT':
+      case 'DASH':
         // console.log('creating stats view');
         let chartingItems = [];
         let tempMarkup = this.createStats(view, data);
         tempHTML = `
           <article class="title">
-            <h1>${controller.panel.title} : stats</h1>
+            <h1>${controller.panel.title} : ${readStartDate} - ${readEndDate}</h1>
           </article>
-          <section class="breadcrumbs">
-            <article class="inner">
-              <ul class="cf">
-                ${tempMarkup[1]}
-              </ul>
-            </article>
-          </section>
           ${tempMarkup[0]}
         `;
+        // NOTE: removing breadcrumbs
+        // <section class="breadcrumbs">
+        //   <article class="inner">
+        //     <ul class="cf">
+        //       ${tempMarkup[1]}
+        //     </ul>
+        //   </article>
+        // </section>
         data.dataSets.forEach(function(set){
           switch (true) {
             case set.id === "911":
@@ -138,18 +142,18 @@ export default class Panel {
                   scales: {
                       yAxes: [{
                           ticks: {
-                              fontColor: "white"
+                              fontColor: "#004544"
                           },
                           gridLines: {
-                            color: 'rgba(255,255,255,.25)'
+                            color: 'rgba(0,69,68,.25)'
                           }
                       }],
                       xAxes: [{
                           ticks: {
-                              fontColor: "white"
+                              fontColor: "#004544"
                           },
                           gridLines: {
-                            color: 'rgba(255,255,255,.25)'
+                            color: 'rgba(0,69,68,.25)'
                           }
                       }]
                   }
@@ -269,7 +273,7 @@ export default class Panel {
             if(ev.target.className === 'layer-btn radio'){
               if(document.getElementById(ev.target.attributes[1].nodeValue).checked){
                 console.log('radio already checked');
-              }else{
+              }else{DASH
                 console.log('switching active radio');
                 controller.boundaryAddRemove(ev.target.attributes[1].nodeValue, controller);
               }
