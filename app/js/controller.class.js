@@ -205,6 +205,7 @@ export default class Controller {
       console.log(tempLayers);
       controller.router.updateURLParams({boundary: id});
       controller.map.addLayers(tempLayers,controller);
+      controller.dataManager.createLayer(null,"#000000", controller);
     }
   }
   layerAddRemove(id, actionType, controller){
@@ -218,7 +219,7 @@ export default class Controller {
           // console.log('layer already exist');
         }else{
           // console.log('adding')
-          let colorList = ["#da3448","#900818","#4891dd","#084a8e"];
+          let colorList = ["#9ab3ff","#ae017e","#4574ff","#f768a1"];
           let layerList = document.querySelectorAll('#legend .color span');
           console.log(layerList);
           let color = null;
@@ -240,7 +241,7 @@ export default class Controller {
               }
             });
           }else{
-            color = "#da3448";
+            color = colorList[0];
           }
           console.log(color);
           let tempColor = document.querySelector('#legend .color').innerHTML;
@@ -298,9 +299,6 @@ export default class Controller {
       }
     }
   }
-  reloadLayers(){
-    // NOTE: reload layers if any data set is already selected
-  }
   checkLayerType(id, value, controller){
     console.log(id);
     console.log(value);
@@ -314,6 +312,23 @@ export default class Controller {
         }else{
           controller.dataManager.createLayer(null,"#000000", controller);
         }
+        console.log(controller.currentPolygon.getBounds());
+        // map.flyTo({
+        //     center: lngLat,
+        //     zoom: 17,
+        //     bearing: 0,
+        //     // These options control the flight curve, making it move
+        //     // slowly and zoom out almost completely before starting
+        //     // to pan.
+        //     speed: 2, // make the flying slow
+        //     curve: 1, // change the speed at which it zooms out
+        //
+        //     // This can be any easing function: it takes a number between
+        //     // 0 and 1 and returns another number between 0 and 1.
+        //     easing: function (t) {
+        //         return t;
+        //     }
+        // });
         break;
       case "neighborhood":
         controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});

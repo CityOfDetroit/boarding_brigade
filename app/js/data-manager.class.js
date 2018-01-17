@@ -56,34 +56,48 @@ export default class DataManager {
       let pBoarded = new Promise((resolve, reject) => {
         let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+between+%27" + controller.defaultSettings.startDate + "%27+and+%27" + controller.defaultSettings.endDate + "%27&objectIds=&time=&geometry=" + encodeURI(JSON.stringify(arcsimplePolygon))+ "&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=parcel&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
         if(JSUtilities.inArray(tempDataSets, "boarded")){
-          return fetch(url)
-          .then((resp) => resp.json()) // Transform the data into json
-          .then(function(data) {
-            console.log(data);
-            let filter = ["in",'parcelno'];
-            data.features.forEach(function(property){
-              (property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+          if(controller.map.map.getSource("boarded")){
+            return fetch(url)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function(data) {
+              console.log(data);
+              controller.map.map.getSource("boarded").setData(data);
+              if(controller.map.map.getLayer("boarded")){
+                resolve(null);
+              }else{
+                let layer = [{
+                  "id": "boarded",
+                  "source": "boarded",
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
+                resolve(layer);
+              }
             });
-            console.log(filter);
-            let layer = [
-              {
-                "id": "boarded",
-                "type": "fill",
-                "source": "parcels",
-                "filter": filter,
-                "layout": {
-                },
-                "paint": {
-                     "fill-color":color,
-                     "fill-opacity":1
-                },
-                'source-layer': 'parcelsgeojson',
-                "event": true
-               }
-             ];
+          }else{
+            console.log("no source found");
+            let sources = [{
+              "id": "boarded",
+              "type": "geojson",
+              "data": url
+            }];
+            controller.map.addSources(sources, controller);
+            let layer = [{
+              "id": "boarded",
+              "source": "boarded",
+              "type": "circle",
+              "paint": {
+                  "circle-radius": 6,
+                  "circle-color": color
+              }
+            }];
             resolve(layer);
-          });
+          }
         }else{
+          console.log('returning null');
           return resolve(null);
         }
       });
@@ -517,34 +531,48 @@ export default class DataManager {
           let pBoarded = new Promise((resolve, reject) => {
             let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Board_Up_Completed_Survey/FeatureServer/0/query?where=CreationDate+between+%27" + controller.defaultSettings.startDate + "%27+and+%27" + controller.defaultSettings.endDate + "%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=parcel&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
             if(JSUtilities.inArray(tempDataSets, "boarded")){
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                console.log(data);
-                let filter = ["in",'parcelno'];
-                data.features.forEach(function(property){
-                  (property.properties.parcel != null) ? filter.push(property.properties.parcel) : 0;
+              if(controller.map.map.getSource("boarded")){
+                return fetch(url)
+                .then((resp) => resp.json()) // Transform the data into json
+                .then(function(data) {
+                  console.log(data);
+                  controller.map.map.getSource("boarded").setData(data);
+                  if(controller.map.map.getLayer("boarded")){
+                    resolve(null);
+                  }else{
+                    let layer = [{
+                      "id": "boarded",
+                      "source": "boarded",
+                      "type": "circle",
+                      "paint": {
+                          "circle-radius": 6,
+                          "circle-color": color
+                      }
+                    }];
+                    resolve(layer);
+                  }
                 });
-                console.log(filter);
-                let layer = [
-                  {
-                    "id": id,
-                    "type": "fill",
-                    "source": "parcels",
-                    "filter": filter,
-                    "layout": {
-                    },
-                    "paint": {
-                         "fill-color":color,
-                         "fill-opacity":1
-                    },
-                    'source-layer': 'parcelsgeojson',
-                    "event": true
-                   }
-                 ];
+              }else{
+                console.log("no source found");
+                let sources = [{
+                  "id": "boarded",
+                  "type": "geojson",
+                  "data": url
+                }];
+                controller.map.addSources(sources, controller);
+                let layer = [{
+                  "id": "boarded",
+                  "source": "boarded",
+                  "type": "circle",
+                  "paint": {
+                      "circle-radius": 6,
+                      "circle-color": color
+                  }
+                }];
                 resolve(layer);
-              });
+              }
             }else{
+              console.log('returning null');
               return resolve(null);
             }
           });
