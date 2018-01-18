@@ -513,18 +513,23 @@ img {
         text-transform: uppercase; }
 
 header {
-  z-index: 3;
   background: #004544;
   width: 100%;
   display: flex;
   height: 4em; }
-
-.logo {
-  width: 4em; }
-
-#top-filters {
-  flex: 1;
-  display: flex; }
+  header .logo {
+    width: 4em; }
+  header #top-filters {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    color: #fff; }
+    header #top-filters article {
+      display: flex;
+      padding: 0 1em; }
+      header #top-filters article label {
+        margin: auto;
+        cursor: pointer; }
 
 .search {
   width: 3em;
@@ -532,9 +537,6 @@ header {
   display: flex; }
   .search img {
     margin: auto; }
-
-header section {
-  display: none; }
 
 ul {
   list-style: none; }

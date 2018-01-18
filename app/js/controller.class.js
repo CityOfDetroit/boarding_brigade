@@ -4,6 +4,7 @@ import Panel from './panel.class.js';
 import Router from './router.class.js';
 import JSUtilities from './utilities.class.js';
 import DataManager from './data-manager.class.js';
+import flatpickr from "flatpickr";
 import mapboxgl from 'mapbox-gl';
 const moment = require('moment');
 const GeoJSON = require('geojson');
@@ -48,6 +49,7 @@ export default class Controller {
     this.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
     this.defaultSettings.endDate = moment().format('YYYY-MM-DD');
     console.log(this.defaultSettings);
+    this.addDatePicker(this);
     let controller = this;
     let boundaries = 'city';
     let dataList = '';
@@ -63,6 +65,30 @@ export default class Controller {
     // console.log(dataList);
     this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
     this.createPanelData('DASH', this);
+  }
+  addDatePicker(controller){
+    flatpickr('#start-date', {
+      defaultDate: controller.defaultSettings.startDate,
+      altInput: true,
+      altFormat: "F j, Y",
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates){
+        console.log(selectedDates);
+        controller.defaultSettings.startDate = selectedDates;
+        controller.createPanelData('DASH', controller);
+      }
+    });
+    flatpickr('#end-date', {
+      defaultDate: controller.defaultSettings.endDate,
+      altInput: true,
+      altFormat: "F j, Y",
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates){
+        console.log(selectedDates);
+        controller.defaultSettings.endDate = selectedDates;
+        controller.createPanelData('DASH', controller);
+      }
+    });
   }
   createPanelData(view, controller){
     console.log(view);

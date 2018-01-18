@@ -58,7 +58,29 @@
         <img src="img/logo-220x220.jpg" alt="City of Detroit">
       </article>
       <section id="top-filters">
-        
+        <article>
+          <label for="start-date">
+            Start Date:
+            <input type="text" id="start-date" name="start-date" value="">
+          </label>
+        </article>
+        <article class="">
+          <label for="end-date">
+            End Date:
+            <input type="text" id="end-date" name="end-date" value="">
+          </label>
+        </article>
+        <article>
+          <label for="boundaries">
+            Boundary:
+            <input id="boundaries" type="text" list="boundaries-list" name="boundaries" value="city">
+            <datalist id="boundaries-list">
+              <option value="city"></option>
+              <option value="council"></option>
+              <option value="neighborhood"></option>
+            </datalist>
+          </label>
+        </article>
       </section>
     </header>
   	<section id="panel-container">

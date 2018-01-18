@@ -55,8 +55,6 @@ export default class Panel {
       console.log('No data');
     }
     let tempHTML = '';
-    let readStartDate = moment(controller.defaultSettings.startDate).format('MMM DD,YYYY');
-    let readEndDate = moment(controller.defaultSettings.endDate).format('MMM DD,YYYY');
     switch (view) {
       case 'DASH':
         // console.log('creating stats view');
@@ -64,7 +62,7 @@ export default class Panel {
         let tempMarkup = this.createStats(view, data);
         tempHTML = `
           <article class="title">
-            <h1>${controller.panel.title} : ${readStartDate} - ${readEndDate}</h1>
+            <h1>${controller.panel.title}</h1>
           </article>
           ${tempMarkup[0]}
         `;
