@@ -331,8 +331,8 @@ img {
     transition: all .2s ease-in-out; }
     #alert-overlay.active article div {
       padding: .5em;
-      background-color: #CF3234;
-      color: #fff; }
+      background-color: #fff;
+      color: #444; }
     #alert-overlay.active article .close {
       position: absolute;
       top: .5em;
@@ -437,7 +437,8 @@ img {
       flex-wrap: wrap; }
       .nav .panel-content .highlights .item {
         width: 100%;
-        padding: 1em; }
+        padding: 1em;
+        cursor: pointer; }
         .nav .panel-content .highlights .item h2 {
           margin: auto;
           text-align: center;
@@ -445,10 +446,15 @@ img {
           background-color: #9fd5b3;
           padding: .5em;
           font-size: 3em;
-          color: #004544; }
+          color: #004544;
+          transition: all .5s ease-in-out; }
           .nav .panel-content .highlights .item h2 span {
             display: block;
             font-size: .3em; }
+      .nav .panel-content .highlights .item:hover h2 {
+        background-color: #004544;
+        color: #9fd5b3;
+        transition: all .5s ease-in-out; }
     .nav .panel-content .chart-section {
       display: flex;
       flex-wrap: wrap;
@@ -530,6 +536,9 @@ header {
       header #top-filters article label {
         margin: auto;
         cursor: pointer; }
+    header #top-filters input[type="text"] {
+      padding: .5em 1em;
+      border: none; }
 
 .search {
   width: 3em;

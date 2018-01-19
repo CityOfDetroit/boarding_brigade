@@ -159,8 +159,8 @@ img{width: 100%;}
 
 		div{
 			padding: .5em;
-			background-color: $color-4;
-			color: $white;
+			background-color: $white;
+			color: $color-5;
 		}
 
 		.close{
@@ -310,6 +310,7 @@ img{width: 100%;}
       .item{
         width: 100%;
         padding: 1em;
+        cursor: pointer;
 
         h2{
           margin: auto;
@@ -319,11 +320,20 @@ img{width: 100%;}
           padding: .5em;
           font-size: 3em;
           color: $color-1;
+          transition: all .5s ease-in-out;
 
           span{
             display: block;
             font-size: .3em;
           }
+        }
+      }
+
+      .item:hover{
+        h2{
+          background-color: $color-1;
+          color: $color-2;
+          transition: all .5s ease-in-out;
         }
       }
     }
@@ -449,6 +459,11 @@ header{
         margin: auto;
         cursor: pointer;
       }
+    }
+
+    input[type="text"]{
+      padding: .5em 1em;
+      border: none;
     }
   }
 }

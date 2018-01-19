@@ -49,7 +49,7 @@ export default class Controller {
     this.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
     this.defaultSettings.endDate = moment().format('YYYY-MM-DD');
     console.log(this.defaultSettings);
-    this.addDatePicker(this);
+    this.addDateBoundaryPicker(this);
     let controller = this;
     let boundaries = 'city';
     let dataList = '';
@@ -66,15 +66,14 @@ export default class Controller {
     this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
     this.createPanelData('DASH', this);
   }
-  addDatePicker(controller){
+  addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
       defaultDate: controller.defaultSettings.startDate,
       altInput: true,
       altFormat: "F j, Y",
       dateFormat: "Y-m-d",
       onChange: function(selectedDates){
-        console.log(selectedDates);
-        controller.defaultSettings.startDate = selectedDates;
+        controller.defaultSettings.startDate = document.getElementById("start-date").value;;
         controller.createPanelData('DASH', controller);
       }
     });
@@ -84,11 +83,88 @@ export default class Controller {
       altFormat: "F j, Y",
       dateFormat: "Y-m-d",
       onChange: function(selectedDates){
-        console.log(selectedDates);
-        controller.defaultSettings.endDate = selectedDates;
+        controller.defaultSettings.endDate = document.getElementById("end-date").value;;;
         controller.createPanelData('DASH', controller);
       }
     });
+    let boundary = document.getElementById("boundaries");
+    boundary.addEventListener('input', function(){
+      console.log('input changed to: ', boundary.value);
+      switch (boundary.value) {
+        case "council":
+          controller.polygonPicker(boundary.value, controller);
+          break;
+        case "neighborhood":
+          controller.polygonPicker(boundary.value, controller);
+          break;
+        case "city":
+          controller.polygonPicker(boundary.value, controller);
+          break;
+        default:
+
+      }
+    });
+  }
+  polygonPicker(currentBoundary, controller){
+    switch (currentBoundary) {
+      case "council":
+        document.querySelector('#alert-overlay div').innerHTML = `
+          <label for="polygon">
+            Select ${currentBoundary}
+            <input id="polygon" type="text" list="polygon-list" name="polygon" value="">
+            <datalist id="polygon-list">
+              <option value="1">District 1</option>
+              <option value="2">District 2</option>
+              <option value="3">District 3</option>
+              <option value="4">District 4</option>
+              <option value="5">District 5</option>
+              <option value="6">District 6</option>
+              <option value="7">District 7</option>
+            </datalist>
+          </label>
+          <button id="submit-polygon">SUBMIT</button>
+        `;
+        document.getElementById("submit-polygon").addEventListener("click", function(){
+          let selectedPolygon = document.getElementById('polygon').value;
+          let validPolygons = ["1","2","3","4","5","6","7"]
+          if(validPolygons.includes(selectedPolygon)){
+            document.getElementById("polygons-list").innerHTML = `
+            <option value="1">District 1</option>
+            <option value="2">District 2</option>
+            <option value="3">District 3</option>
+            <option value="4">District 4</option>
+            <option value="5">District 5</option>
+            <option value="6">District 6</option>
+            <option value="7">District 7</option>
+            `;
+            document.getElementById("polygons").value = selectedPolygon;
+            document.getElementById("polygons").disabled = false;
+            document.getElementById('alert-overlay').className = "";
+          }else{
+            console.log("invalid polygon");
+          }
+        });
+        document.getElementById('alert-overlay').className = "active";
+        break;
+
+      case "neighborhood":
+        document.querySelector('#alert-overlay div').innerHTML = ``;
+        console.log(document.querySelector("input#" + id).checked);
+        document.querySelector("input#" + id).checked = false;
+        document.getElementById('alert-overlay').className = "active";
+        break;
+
+      case "city":
+        document.getElementById("polygons-list").innerHTML = "";
+        document.getElementById("polygons").value = "";
+        document.getElementById("polygons").disabled = true;
+        break;
+      default:
+      console.log("not valid boundary");
+    }
+  }
+  loadDatasetView(ev, controller){
+    console.log(ev);
   }
   createPanelData(view, controller){
     console.log(view);

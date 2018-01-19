@@ -25,7 +25,7 @@ export default class Panel {
       (data.dataSets.length > 3) ? markUp += `<article class="highlights lots">` : markUp += `<article class="highlights">`;
       data.dataSets.forEach(function(data){
         markUp += `
-        <div class="item">
+        <div class="item" data-id="${data.id}">
           <h2>${data.numbers}<br><span>${data.name}</span></h2>
         </div>`;
       });
@@ -74,18 +74,19 @@ export default class Panel {
         //     </ul>
         //   </article>
         // </section>
-        data.dataSets.forEach(function(set){
-          switch (true) {
-            case set.id === "911":
-              chartingItems.push(set);
-              break;
-            case set.id === "crime":
-              chartingItems.push(set);
-              break;
-            default:
-
-          }
-        });
+        // NOTE: removing charting for now
+        // data.dataSets.forEach(function(set){
+        //   switch (true) {
+        //     case set.id === "911":
+        //       chartingItems.push(set);
+        //       break;
+        //     case set.id === "crime":
+        //       chartingItems.push(set);
+        //       break;
+        //     default:
+        //
+        //   }
+        // });
         console.log(chartingItems);
         if(chartingItems.length){
           tempHTML += `<article class="chart-section">`;
@@ -161,6 +162,12 @@ export default class Panel {
         }else{
           document.querySelector('.panel-content').innerHTML = tempHTML;
         }
+        let dashItems = document.querySelectorAll("nav .item");
+        dashItems.forEach(function(item){
+          item.addEventListener('click', function(e){
+            controller.loadDatasetView(e, controller);
+          });
+        });
         let breadcrumbs = document.querySelectorAll('.cf a');
         breadcrumbs.forEach(function(bread){
           bread.addEventListener('click', function(e){
