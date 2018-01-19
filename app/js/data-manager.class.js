@@ -990,12 +990,12 @@ export default class DataManager {
           }
         });
         pBuildingPermits = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?$where=permit_issued between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'";
+          let url = "https://data.detroitmi.gov/resource/but4-ky7y.geojson?$where=permit_issued between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "permits")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1003,12 +1003,12 @@ export default class DataManager {
           }
         });
         pTotalPropertySales = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/9xku-658c.json?$where=sale_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'";
+          let url = "https://data.detroitmi.gov/resource/9xku-658c.geojson?$where=sale_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "total-property-sales")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1016,12 +1016,12 @@ export default class DataManager {
           }
         });
         pBlight = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?$where=violation_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'";
+          let url = "https://data.detroitmi.gov/resource/s7hj-n86v.geojson?$where=violation_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "blight-tickets")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1029,12 +1029,12 @@ export default class DataManager {
           }
         });
         pCommDemos = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/niaj-6fdd.json?$where=demo_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'";
+          let url = "https://data.detroitmi.gov/resource/niaj-6fdd.geojson?$where=demo_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "commercial-demos")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1042,12 +1042,12 @@ export default class DataManager {
           }
         });
         p911 = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.json?$where=call_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=50000";
+          let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.geojson?$where=call_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "911")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "911", "name": "911 CALLS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "911", "name": "911 CALLS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1055,12 +1055,12 @@ export default class DataManager {
           }
         });
         pCrime = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/9i6z-cm98.json?$where=incident_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=50000";
+          let url = "https://data.detroitmi.gov/resource/9i6z-cm98.geojson?$where=incident_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "crime")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "crime", "name": "CRIMES", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "crime", "name": "CRIMES", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1068,12 +1068,12 @@ export default class DataManager {
           }
         });
         pFire = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$where=call_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=50000";
+          let url = "https://data.detroitmi.gov/resource/pav4-mvgv.geojson?$where=call_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "fire")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1081,12 +1081,12 @@ export default class DataManager {
           }
         });
         pGreenlight = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/xgha-35ji.json?$where=live_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=50000";
+          let url = "https://data.detroitmi.gov/resource/xgha-35ji.geojson?$where=live_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "'&$limit=500000";
           if(JSUtilities.inArray(tempDataSets, "green-lights")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1096,9 +1096,19 @@ export default class DataManager {
         Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pCommDemos, p911, pCrime, pFire, pGreenlight]).then(values => {
             console.log(values); //one, two
             let dataSets = [];
+            let initalLoadInfo = {};
+            let initialLoadChecker = true;
             values.forEach(function(value) {
-              (value != null) ? dataSets.push(value) : 0;
+              if(value != null) {
+                dataSets.push(value);
+                initalLoadInfo[value.id] = value.data;
+              }else{
+                initialLoadChecker = false;
+              }
             });
+            if(initialLoadChecker){
+              controller.dataBank = initalLoadInfo;
+            }
             dataObj.dataSets = dataSets;
             console.log(dataObj);
             controller.panel.createView(view, dataObj, controller);
@@ -1115,7 +1125,7 @@ export default class DataManager {
         let socrataPolygon = WKT.convert(simplePolygon.geometry);
         let tempDataSets = null;
         if(!dataSets) {
-          tempDataSets = [];
+          tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","commercial-demos","911","crime","fire","green-lights"];
         }else{
           tempDataSets = dataSets;
         }
@@ -1133,13 +1143,13 @@ export default class DataManager {
           }
         });
         let pBuildingPermits = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?$query=SELECT * WHERE permit_issued between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(site_location,"+ JSON.stringify(socrataPolygon) + ")";
+          let url = "https://data.detroitmi.gov/resource/but4-ky7y.geojson?$query=SELECT * WHERE permit_issued between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(site_location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           console.log(url);
           if(JSUtilities.inArray(tempDataSets, "permits")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "permits", "name": "BUILDING PERMITS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1147,12 +1157,12 @@ export default class DataManager {
           }
         });
         let pTotalPropertySales = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/9xku-658c.json?$query=SELECT * WHERE sale_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ")";
+          let url = "https://data.detroitmi.gov/resource/9xku-658c.geojson?$query=SELECT * WHERE sale_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "total-property-sales")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "total-property-sales", "name": "TOTAL PROPERTY SALES", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1160,12 +1170,12 @@ export default class DataManager {
           }
         });
         let pBlight = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?$query=SELECT * WHERE violation_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ")";
+          let url = "https://data.detroitmi.gov/resource/s7hj-n86v.geojson?$query=SELECT * WHERE violation_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "blight-tickets")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "blight-tickets", "name": "BLIGHT TICKETS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1173,12 +1183,12 @@ export default class DataManager {
           }
         });
         let pCommDemos = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/niaj-6fdd.json?$query=SELECT * WHERE demo_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ")";
+          let url = "https://data.detroitmi.gov/resource/niaj-6fdd.geojson?$query=SELECT * WHERE demo_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "commercial-demos")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "commercial-demos", "name": "COMMERCIAL DEMOLITIONS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1186,12 +1196,12 @@ export default class DataManager {
           }
         });
         let p911 = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.json?$query=SELECT * WHERE call_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 50000";
+          let url = "https://data.detroitmi.gov/resource/dvu3-6qvr.geojson?$query=SELECT * WHERE call_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "911")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "911", "name": "911 CALLS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "911", "name": "911 CALLS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1199,12 +1209,12 @@ export default class DataManager {
           }
         });
         let pCrime = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/9i6z-cm98.json?$query=SELECT * WHERE incident_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") AND LIMIT 50000";
+          let url = "https://data.detroitmi.gov/resource/9i6z-cm98.geojson?$query=SELECT * WHERE incident_timestamp between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "crime")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "crime", "name": "CRIMES", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "crime", "name": "CRIMES", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1212,12 +1222,12 @@ export default class DataManager {
           }
         });
         let pFire = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/pav4-mvgv.json?$query=SELECT * WHERE call_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(incident_location,"+ JSON.stringify(socrataPolygon) + ") AND LIMIT 50000";
+          let url = "https://data.detroitmi.gov/resource/pav4-mvgv.geojson?$query=SELECT * WHERE call_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(incident_location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "fire")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "fire", "name": "FIRE INCIDENTS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');
@@ -1225,12 +1235,12 @@ export default class DataManager {
           }
         });
         let pGreenlight = new Promise((resolve, reject) => {
-          let url = "https://data.detroitmi.gov/resource/xgha-35ji.json?$query=SELECT * WHERE live_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ")";
+          let url = "https://data.detroitmi.gov/resource/xgha-35ji.geojson?$query=SELECT * WHERE live_date between '" + controller.defaultSettings.startDate + "' AND '" + controller.defaultSettings.endDate + "' AND within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
           if(JSUtilities.inArray(tempDataSets, "green-lights")){
             return fetch(url)
             .then((resp) => resp.json()) // Transform the data into json
             .then(function(data) {
-              resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.length.toLocaleString(), "data": data});
+              resolve({"id": "green-lights", "name": "GREEN LIGHTS", "numbers": data.features.length.toLocaleString(), "data": data});
             });
           }else{
             console.log('returning null');

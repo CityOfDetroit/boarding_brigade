@@ -25,7 +25,7 @@ export default class Panel {
       (data.dataSets.length > 3) ? markUp += `<article class="highlights lots">` : markUp += `<article class="highlights">`;
       data.dataSets.forEach(function(data){
         markUp += `
-        <div class="item" data-id="${data.id}">
+        <div class="item link" data-id="${data.id}">
           <h2>${data.numbers}<br><span>${data.name}</span></h2>
         </div>`;
       });
@@ -162,7 +162,7 @@ export default class Panel {
         }else{
           document.querySelector('.panel-content').innerHTML = tempHTML;
         }
-        let dashItems = document.querySelectorAll("nav .item");
+        let dashItems = document.querySelectorAll("nav .item.link");
         dashItems.forEach(function(item){
           item.addEventListener('click', function(e){
             controller.loadDatasetView(e, controller);
@@ -383,5 +383,45 @@ export default class Panel {
     });
     console.log(chartData);
     return chartData;
+  }
+  buildSetView(set, controller){
+    console.log(set);
+    console.log(controller.dataBank[set]);
+    switch (set) {
+      case "911":
+        let categories = [];
+        let categoriesData = {};
+        let priorities = [];
+        let prioritiesData = {}
+        controller.dataBank[set].features.forEach(function(item){
+          if(categories.includes(item.properties.calldescription)){
+            categoriesData[item.properties.calldescription].count++;
+            categoriesData[item.properties.calldescription].data.push(item);
+          }else{
+            categories.push(item.properties.calldescription);
+            categoriesData[item.properties.calldescription] = {data: [item], count: 1};
+          }
+          if(priorities.includes(item.properties.priority)){
+            prioritiesData[item.properties.priority].count++;
+            if(item.properties.totalresponsetime != null) {
+              prioritiesData[item.properties.priority].responseTimeSum += parseInt(item.properties.totalresponsetime);
+            }
+            prioritiesData[item.properties.priority].data.push(item);
+          }else{
+            priorities.push(item.properties.priority);
+            prioritiesData[item.properties.priority] = {data: [item], count: 1, responseTimeSum: 0};
+            if(item.properties.totalresponsetime != null) {
+              prioritiesData[item.properties.priority].responseTimeSum = parseInt(item.properties.totalresponsetime);
+            }
+          }
+        });
+        console.log(categories);
+        console.log(categoriesData);
+        console.log(priorities);
+        console.log(prioritiesData);
+        break;
+      default:
+
+    }
   }
 }

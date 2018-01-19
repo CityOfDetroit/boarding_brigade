@@ -12,6 +12,7 @@ export default class Controller {
   constructor(map, router, dataSouresInfo, palette) {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
+    this.dataBank = null;
     this.dataSouresInfo = dataSouresInfo;
     this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
@@ -105,6 +106,27 @@ export default class Controller {
       }
     });
   }
+  createPolygon(currentBoundary, currentPolygon, controller){
+    switch (currentBoundary) {
+      case "council":
+        let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/ArcGIS/rest/services/theNeighborhoods/FeatureServer/7/query?where=districts+%3D+" + currentPolygon + "&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
+        fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          controller.currentPolygon = data.features[0];
+          if(controller.panel.currentView === 'DASH') {
+            controller.createPanelData('DASH', controller);
+          }
+        })
+        break;
+      case "neighborhood":
+
+        break;
+      default:
+
+    }
+  }
   polygonPicker(currentBoundary, controller){
     switch (currentBoundary) {
       case "council":
@@ -124,6 +146,7 @@ export default class Controller {
           </label>
           <button id="submit-polygon">SUBMIT</button>
         `;
+        controller.router.updateURLParams({boundary: currentBoundary});
         document.getElementById("submit-polygon").addEventListener("click", function(){
           let selectedPolygon = document.getElementById('polygon').value;
           let validPolygons = ["1","2","3","4","5","6","7"]
@@ -139,9 +162,22 @@ export default class Controller {
             `;
             document.getElementById("polygons").value = selectedPolygon;
             document.getElementById("polygons").disabled = false;
+            controller.router.updateURLParams({polygon: selectedPolygon});
+            controller.createPolygon(currentBoundary, selectedPolygon, controller);
+            // controller.currentPolygon = value;
             document.getElementById('alert-overlay').className = "";
           }else{
             console.log("invalid polygon");
+          }
+        });
+        let polygonBox = document.getElementById("polygons");
+        polygonBox.addEventListener('input', function(){
+          console.log('input changed to: ', polygonBox.value);
+          let validPolygons = ["1","2","3","4","5","6","7"]
+          if(validPolygons.includes(polygonBox.value)){
+            console.log("filtering for district " + polygonBox.value);
+            controller.router.updateURLParams({polygon: polygonBox.value});
+            controller.createPolygon(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('polygon'), controller);
           }
         });
         document.getElementById('alert-overlay').className = "active";
@@ -165,6 +201,10 @@ export default class Controller {
   }
   loadDatasetView(ev, controller){
     console.log(ev);
+    let setID = null;
+    (ev.target.tagName === "H2") ? setID = ev.target.parentNode.attributes[1].nodeValue : setID = ev.target.parentNode.parentNode.attributes[1].nodeValue;
+    console.log(setID);
+    controller.panel.buildSetView(setID, controller);
   }
   createPanelData(view, controller){
     console.log(view);
