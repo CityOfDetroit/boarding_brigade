@@ -13,6 +13,7 @@ export default class Controller {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
     this.dataBank = null;
+    this.tempDataDetails = null;
     this.dataSouresInfo = dataSouresInfo;
     this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');

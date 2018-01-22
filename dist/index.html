@@ -52,8 +52,46 @@
     MENU
   </label> -->
   <input type="checkbox" id="menu" checked/>
+  <header>
+    <article class="logo">
+      <img src="img/logo-220x220.jpg" alt="City of Detroit">
+    </article>
+    <section id="top-filters">
+      <article>
+        <label for="start-date">
+          Start Date:
+          <input type="text" id="start-date" name="start-date" value="">
+        </label>
+      </article>
+      <article class="">
+        <label for="end-date">
+          End Date:
+          <input type="text" id="end-date" name="end-date" value="">
+        </label>
+      </article>
+      <article>
+        <label for="boundaries">
+          Boundary:
+          <input id="boundaries" type="text" list="boundaries-list" name="boundaries" value="city">
+          <datalist id="boundaries-list">
+            <option value="city">Cityk</option>
+            <option value="council"></option>
+            <option value="neighborhood"></option>
+          </datalist>
+        </label>
+      </article>
+      <article>
+        <label for="polygons">
+          Polygon:
+          <input id="polygons" type="text" list="polygons-list" name="polygons" value="" disabled>
+          <datalist id="polygons-list">
+          </datalist>
+        </label>
+      </article>
+    </section>
+  </header>
   <nav class="nav">
-    <header>
+    <!-- <header>
       <article class="logo">
         <img src="img/logo-220x220.jpg" alt="City of Detroit">
       </article>
@@ -90,7 +128,7 @@
           </label>
         </article>
       </section>
-    </header>
+    </header> -->
   	<section id="panel-container">
   	  <article class="panel-tabs">
   	    <div class="tab-btn active">

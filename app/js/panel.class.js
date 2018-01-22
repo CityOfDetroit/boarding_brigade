@@ -396,10 +396,16 @@ export default class Panel {
         controller.dataBank[set].features.forEach(function(item){
           if(categories.includes(item.properties.calldescription)){
             categoriesData[item.properties.calldescription].count++;
+            if(item.properties.totalresponsetime != null) {
+              categoriesData[item.properties.calldescription].responseTimeSum += parseInt(item.properties.totalresponsetime)
+            }
             categoriesData[item.properties.calldescription].data.push(item);
           }else{
             categories.push(item.properties.calldescription);
-            categoriesData[item.properties.calldescription] = {data: [item], count: 1};
+            categoriesData[item.properties.calldescription] = {name: item.properties.calldescription, priority: item.properties.priority,  data: [item], count: 1};
+            if(item.properties.totalresponsetime != null) {
+              categoriesData[item.properties.calldescription].responseTimeSum = parseInt(item.properties.totalresponsetime);
+            }
           }
           if(priorities.includes(item.properties.priority)){
             prioritiesData[item.properties.priority].count++;
@@ -409,7 +415,7 @@ export default class Panel {
             prioritiesData[item.properties.priority].data.push(item);
           }else{
             priorities.push(item.properties.priority);
-            prioritiesData[item.properties.priority] = {data: [item], count: 1, responseTimeSum: 0};
+            prioritiesData[item.properties.priority] = {priority: item.properties.priority, data: [item], count: 1, responseTimeSum: 0};
             if(item.properties.totalresponsetime != null) {
               prioritiesData[item.properties.priority].responseTimeSum = parseInt(item.properties.totalresponsetime);
             }
@@ -419,6 +425,179 @@ export default class Panel {
         console.log(categoriesData);
         console.log(priorities);
         console.log(prioritiesData);
+        let topSets1 = [];
+        let topSets2 = [];
+        let topSets3 = [];
+        let topSets4 = [];
+        let topSets5 = [];
+        let checker1 = true;
+        let checker2 = true;
+        let checker3 = true;
+        let checker4 = true;
+        let checker5 = true;
+        for (var cat in categoriesData) {
+          checker1 = true;
+          checker2 = true;
+          checker3 = true;
+          checker4 = true;
+          checker5 = true;
+          switch (categoriesData[cat].priority) {
+            case "1":
+              if(topSets1.length < 2){
+                topSets1.push(categoriesData[cat]);
+              }else{
+                for (var i = 0; i < topSets1.length; i++) {
+                  if(topSets1[i].count < categoriesData[cat].count){
+                    if(checker1){
+                      topSets1[i] = categoriesData[cat];
+                      checker1 = false;
+                    }
+                  }
+                }
+              }
+              break;
+            case "2":
+              if(topSets2.length < 2){
+                topSets2.push(categoriesData[cat]);
+              }else{
+                for (var i = 0; i < topSets2.length; i++) {
+                  if(topSets2[i].count < categoriesData[cat].count){
+                    if(checker2){
+                      topSets2[i] = categoriesData[cat];
+                      checker2 = false;
+                    }
+                  }
+                }
+              }
+              break;
+            case "3":
+              if(topSets3.length < 2){
+                topSets3.push(categoriesData[cat]);
+              }else{
+                for (var i = 0; i < topSets3.length; i++) {
+                  if(topSets3[i].count < categoriesData[cat].count){
+                    if(checker3){
+                      topSets3[i] = categoriesData[cat];
+                      checker3 = false;
+                    }
+                  }
+                }
+              }
+              break;
+            case "4":
+              if(topSets4.length < 2){
+                topSets4.push(categoriesData[cat]);
+              }else{
+                for (var i = 0; i < topSets4.length; i++) {
+                  if(topSets4[i].count < categoriesData[cat].count){
+                    if(checker4){
+                      topSets4[i] = categoriesData[cat];
+                      checker4 = false;
+                    }
+                  }
+                }
+              }
+              break;
+            case "5":
+              if(topSets5.length < 2){
+                topSets5.push(categoriesData[cat]);
+              }else{
+                for (var i = 0; i < topSets5.length; i++) {
+                  if(topSets5[i].count < categoriesData[cat].count){
+                    if(checker5){
+                      topSets5[i] = categoriesData[cat];
+                      checker5 = false;
+                    }
+                  }
+                }
+              }
+              break;
+            default:
+
+          }
+        }
+        let cityResponseTime = Math.round(((prioritiesData[1].responseTimeSum + prioritiesData[2].responseTimeSum + prioritiesData[3].responseTimeSum + prioritiesData[4].responseTimeSum + prioritiesData[5].responseTimeSum) / controller.dataBank[set].features.length) * 100)*.01;
+        let rtime1 = Math.round((prioritiesData[1].responseTimeSum / prioritiesData[1].count) * 100)*.01;
+        let rtime2 = Math.round((prioritiesData[2].responseTimeSum / prioritiesData[2].count) * 100)*.01;
+        let rtime3 = Math.round((prioritiesData[3].responseTimeSum / prioritiesData[3].count) * 100)*.01;
+        let rtime4 = Math.round((prioritiesData[4].responseTimeSum / prioritiesData[4].count) * 100)*.01;
+        let rtime5 = Math.round((prioritiesData[5].responseTimeSum / prioritiesData[5].count) * 100)*.01;
+        let tempHTML = `
+        <section class="breadcrumbs">
+          <article class="inner">
+            <ul class="cf">
+              <li><a href="#"><span>1</span><span class="breadcrumb-title">Home</span></a></li>
+              <li><a href="#"><span>2</span><span class="breadcrumb-title">911 CALLS</span></a></li>
+            </ul>
+          </article>
+        </section>
+        <article class="sec-title"><h2>TOP FIVE 911 CALLS BY PRIORITY</h2></article>
+        <article class="highlights lots">`;
+        tempHTML  += `
+        <div class="item parent-item">
+          <h2>${controller.dataBank[set].features.length}<br><span>total 911 calls<br><u>avg. response time</u><br>${cityResponseTime} min</span></h2>
+        </div>
+        <div class="item">
+          <h2>${topSets1[0].count}<br><span><u>priority 1</u><br>${topSets1[0].name}<br><u>avg. response time</u><br>${rtime1} min</span></h2>
+        </div>
+        <div class="item">
+          <h2>${topSets2[0].count}<br><span><u>priority 2</u><br>${topSets2[0].name}<br><u>avg. response time</u><br>${rtime2} min</span></h2>
+        </div>
+        <div class="item">
+          <h2>${topSets3[0].count}<br><span><u>priority 3</u><br>${topSets3[0].name}<br><u>avg. response time</u><br>${rtime3} min</span></h2>
+        </div>
+        <div class="item">
+          <h2>${topSets4[0].count}<br><span><u>priority 4</u><br>${topSets4[0].name}<br><u>avg. response time</u><br>${rtime4} min</span></h2>
+        </div>
+        <div class="item">
+          <h2>${topSets5[0].count}<br><span><u>priority 5</u><br>${topSets5[0].name}<br><u>avg. response time</u><br>${rtime5} min</span></h2>
+        </div>`;
+        tempHTML += `</article>`;
+        document.querySelector('.panel-content').className = "panel-content details";
+
+        tempHTML += `<article class="chart-section">
+        <div>
+          <h2>PRIORITY RESPONSE TIMES</h2>
+          <canvas id="911-chart" width="400" height="250"></canvas>
+        </div>
+        </article>`;
+        document.querySelector('.panel-content').innerHTML = tempHTML;
+
+        controller.panel.ctx['911'] = document.getElementById("911-chart");
+        controller.panel.charts['911'] = new Chart(controller.panel.ctx["911"], {
+            type: 'bar',
+            data: {
+                labels: ["PRIORITY 1", "PRIORITY 2", "PRIORITY 3", "PRIORITY 4", "PRIORITY 5"],
+                datasets: [{
+                    data: [ Math.round((prioritiesData[1].responseTimeSum/prioritiesData[1].count)* 100)*.01, Math.round((prioritiesData[2].responseTimeSum/prioritiesData[2].count)* 100)*.01, Math.round((prioritiesData[3].responseTimeSum/prioritiesData[3].count)* 100)*.01, Math.round((prioritiesData[4].responseTimeSum/prioritiesData[4].count)* 100)*.01, Math.round((prioritiesData[5].responseTimeSum/prioritiesData[5].count)* 100)*.01],
+                    backgroundColor: "#9fd5b3",
+                    borderColor: "#9fd5b3"
+                }]
+            },
+            options: {
+              legend: {
+                  display: false
+              },
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          fontColor: "#004544"
+                      },
+                      gridLines: {
+                        color: 'rgba(0,69,68,.25)'
+                      }
+                  }],
+                  xAxes: [{
+                      ticks: {
+                          fontColor: "#004544"
+                      },
+                      gridLines: {
+                        color: 'rgba(0,69,68,.25)'
+                      }
+                  }]
+              }
+            }
+         });
         break;
       default:
 

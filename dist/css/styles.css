@@ -221,10 +221,6 @@ body {
   font-weight: lighter;
   overflow: hidden; }
 
-header {
-  width: 100%;
-  display: flex; }
-
 main {
   position: relative;
   width: 100%; }
@@ -398,13 +394,10 @@ img {
   #menu:checked ~ main {
     transform: translateX(250px);
     transition: transform 500ms ease; }
-  #menu:checked ~ header {
-    transform: translateX(250px);
-    transition: transform 500ms ease; }
 
 .nav {
   position: fixed;
-  top: 0;
+  top: 4em;
   left: -100vw;
   width: 100vw;
   height: 100vh;
@@ -416,6 +409,10 @@ img {
   .nav #panel-container {
     position: relative;
     display: flex; }
+  .nav #dash-content {
+    flex: 1;
+    height: calc(100vh - 4em);
+    overflow: hidden; }
   .nav .panel-content {
     height: calc(100vh - 4em);
     flex: 1;
@@ -432,26 +429,35 @@ img {
         text-align: center;
         color: #E48F22;
         text-transform: uppercase; }
+    .nav .panel-content .sec-title {
+      padding: 0 1em;
+      color: #004544;
+      font-size: 1.25em; }
     .nav .panel-content .highlights {
       display: flex;
       flex-wrap: wrap; }
       .nav .panel-content .highlights .item {
         width: 100%;
-        padding: 1em;
-        cursor: pointer; }
+        padding: 1em; }
         .nav .panel-content .highlights .item h2 {
           margin: auto;
           text-align: center;
           height: 100%;
           background-color: #9fd5b3;
           padding: .5em;
+          text-transform: uppercase;
           font-size: 3em;
           color: #004544;
           transition: all .5s ease-in-out; }
           .nav .panel-content .highlights .item h2 span {
             display: block;
             font-size: .3em; }
-      .nav .panel-content .highlights .item:hover h2 {
+      .nav .panel-content .highlights .item.link {
+        cursor: pointer; }
+      .nav .panel-content .highlights .item.parent-item h2 {
+        background-color: #004544;
+        color: #9fd5b3; }
+      .nav .panel-content .highlights .item.link:hover h2 {
         background-color: #004544;
         color: #9fd5b3;
         transition: all .5s ease-in-out; }
@@ -464,7 +470,8 @@ img {
         text-align: center;
         color: #fff; }
       .nav .panel-content .chart-section #myChart, .nav .panel-content .chart-section div {
-        flex: 1; }
+        flex: 1;
+        max-width: 50%; }
     .nav .panel-content .data-sets-boundaries {
       padding: 1em; }
       .nav .panel-content .data-sets-boundaries div article {
@@ -487,7 +494,7 @@ img {
     background-color: #E48F22; }
   .nav .tab-btn {
     padding: 1.5em;
-    font-size: .6vw;
+    font-size: .5em;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
@@ -656,7 +663,7 @@ ul {
     margin-left: 1px;
     border-left-color: #E48F22; }
   .breadcrumbs a:after {
-    border-left-color: #004544; }
+    border-left-color: #fff; }
   .breadcrumbs a:hover:after {
     border-left-color: #E48F22; }
   .breadcrumbs a.active:after {

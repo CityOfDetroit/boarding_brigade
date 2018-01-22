@@ -34,7 +34,6 @@ $lg: new-breakpoint(min-width 1024px);
 	outline: none;
 }
 body { margin:0; padding:0; font-family: 'Montserrat', sans-serif; font-weight: lighter; overflow: hidden;}
-header{width: 100%; display: flex;}
 main {position: relative; width: 100%;}
 h1,h2,h3,h4,h5{font-weight: bold; margin: 0;}
 img{width: 100%;}
@@ -255,15 +254,15 @@ img{width: 100%;}
 		transition: transform $base-duration ease;
 	}
 
-	&:checked ~ header {
-		transform: translateX(250px);
-		transition: transform $base-duration ease;
-	}
+	// &:checked ~ header {
+	// 	transform: translateX(250px);
+	// 	transition: transform $base-duration ease;
+	// }
 }
 
 .nav {
 	position: fixed;
-	top: 0;
+	top: 4em;
 	left: -100vw;
 	width: 100vw;
 	height: 100vh;
@@ -278,6 +277,11 @@ img{width: 100%;}
     display:flex;
   }
 
+  #dash-content{
+    flex: 1;
+    height: calc(100vh - 4em);
+    overflow: hidden;
+  }
   .panel-content{
     height: calc(100vh - 4em);
     flex: 1;
@@ -303,6 +307,12 @@ img{width: 100%;}
       }
     }
 
+    .sec-title{
+      padding: 0 1em;
+      color: $color-1;
+      font-size: 1.25em;
+    }
+
     .highlights{
       display: flex;
       flex-wrap: wrap;
@@ -310,7 +320,6 @@ img{width: 100%;}
       .item{
         width: 100%;
         padding: 1em;
-        cursor: pointer;
 
         h2{
           margin: auto;
@@ -318,6 +327,7 @@ img{width: 100%;}
           height: 100%;
           background-color: $color-2;
           padding: .5em;
+          text-transform: uppercase;
           font-size: 3em;
           color: $color-1;
           transition: all .5s ease-in-out;
@@ -328,8 +338,16 @@ img{width: 100%;}
           }
         }
       }
+      .item.link{
+        cursor: pointer;
+      }
 
-      .item:hover{
+      .item.parent-item h2{
+        background-color: $color-1;
+        color: $color-2;
+      }
+
+      .item.link:hover{
         h2{
           background-color: $color-1;
           color: $color-2;
@@ -351,6 +369,7 @@ img{width: 100%;}
 
       #myChart, div{
         flex: 1;
+        max-width: 50%;
       }
     }
 
@@ -395,7 +414,7 @@ img{width: 100%;}
   }
   .tab-btn{
     padding: 1.5em;
-    font-size: .6vw;
+    font-size: .5em;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
@@ -619,7 +638,7 @@ ul {
 	}
 
 	.breadcrumbs a:after {
-	  border-left-color: $color-1;
+	  border-left-color: $white;
 	}
 
 	.breadcrumbs a:hover:after {
