@@ -1,0 +1,65 @@
+#map-side-panel {
+  position: fixed;
+  top: 4em;
+  left: 100vw;
+  width: calc(100vw - 4em);
+  height: calc(100vh - 4em);
+  z-index: 1;
+  background-color: #fff;
+  padding: 1em;
+  transition: all 500ms ease; }
+  #map-side-panel .box {
+    position: relative; }
+  #map-side-panel .panel-information {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto;
+    grid-template-areas: "header header badges ." "owner property blight sales";
+    grid-column-gap: 1em;
+    grid-row-gap: 1em; }
+    #map-side-panel .panel-information .info-section {
+      position: relative;
+      border: 1px solid #E48F22;
+      padding: 1em; }
+      #map-side-panel .panel-information .info-section span {
+        position: absolute;
+        top: -1em;
+        padding: .3em .5em;
+        background-color: #fff;
+        color: #004544;
+        font-weight: bold; }
+    #map-side-panel .panel-information h2 {
+      grid-area: header;
+      color: #CF3234;
+      font-size: 1.5em;
+      font-weight: bold; }
+    #map-side-panel .panel-information .badges {
+      grid-area: badges; }
+    #map-side-panel .panel-information .section-property {
+      grid-area: property; }
+    #map-side-panel .panel-information .section-owner {
+      grid-area: owner; }
+    #map-side-panel .panel-information .section-blight {
+      grid-area: blight; }
+    #map-side-panel .panel-information .section-sales {
+      grid-area: sales; }
+
+#map-side-panel.active {
+  left: 4em;
+  transition: all 500ms ease; }
+
+#hidde-panel-btn {
+  position: absolute;
+  top: .5em;
+  right: 1em;
+  padding: .5em 1em;
+  background-color: #CF3234;
+  color: #fff;
+  font-weight: bold;
+  transition: all 500ms ease;
+  cursor: pointer; }
+
+#hidde-panel-btn:hover {
+  padding: .7em 1.15em;
+  background-color: #d44748;
+  transition: all 500ms ease; }

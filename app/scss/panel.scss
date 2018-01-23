@@ -1,0 +1,104 @@
+// NOTE: styles for map side panel view
+$base-duration: 500ms;
+$cubic: cubic-bezier(.64,.09,.08,1);
+// Colors
+$color-1: #004544;
+$color-2: #9fd5b3;
+$color-3: #E48F22;
+$color-4: #CF3234;
+$color-5: #444;
+$white: #fff;
+
+// Breakpoints
+$sm: new-breakpoint(min-width 320px);
+$med: new-breakpoint(min-width 768px);
+$lg: new-breakpoint(min-width 1024px);
+
+#map-side-panel{
+  position: fixed;
+  top: 4em;
+  left: 100vw;
+  width: calc(100vw - 4em);
+  height: calc(100vh - 4em);
+  z-index: 1;
+  background-color: $white;
+  padding: 1em;
+  transition: all $base-duration ease;
+
+  .box{
+    position: relative;
+  }
+
+  .panel-information{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto;
+    grid-template-areas:
+    "header header badges ."
+    "owner property blight sales";
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+
+    .info-section{
+      position: relative;
+      border: 1px solid $color-3;
+      padding: 1em;
+
+      span{
+        position: absolute;
+        top: -1em;
+        padding: .3em .5em;
+        background-color: $white;
+        color: $color-1;
+        font-weight: bold;
+      }
+    }
+
+    h2{
+      grid-area: header;
+      color: $color-4;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .badges{
+      grid-area: badges;
+    }
+
+    .section-property{
+      grid-area: property;
+    }
+
+    .section-owner{
+      grid-area: owner;
+    }
+
+    .section-blight{
+      grid-area: blight;
+    }
+
+    .section-sales{
+      grid-area: sales;
+    }
+  }
+}
+#map-side-panel.active{
+  left: 4em;
+  transition: all $base-duration ease;
+}
+#hidde-panel-btn{
+  position: absolute;
+  top: .5em;
+  right: 1em;
+  padding: .5em 1em;
+  background-color: $color-4;
+  color: $white;
+  font-weight: bold;
+  transition: all $base-duration ease;
+  cursor: pointer;
+}
+#hidde-panel-btn:hover{
+  padding: .7em 1.15em;
+  background-color: lighten($color-4, 5%);
+  transition: all $base-duration ease;
+}

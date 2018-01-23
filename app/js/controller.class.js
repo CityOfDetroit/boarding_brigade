@@ -1,5 +1,6 @@
 'use strict';
 import Map from './map.class.js';
+import Dashboard from './dashboard.class.js';
 import Panel from './panel.class.js';
 import Router from './router.class.js';
 import JSUtilities from './utilities.class.js';
@@ -12,17 +13,19 @@ export default class Controller {
   constructor(map, router, dataSouresInfo, palette) {
     this.defaultSettings = {department: 'All'};
     this.currentPolygon = null;
+    this.cityPolygon = null;
     this.dataBank = null;
     this.tempDataDetails = null;
     this.dataSouresInfo = dataSouresInfo;
     this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
+    this.dashboard = new Dashboard();
     this.panel = new Panel();
     this.map = new Map(map, this);
     this.router = new Router(router);
-    this.initialLoad();
+    this.initialLoad(this);
   }
-  initialLoad(){
+  initialLoad(controller){
     let currentDayofWeek = moment().weekday();
     console.log(currentDayofWeek);
     let currentOfSet = 0;
@@ -48,25 +51,30 @@ export default class Controller {
       default:
         currentOfSet = 13;
     }
-    this.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
-    this.defaultSettings.endDate = moment().format('YYYY-MM-DD');
-    console.log(this.defaultSettings);
-    this.addDateBoundaryPicker(this);
-    let controller = this;
-    let boundaries = 'city';
-    let dataList = '';
-    let polygon = '';
-    // console.log(dataList);
-    this.map.currentState.layers.forEach(function(layer){
-      // console.log(layer.id);
-      // console.log(JSUtilities.inArray(controller.layerTypes.dataSets, layer.id));
-      (JSUtilities.inArray(controller.dataSouresInfo.boundaries, layer.id)) ? boundaries += layer.id : 0;
-      (JSUtilities.inArray(controller.dataSouresInfo.dataSets, layer.id)) ? dataList += layer.id + ',' : 0;
+    let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/City_of_Detroit_Boundaries/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=geojson&token=";
+    fetch(url)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) {
+      controller.cityPolygon = data.features[0];
+      controller.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
+      controller.defaultSettings.endDate = moment().format('YYYY-MM-DD');
+      console.log(controller.defaultSettings);
+      controller.addDateBoundaryPicker(controller);
+      let boundaries = 'city';
+      let dataList = '';
+      let polygon = '';
       // console.log(dataList);
+      controller.map.currentState.layers.forEach(function(layer){
+        // console.log(layer.id);
+        // console.log(JSUtilities.inArray(controller.layerTypes.dataSets, layer.id));
+        (JSUtilities.inArray(controller.dataSouresInfo.boundaries, layer.id)) ? boundaries += layer.id : 0;
+        (JSUtilities.inArray(controller.dataSouresInfo.dataSets, layer.id)) ? dataList += layer.id + ',' : 0;
+        // console.log(dataList);
+      });
+      // console.log(dataList);
+      controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat, zoom: controller.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
+      controller.createPanelData('DASH', controller);
     });
-    // console.log(dataList);
-    this.router.updateURLParams({lng: this.map.map.getCenter().lng, lat: this.map.map.getCenter().lat, zoom: this.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
-    this.createPanelData('DASH', this);
   }
   addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
@@ -116,7 +124,7 @@ export default class Controller {
         .then(function(data) {
           console.log(data);
           controller.currentPolygon = data.features[0];
-          if(controller.panel.currentView === 'DASH') {
+          if(controller.dashboard.currentView === 'DASH') {
             controller.createPanelData('DASH', controller);
           }
         })
@@ -205,7 +213,7 @@ export default class Controller {
     let setID = null;
     (ev.target.tagName === "H2") ? setID = ev.target.parentNode.attributes[1].nodeValue : setID = ev.target.parentNode.parentNode.attributes[1].nodeValue;
     console.log(setID);
-    controller.panel.buildSetView(setID, controller);
+    controller.dashboard.buildSetView(setID, controller);
   }
   createPanelData(view, controller){
     console.log(view);
@@ -216,6 +224,10 @@ export default class Controller {
         // console.log('creating stats data');
         let url = null;
         controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);
+        document.getElementById('menu').checked = true;
+        break;
+      case 'MAP':
+        (document.getElementById('menu').checked) ? document.getElementById('menu').checked = false : document.getElementById('menu').checked = true;
         break;
       case 'FILTERS':
         // console.log('creating layers data');
@@ -225,23 +237,23 @@ export default class Controller {
         .then(function(data) {
           // console.log(data);
           let dataObj = {title: "FILTERS", data: data};
-          controller.panel.createView(view, dataObj, controller);
+          controller.dashboard.createView(view, dataObj, controller);
         })
         break;
       case 'TOOLS':
         // console.log('creating tools data');
         let dataObj = {title: "TOOLS", boarded: null, needBoarding: null};
-        controller.panel.createView(view, dataObj, controller);
+        controller.dashboard.createView(view, dataObj, controller);
         break;
       case 'SET':
         // console.log('creating settings data');
         dataObj = {title: "SETTINGS", boarded: null, needBoarding: null};
-        controller.panel.createView(view, dataObj, controller);
+        controller.dashboard.createView(view, dataObj, controller);
         break;
       case 'FORM':
         dataObj = {title: "FORM", boarded: null, needBoarding: null};
         // console.log('creating forms data');
-        controller.panel.createView(view, dataObj, controller);
+        controller.dashboard.createView(view, dataObj, controller);
         break;
       default:
         console.log('invalid view reverting back');
@@ -445,11 +457,12 @@ export default class Controller {
   checkLayerType(id, value, controller){
     console.log(id);
     console.log(value);
+    document.getElementById('initial-loader-overlay').className = 'active';
     switch (id) {
       case "council":
         controller.router.updateURLParams({polygon: "district" + value.properties.districts});
         controller.currentPolygon = value;
-        if(controller.panel.currentView === 'DASH') {
+        if(controller.dashboard.currentView === 'DASH') {
           controller.createPanelData('DASH', controller);
           controller.dataManager.createLayer(null,"#000000", controller);
         }else{
@@ -476,7 +489,7 @@ export default class Controller {
       case "neighborhood":
         controller.router.updateURLParams({polygon: "neighborhood" + value.properties.OBJECTID});
         controller.currentPolygon = value;
-        if(controller.panel.currentView === 'DASH') {
+        if(controller.dashboard.currentView === 'DASH') {
           controller.createPanelData('DASH', controller);
           controller.dataManager.createLayer(null,"#000000", controller);
         }else{
@@ -484,7 +497,34 @@ export default class Controller {
         }
         break;
       default:
-        console.log('this layer is a feature not a boundary');
+        switch (id) {
+          case "parcel-fill":
+            let assessorsData = new Promise((resolve, reject) => {
+              let url = "https://apis.detroitmi.gov/assessments/parcel/" + value.properties.parcelno + "/";
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "assessors-data", "data": data});
+              });
+            });
+            let dteData = new Promise((resolve, reject) => {
+              let url = "https://apis.detroitmi.gov/property_data/dte/active_connections/" + value.properties.parcelno + "/";
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "dte-data", "data": data});
+              });
+            });
+            Promise.all([assessorsData,dteData]).then(values => {
+              console.log(values); //one, two
+              controller.panel.createPanel(values, controller);
+            }).catch(reason => {
+              console.log(reason);
+            });
+            break;
+          default:
+
+        }
     }
   }
   loadPrevious(prev, controller){

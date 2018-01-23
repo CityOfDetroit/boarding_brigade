@@ -194,6 +194,72 @@ nav [type="checkbox"]:checked + label:after {
   100% {
     transform: scale(1, 1); } }
 
+#map-side-panel {
+  position: fixed;
+  top: 4em;
+  left: 100vw;
+  width: calc(100vw - 4em);
+  height: calc(100vh - 4em);
+  z-index: 1;
+  background-color: #fff;
+  padding: 1em;
+  transition: all 500ms ease; }
+  #map-side-panel .box {
+    position: relative; }
+  #map-side-panel .panel-information {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto;
+    grid-template-areas: "header header badges ." "owner property blight sales";
+    grid-column-gap: 1em;
+    grid-row-gap: 1em; }
+    #map-side-panel .panel-information .info-section {
+      position: relative;
+      border: 1px solid #E48F22;
+      padding: 1em; }
+      #map-side-panel .panel-information .info-section span {
+        position: absolute;
+        top: -1em;
+        padding: .3em .5em;
+        background-color: #fff;
+        color: #004544;
+        font-weight: bold; }
+    #map-side-panel .panel-information h2 {
+      grid-area: header;
+      color: #CF3234;
+      font-size: 1.5em;
+      font-weight: bold; }
+    #map-side-panel .panel-information .badges {
+      grid-area: badges; }
+    #map-side-panel .panel-information .section-property {
+      grid-area: property; }
+    #map-side-panel .panel-information .section-owner {
+      grid-area: owner; }
+    #map-side-panel .panel-information .section-blight {
+      grid-area: blight; }
+    #map-side-panel .panel-information .section-sales {
+      grid-area: sales; }
+
+#map-side-panel.active {
+  left: 4em;
+  transition: all 500ms ease; }
+
+#hidde-panel-btn {
+  position: absolute;
+  top: .5em;
+  right: 1em;
+  padding: .5em 1em;
+  background-color: #CF3234;
+  color: #fff;
+  font-weight: bold;
+  transition: all 500ms ease;
+  cursor: pointer; }
+
+#hidde-panel-btn:hover {
+  padding: .7em 1.15em;
+  background-color: #d44748;
+  transition: all 500ms ease; }
+
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #444; }
@@ -244,7 +310,7 @@ img {
   height: 100vh;
   width: 100vw;
   padding: 1em;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: #fff;
   display: flex; }
   #initial-loader-overlay.active article {
     margin: auto;
@@ -389,7 +455,7 @@ img {
       #menu:checked ~ .menu span:nth-of-type(3) {
         transform: translateY(-1px) rotate(-45deg); }
   #menu:checked ~ .nav {
-    left: 0px;
+    left: 4em;
     transition: left 500ms ease; }
   #menu:checked ~ main {
     transform: translateX(250px);
@@ -399,7 +465,7 @@ img {
   position: fixed;
   top: 4em;
   left: -100vw;
-  width: 100vw;
+  width: calc(100vw - 4em);
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -489,41 +555,6 @@ img {
         margin-bottom: .5em; }
     .nav .panel-content .time-range article {
       display: flex; }
-  .nav .panel-tabs {
-    width: 4em;
-    background-color: #E48F22; }
-  .nav .tab-btn {
-    padding: 1.5em;
-    font-size: .5em;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: all .2s ease-in-out; }
-  .nav .tab-btn:hover, .nav .tab-btn.active {
-    background-color: #004544;
-    color: #E48F22;
-    transition: all .2s ease-in-out; }
-  .nav .tab-btn:not(:last-child) {
-    border-bottom: 1px solid #004544; }
-  .nav ul {
-    position: relative;
-    list-style-type: none;
-    margin: 100px 0;
-    padding: 0; }
-    .nav ul li {
-      position: relative;
-      display: block;
-      border-bottom: 5px solid #e48f22; }
-      .nav ul li a {
-        position: relative;
-        display: block;
-        margin: 0;
-        padding: 15px 20px;
-        color: #E48F22;
-        font-size: 14px;
-        font-weight: bold;
-        text-decoration: none;
-        text-transform: uppercase; }
 
 header {
   background: #004544;
@@ -546,6 +577,51 @@ header {
     header #top-filters input[type="text"] {
       padding: .5em 1em;
       border: none; }
+
+#view-tabs {
+  width: 4em;
+  height: 100vh;
+  position: fixed;
+  top: 4em;
+  left: 0;
+  background-color: #E48F22;
+  z-index: 6; }
+
+.tab-btn {
+  padding: 1.5em;
+  font-size: .5em;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s ease-in-out; }
+
+.tab-btn:hover, .tab-btn.active {
+  background-color: #004544;
+  color: #E48F22;
+  transition: all .2s ease-in-out; }
+
+.tab-btn:not(:last-child) {
+  border-bottom: 1px solid #004544; }
+
+ul {
+  position: relative;
+  list-style-type: none;
+  margin: 100px 0;
+  padding: 0; }
+  ul li {
+    position: relative;
+    display: block;
+    border-bottom: 5px solid #e48f22; }
+    ul li a {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 15px 20px;
+      color: #E48F22;
+      font-size: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      text-transform: uppercase; }
 
 .search {
   width: 3em;

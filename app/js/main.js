@@ -118,4 +118,7 @@ import Connector from './connector.class.js';
         controller.closeAlert(ev)
     });
   });
+  document.getElementById("hidde-panel-btn").addEventListener('click', function(){
+    document.getElementById("map-side-panel").className = "";
+  });
 })(window);

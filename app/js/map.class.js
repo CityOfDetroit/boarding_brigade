@@ -52,13 +52,13 @@ export default class Map {
         document.getElementById('geocoder').appendChild(this.geocoder.onAdd(this.map))
     });
     this.map.on('style.load',()=>{
-      this.loadMap();
+      this.loadMap(controller);
     });
   }
   changeBaseMap(baseMap){
     this.map.setStyle(`${this.styleURL}/${this.baseLayers[baseMap]}`);
   }
-  loadMap() {
+  loadMap(controller) {
     let sourcePromise = new Promise((resolve, reject) => {
       (this.loadSources()) ? resolve(this) : reject(this);
     });
@@ -69,8 +69,8 @@ export default class Map {
           layers: ["parcel-fill"]
         });
         if (features.length) {
-          console.log(features);
-          // controller.checkLayerType(features[0].layer.id,features[0],controller);
+          // console.log(features);
+          controller.checkLayerType(features[0].layer.id,features[0],controller);
         }else{
           console.log('No features');
         }

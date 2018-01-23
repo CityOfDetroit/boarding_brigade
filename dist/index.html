@@ -90,68 +90,38 @@
       </article>
     </section>
   </header>
+  <article id="view-tabs">
+    <div class="tab-btn active">
+      <img src="img/gauge.png" alt="dashboard">
+      <span>DASH</span>
+    </div>
+    <div class="tab-btn">
+      <img src="img/map-view.png" alt="map">
+      <span>MAP</span>
+    </div>
+    <div class="tab-btn">
+      <img src="img/property.png" alt="property">
+      <span>PROPERTY</span>
+    </div>
+    <!-- <div class="tab-btn">
+      <img src="img/filter.png" alt="filters">
+      <span>FILTERS</span>
+    </div>
+    <div class="tab-btn">
+      <img src="img/wrench.png" alt="tools">
+      <span>TOOLS</span>
+    </div>
+    <div class="tab-btn">
+      <img src="img/settings.png" alt="settings">
+      <span>SET</span>
+    </div>
+    <div class="tab-btn">
+      <img src="img/question.png" alt="form">
+      <span>FORM</span>
+    </div> -->
+  </article>
   <nav class="nav">
-    <!-- <header>
-      <article class="logo">
-        <img src="img/logo-220x220.jpg" alt="City of Detroit">
-      </article>
-      <section id="top-filters">
-        <article>
-          <label for="start-date">
-            Start Date:
-            <input type="text" id="start-date" name="start-date" value="">
-          </label>
-        </article>
-        <article class="">
-          <label for="end-date">
-            End Date:
-            <input type="text" id="end-date" name="end-date" value="">
-          </label>
-        </article>
-        <article>
-          <label for="boundaries">
-            Boundary:
-            <input id="boundaries" type="text" list="boundaries-list" name="boundaries" value="city">
-            <datalist id="boundaries-list">
-              <option value="city">Cityk</option>
-              <option value="council"></option>
-              <option value="neighborhood"></option>
-            </datalist>
-          </label>
-        </article>
-        <article>
-          <label for="polygons">
-            Polygon:
-            <input id="polygons" type="text" list="polygons-list" name="polygons" value="" disabled>
-            <datalist id="polygons-list">
-            </datalist>
-          </label>
-        </article>
-      </section>
-    </header> -->
   	<section id="panel-container">
-  	  <article class="panel-tabs">
-  	    <div class="tab-btn active">
-  	      <img src="img/gauge.png" alt="dashboard">
-          <span>DASH</span>
-  	    </div>
-        <div class="tab-btn">
-  	      <img src="img/filter.png" alt="filters">
-          <span>FILTERS</span>
-  	    </div>
-        <div class="tab-btn">
-  	      <img src="img/wrench.png" alt="tools">
-          <span>TOOLS</span>
-  	    </div>
-        <div class="tab-btn">
-  	      <img src="img/settings.png" alt="settings">
-          <span>SET</span>
-  	    </div>
-        <div class="tab-btn">
-  	      <img src="img/question.png" alt="form">
-          <span>FORM</span>
-  	    </div>
-  	  </article>
       <article class="panel-content">
       </article>
   	</section>
@@ -167,6 +137,40 @@
       <article id="geocoder"></article>
     </section>
   </main>
+  <section id="map-side-panel">
+    <section class="box">
+      <article id="hidde-panel-btn">
+        BACK
+      </article>
+      <article class="panel-information">
+        <h2>18211 WOODINGHAM</h2>
+        <article class="badges">
+
+        </article>
+        <article class="info-section section-owner">
+          <span>OWNER</span>
+          <p><strong>NAME:</strong> FORD, HERBERT</p>
+          <p><strong>CITY:</strong> DETROIT</p>
+          <p><strong>STATE:</strong> MI</p>
+          <p><strong>ADDRESS:</strong> 18221 WOODINGHAM DR</p>
+          <p><strong>ZIP:</strong> 48221-2153</p>
+        </article>
+        <article class="info-section section-property">
+          <span>PROPERTY</span>
+          <p><strong>PARCEL NUMBER:</strong> 16028762.</p>
+          <p><strong>YEAR BUILD:</strong> 1941</p>
+          <p><strong>CALCULATED VALUE:</strong> $126,275</p>
+          <p><strong>FLOOT AREA:</strong> 1,722 SQFT</p>
+          <p><strong>BASEMENT AREA:</strong>  844 SQFT</p>
+          <p><strong>BUILDING CLASS:</strong> 2</p>
+          <p><strong>EXTERIOR:</strong> 48221-2153</p>
+          <p><strong>NUMBER OF FIREPLACES:</strong> 1</p>
+          <p><strong>GARAGE AREA:</strong> 400 SQFT</p>
+          <p><strong>NUMBER OF BEDROOMS:</strong> 0</p>
+        </article>
+      </article>
+    </section>
+  </section>
   <script src="js/app.main.js"></script>
 </body>
 </html>
