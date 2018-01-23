@@ -468,7 +468,7 @@ img {
       .nav .panel-content .chart-section h2 {
         text-transform: uppercase;
         text-align: center;
-        color: #fff; }
+        color: #004544; }
       .nav .panel-content .chart-section #myChart, .nav .panel-content .chart-section div {
         flex: 1;
         max-width: 50%; }

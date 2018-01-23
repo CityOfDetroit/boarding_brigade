@@ -392,7 +392,11 @@ export default class Panel {
         let categories = [];
         let categoriesData = {};
         let priorities = [];
-        let prioritiesData = {}
+        let prioritiesData = {};
+        let scoutCars = [];
+        let scoutCarsData = {};
+        let district = [];
+        let districtData = {};
         controller.dataBank[set].features.forEach(function(item){
           if(categories.includes(item.properties.calldescription)){
             categoriesData[item.properties.calldescription].count++;
@@ -420,11 +424,42 @@ export default class Panel {
               prioritiesData[item.properties.priority].responseTimeSum = parseInt(item.properties.totalresponsetime);
             }
           }
+          if(scoutCars.includes(item.properties.precinct_sca)){
+            scoutCarsData[item.properties.precinct_sca].count++;
+            if(item.properties.totalresponsetime != null) {
+              scoutCarsData[item.properties.precinct_sca].responseTimeSum += parseInt(item.properties.totalresponsetime)
+            }
+            scoutCarsData[item.properties.precinct_sca].data.push(item);
+          }else{
+            scoutCars.push(item.properties.precinct_sca);
+            scoutCarsData[item.properties.precinct_sca] = {name: item.properties.precinct_sca, priority: item.properties.priority,  data: [item], count: 1};
+            if(item.properties.totalresponsetime != null) {
+              scoutCarsData[item.properties.precinct_sca].responseTimeSum = parseInt(item.properties.totalresponsetime);
+            }
+          }
+          if(district.includes(item.properties.council_district)){
+            districtData[item.properties.council_district].count++;
+            if(item.properties.totalresponsetime != null) {
+              console.log(item.properties.totalresponsetime);
+              districtData[item.properties.council_district].responseTimeSum += parseInt(item.properties.totalresponsetime)
+            }
+            districtData[item.properties.council_district].data.push(item);
+          }else{
+            district.push(item.properties.council_district);
+            districtData[item.properties.council_district] = {name: item.properties.council_district,  data: [item], count: 1};
+            if(item.properties.totalresponsetime != null) {
+              districtData[item.properties.council_district].responseTimeSum = parseInt(item.properties.totalresponsetime);
+            }
+          }
         });
         console.log(categories);
         console.log(categoriesData);
         console.log(priorities);
         console.log(prioritiesData);
+        console.log(scoutCars);
+        console.log(scoutCarsData);
+        console.log(district);
+        console.log(districtData);
         let topSets1 = [];
         let topSets2 = [];
         let topSets3 = [];
@@ -535,30 +570,34 @@ export default class Panel {
         <article class="highlights lots">`;
         tempHTML  += `
         <div class="item parent-item">
-          <h2>${controller.dataBank[set].features.length}<br><span>total 911 calls<br><u>avg. response time</u><br>${cityResponseTime} min</span></h2>
+          <h2>${controller.dataBank[set].features.length.toLocaleString()}<br><span>total 911 calls<br><u>avg. response time</u><br>${cityResponseTime} min</span></h2>
         </div>
         <div class="item">
-          <h2>${topSets1[0].count}<br><span><u>priority 1</u><br>${topSets1[0].name}<br><u>avg. response time</u><br>${rtime1} min</span></h2>
+          <h2>${topSets1[0].count.toLocaleString()}<br><span><u>priority 1</u><br>${topSets1[0].name}<br><u>avg. response time</u><br>${rtime1} min</span></h2>
         </div>
         <div class="item">
-          <h2>${topSets2[0].count}<br><span><u>priority 2</u><br>${topSets2[0].name}<br><u>avg. response time</u><br>${rtime2} min</span></h2>
+          <h2>${topSets2[0].count.toLocaleString()}<br><span><u>priority 2</u><br>${topSets2[0].name}<br><u>avg. response time</u><br>${rtime2} min</span></h2>
         </div>
         <div class="item">
-          <h2>${topSets3[0].count}<br><span><u>priority 3</u><br>${topSets3[0].name}<br><u>avg. response time</u><br>${rtime3} min</span></h2>
+          <h2>${topSets3[0].count.toLocaleString()}<br><span><u>priority 3</u><br>${topSets3[0].name}<br><u>avg. response time</u><br>${rtime3} min</span></h2>
         </div>
         <div class="item">
-          <h2>${topSets4[0].count}<br><span><u>priority 4</u><br>${topSets4[0].name}<br><u>avg. response time</u><br>${rtime4} min</span></h2>
+          <h2>${topSets4[0].count.toLocaleString()}<br><span><u>priority 4</u><br>${topSets4[0].name}<br><u>avg. response time</u><br>${rtime4} min</span></h2>
         </div>
         <div class="item">
-          <h2>${topSets5[0].count}<br><span><u>priority 5</u><br>${topSets5[0].name}<br><u>avg. response time</u><br>${rtime5} min</span></h2>
+          <h2>${topSets5[0].count.toLocaleString()}<br><span><u>priority 5</u><br>${topSets5[0].name}<br><u>avg. response time</u><br>${rtime5} min</span></h2>
         </div>`;
         tempHTML += `</article>`;
         document.querySelector('.panel-content').className = "panel-content details";
 
         tempHTML += `<article class="chart-section">
         <div>
-          <h2>PRIORITY RESPONSE TIMES</h2>
+          <h2>RESPONSE TIMES BY PRIORITY</h2>
           <canvas id="911-chart" width="400" height="250"></canvas>
+        </div>
+        <div>
+          <h2>REPSONSE TIME BY COUNCIL DIST.</h2>
+          <canvas id="council-911-chart" width="400" height="250"></canvas>
         </div>
         </article>`;
         document.querySelector('.panel-content').innerHTML = tempHTML;
@@ -598,6 +637,41 @@ export default class Panel {
               }
             }
          });
+         controller.panel.ctx['council-911'] = document.getElementById("council-911-chart");
+         controller.panel.charts['council-911'] = new Chart(controller.panel.ctx["council-911"], {
+             type: 'bar',
+             data: {
+                 labels: ["DISTRICT 1", "DISTRICT 2", "DISTRICT 3", "DISTRICT 4", "DISTRICT 5", "DISTRICT 6", "DISTRICT 7"],
+                 datasets: [{
+                     data: [ Math.round((districtData[1].responseTimeSum/districtData[1].count)* 100)*.01, Math.round((districtData[2].responseTimeSum/districtData[2].count)* 100)*.01, Math.round((districtData[3].responseTimeSum/districtData[3].count)* 100)*.01, Math.round((districtData[4].responseTimeSum/districtData[4].count)* 100)*.01, Math.round((districtData[5].responseTimeSum/districtData[5].count)* 100)*.01, Math.round((districtData[6].responseTimeSum/districtData[6].count)* 100)*.01, Math.round((districtData[7].responseTimeSum/districtData[7].count)* 100)*.01],
+                     backgroundColor: "#9fd5b3",
+                     borderColor: "#9fd5b3"
+                 }]
+             },
+             options: {
+               legend: {
+                   display: false
+               },
+               scales: {
+                   yAxes: [{
+                       ticks: {
+                           fontColor: "#004544"
+                       },
+                       gridLines: {
+                         color: 'rgba(0,69,68,.25)'
+                       }
+                   }],
+                   xAxes: [{
+                       ticks: {
+                           fontColor: "#004544"
+                       },
+                       gridLines: {
+                         color: 'rgba(0,69,68,.25)'
+                       }
+                   }]
+               }
+             }
+          });
         break;
       default:
 
