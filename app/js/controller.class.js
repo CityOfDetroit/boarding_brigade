@@ -499,6 +499,7 @@ export default class Controller {
       default:
         switch (id) {
           case "parcel-fill":
+            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
             let assessorsData = new Promise((resolve, reject) => {
               let url = "https://apis.detroitmi.gov/assessments/parcel/" + value.properties.parcelno + "/";
               return fetch(url)
