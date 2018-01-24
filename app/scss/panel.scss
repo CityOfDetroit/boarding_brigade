@@ -20,6 +20,7 @@ $lg: new-breakpoint(min-width 1024px);
   left: 100vw;
   width: calc(100vw - 4em);
   height: calc(100vh - 4em);
+  overflow-y: auto;
   z-index: 1;
   background-color: $white;
   padding: 1em;
@@ -31,26 +32,49 @@ $lg: new-breakpoint(min-width 1024px);
 
   .panel-information{
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     grid-template-areas:
-    "header header badges ."
-    "owner property blight sales";
+    "header badges ."
+    "owner property blight"
+    "sales permits .";
     grid-column-gap: 1em;
-    grid-row-gap: 1em;
+    grid-row-gap: 1.5em;
 
     .info-section{
       position: relative;
-      border: 1px solid $color-3;
+      background-color: $color-2;
       padding: 1em;
+      color: $color-1;
 
       span{
         position: absolute;
         top: -1em;
         padding: .3em .5em;
-        background-color: $white;
+        background-color: $color-3;
         color: $color-1;
         font-weight: bold;
+      }
+
+      p{
+        padding: .5em .25em;
+        margin: 0;
+      }
+      p:nth-child(odd){
+        background-color: rgba($white, .6);
+      }
+
+      div{
+        background-color: rgba($white, .6);
+        margin-bottom: .5em;
+
+        p{
+          padding: .25em;
+        }
+
+        p:nth-child(odd){
+          background-color: transparent;
+        }
       }
     }
 
@@ -63,6 +87,22 @@ $lg: new-breakpoint(min-width 1024px);
 
     .badges{
       grid-area: badges;
+
+      span{
+        padding: .5em 1em;
+        font-weight: bold;
+        margin-right: 1em;
+      }
+
+      span.active{
+        background-color: $color-1;
+        color: $white;
+      }
+
+      span.inactive{
+        background-color: $color-4;
+        color: $white;
+      }
     }
 
     .section-property{
@@ -80,6 +120,10 @@ $lg: new-breakpoint(min-width 1024px);
     .section-sales{
       grid-area: sales;
     }
+
+    .section-permits{
+      grid-area: permits;
+    }
   }
 }
 #map-side-panel.active{
@@ -88,8 +132,8 @@ $lg: new-breakpoint(min-width 1024px);
 }
 #hidde-panel-btn{
   position: absolute;
-  top: .5em;
-  right: 1em;
+  top: -.5em;
+  right: 0;
   padding: .5em 1em;
   background-color: $color-4;
   color: $white;

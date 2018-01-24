@@ -200,6 +200,7 @@ nav [type="checkbox"]:checked + label:after {
   left: 100vw;
   width: calc(100vw - 4em);
   height: calc(100vh - 4em);
+  overflow-y: auto;
   z-index: 1;
   background-color: #fff;
   padding: 1em;
@@ -208,22 +209,35 @@ nav [type="checkbox"]:checked + label:after {
     position: relative; }
   #map-side-panel .panel-information {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    grid-template-areas: "header header badges ." "owner property blight sales";
+    grid-template-areas: "header badges ." "owner property blight" "sales permits .";
     grid-column-gap: 1em;
-    grid-row-gap: 1em; }
+    grid-row-gap: 1.5em; }
     #map-side-panel .panel-information .info-section {
       position: relative;
-      border: 1px solid #E48F22;
-      padding: 1em; }
+      background-color: #9fd5b3;
+      padding: 1em;
+      color: #004544; }
       #map-side-panel .panel-information .info-section span {
         position: absolute;
         top: -1em;
         padding: .3em .5em;
-        background-color: #fff;
+        background-color: #E48F22;
         color: #004544;
         font-weight: bold; }
+      #map-side-panel .panel-information .info-section p {
+        padding: .5em .25em;
+        margin: 0; }
+      #map-side-panel .panel-information .info-section p:nth-child(odd) {
+        background-color: rgba(255, 255, 255, 0.6); }
+      #map-side-panel .panel-information .info-section div {
+        background-color: rgba(255, 255, 255, 0.6);
+        margin-bottom: .5em; }
+        #map-side-panel .panel-information .info-section div p {
+          padding: .25em; }
+        #map-side-panel .panel-information .info-section div p:nth-child(odd) {
+          background-color: transparent; }
     #map-side-panel .panel-information h2 {
       grid-area: header;
       color: #CF3234;
@@ -231,6 +245,16 @@ nav [type="checkbox"]:checked + label:after {
       font-weight: bold; }
     #map-side-panel .panel-information .badges {
       grid-area: badges; }
+      #map-side-panel .panel-information .badges span {
+        padding: .5em 1em;
+        font-weight: bold;
+        margin-right: 1em; }
+      #map-side-panel .panel-information .badges span.active {
+        background-color: #004544;
+        color: #fff; }
+      #map-side-panel .panel-information .badges span.inactive {
+        background-color: #CF3234;
+        color: #fff; }
     #map-side-panel .panel-information .section-property {
       grid-area: property; }
     #map-side-panel .panel-information .section-owner {
@@ -239,6 +263,8 @@ nav [type="checkbox"]:checked + label:after {
       grid-area: blight; }
     #map-side-panel .panel-information .section-sales {
       grid-area: sales; }
+    #map-side-panel .panel-information .section-permits {
+      grid-area: permits; }
 
 #map-side-panel.active {
   left: 4em;
@@ -246,8 +272,8 @@ nav [type="checkbox"]:checked + label:after {
 
 #hidde-panel-btn {
   position: absolute;
-  top: .5em;
-  right: 1em;
+  top: -.5em;
+  right: 0;
   padding: .5em 1em;
   background-color: #CF3234;
   color: #fff;

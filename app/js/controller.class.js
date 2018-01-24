@@ -515,7 +515,31 @@ export default class Controller {
                 resolve({"id": "dte-data", "data": data});
               });
             });
-            Promise.all([assessorsData,dteData]).then(values => {
+            let permitData = new Promise((resolve, reject) => {
+              let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?parcel_no=" + value.properties.parcelno;
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "permit-data", "data": data});
+              });
+            });
+            let blightData = new Promise((resolve, reject) => {
+              let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?parcelno=" + value.properties.parcelno;
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "blight-data", "data": data});
+              });
+            });
+            let salesHistoryData = new Promise((resolve, reject) => {
+              let url = "https://data.detroitmi.gov/resource/9xku-658c.json?parcel_no=" + value.properties.parcelno;
+              return fetch(url)
+              .then((resp) => resp.json()) // Transform the data into json
+              .then(function(data) {
+                resolve({"id": "sales-data", "data": data});
+              });
+            });
+            Promise.all([assessorsData,dteData,permitData,blightData,salesHistoryData]).then(values => {
               console.log(values); //one, two
               controller.panel.createPanel(values, controller);
             }).catch(reason => {
