@@ -568,7 +568,7 @@ export default class Controller {
     .then(function(data) {
       console.log(data);
       if(data.candidates.length){
-        if(data.candidates[0].attributes.User_fld != null){
+        if(data.candidates[0].attributes.User_fld != ""){
           document.querySelector('#alert-overlay div').innerHTML = `
             <p>This address has parcel data. Would you like to see it?</p>
             <button class="parcel-view-btn">YES</button>
@@ -589,6 +589,9 @@ export default class Controller {
             });
           });
           controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", data.candidates[0].attributes.User_fld]);
+        }else{
+          console.log("no parcel found");
+          controller.map.map.getSource('address-point').setData(e.result.geometry);
         }
       }else{
         console.log("no parcel found");
