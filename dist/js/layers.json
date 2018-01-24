@@ -65,6 +65,14 @@
   ],
   "sources": [
     {
+      "id": "address-point",
+      "type": "geojson",
+      "data": {
+          "type": "FeatureCollection",
+          "features": []
+      }
+    },
+    {
       "id": "parcels",
       "type": "vector",
       "url": "mapbox://slusarskiddetroitmi.cwobdjn0"

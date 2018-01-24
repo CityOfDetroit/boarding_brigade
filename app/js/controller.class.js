@@ -16,6 +16,7 @@ export default class Controller {
     this.cityPolygon = null;
     this.dataBank = null;
     this.tempDataDetails = null;
+    this.tempAddressPoint = null;
     this.dataSouresInfo = dataSouresInfo;
     this.palette = palette;
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
@@ -500,52 +501,7 @@ export default class Controller {
         switch (id) {
           case "parcel-fill":
             controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
-            let assessorsData = new Promise((resolve, reject) => {
-              let url = "https://apis.detroitmi.gov/assessments/parcel/" + value.properties.parcelno + "/";
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "assessors-data", "data": data});
-              });
-            });
-            let dteData = new Promise((resolve, reject) => {
-              let url = "https://apis.detroitmi.gov/property_data/dte/active_connections/" + value.properties.parcelno + "/";
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "dte-data", "data": data});
-              });
-            });
-            let permitData = new Promise((resolve, reject) => {
-              let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?parcel_no=" + value.properties.parcelno;
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "permit-data", "data": data});
-              });
-            });
-            let blightData = new Promise((resolve, reject) => {
-              let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?parcelno=" + value.properties.parcelno;
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "blight-data", "data": data});
-              });
-            });
-            let salesHistoryData = new Promise((resolve, reject) => {
-              let url = "https://data.detroitmi.gov/resource/9xku-658c.json?parcel_no=" + value.properties.parcelno;
-              return fetch(url)
-              .then((resp) => resp.json()) // Transform the data into json
-              .then(function(data) {
-                resolve({"id": "sales-data", "data": data});
-              });
-            });
-            Promise.all([assessorsData,dteData,permitData,blightData,salesHistoryData]).then(values => {
-              console.log(values); //one, two
-              controller.panel.createPanel(values, controller);
-            }).catch(reason => {
-              console.log(reason);
-            });
+            controller.panel.creatPanel("parcel", value.properties.parcelno, controller);
             break;
           default:
 
@@ -594,6 +550,51 @@ export default class Controller {
       default:
         // console.log("Hydrant view can't go back");
     }
+  }
+  geocoderResults(e, controller){
+    let tempAddr = e.result.place_name.split(",");
+    tempAddr = tempAddr[0];
+    tempAddr = tempAddr.split(" ");
+    let newTempAddr = '';
+    let size = tempAddr.length;
+    tempAddr.forEach(function(item, index) {
+      newTempAddr += item;
+      ((index < size) && (index + 1) !== size) ? newTempAddr += '+': 0;
+    });
+    console.log(newTempAddr);
+    let url = "https://gis.detroitmi.gov/arcgis/rest/services/DoIT/CompositeGeocoder/GeocodeServer/findAddressCandidates?Street=&City=&ZIP=&SingleLine=" + newTempAddr + "&category=&outFields=User_fld&maxLocations=&outSR=4326&searchExtent=&location=&distance=&magicKey=&f=json";
+    fetch(url)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) {
+      console.log(data);
+      if(data.candidates.length){
+        if(data.candidates[0].attributes.User_fld != null){
+          document.querySelector('#alert-overlay div').innerHTML = `
+            <p>This address has parcel data. Would you like to see it?</p>
+            <button class="parcel-view-btn">YES</button>
+            <button class="parcel-view-btn">NO</button>
+          `;
+          document.getElementById('alert-overlay').className = 'active';
+          let tempBtns = document.querySelectorAll('.parcel-view-btn');
+          tempBtns.forEach(function(btn){
+            btn.addEventListener('click', function(ev){
+              console.log(ev);
+              console.log(ev.target.innerText);
+              if(ev.target.innerText === "YES"){
+                document.getElementById('alert-overlay').className = '';
+                controller.panel.creatPanel("parcel", data.candidates[0].attributes.User_fld, controller);
+              }else{
+                document.getElementById('alert-overlay').className = '';
+              }
+            });
+          });
+          controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", data.candidates[0].attributes.User_fld]);
+        }
+      }else{
+        console.log("no parcel found");
+        controller.map.map.getSource('address-point').setData(e.result.geometry);
+      }
+    });
   }
   closeAlert(ev){
     (ev.target.parentNode.parentNode.id === 'alert-overlay') ? document.getElementById('alert-overlay').className = '': document.getElementById('drill-down-overlay').className = '';

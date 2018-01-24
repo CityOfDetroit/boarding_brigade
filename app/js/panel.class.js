@@ -4,10 +4,66 @@ export default class Panel {
   constructor() {
     this.title = null;
   }
-  createPanel(values, controller){
+  creatPanel(type, data, controller){
+    console.log(type);
+    console.log(data);
+    switch (type) {
+      case "parcel":
+        let assessorsData = new Promise((resolve, reject) => {
+          let url = "https://apis.detroitmi.gov/assessments/parcel/" + data + "/";
+          return fetch(url)
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            resolve({"id": "assessors-data", "data": data});
+          });
+        });
+        let dteData = new Promise((resolve, reject) => {
+          let url = "https://apis.detroitmi.gov/property_data/dte/active_connections/" + data + "/";
+          return fetch(url)
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            resolve({"id": "dte-data", "data": data});
+          });
+        });
+        let permitData = new Promise((resolve, reject) => {
+          let url = "https://data.detroitmi.gov/resource/but4-ky7y.json?parcel_no=" + data;
+          return fetch(url)
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            resolve({"id": "permit-data", "data": data});
+          });
+        });
+        let blightData = new Promise((resolve, reject) => {
+          let url = "https://data.detroitmi.gov/resource/s7hj-n86v.json?parcelno=" + data;
+          return fetch(url)
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            resolve({"id": "blight-data", "data": data});
+          });
+        });
+        let salesHistoryData = new Promise((resolve, reject) => {
+          let url = "https://data.detroitmi.gov/resource/9xku-658c.json?parcel_no=" + data;
+          return fetch(url)
+          .then((resp) => resp.json()) // Transform the data into json
+          .then(function(data) {
+            resolve({"id": "sales-data", "data": data});
+          });
+        });
+        Promise.all([assessorsData,dteData,permitData,blightData,salesHistoryData]).then(values => {
+          console.log(values); //one, two
+          controller.panel.createMarkup(values, controller);
+        }).catch(reason => {
+          console.log(reason);
+        });
+        break;
+      default:
+
+    }
+  }
+  createMarkup(values, controller){
     console.log(values);
     let tempHTML = `<h2>${values[0].data.propstreetcombined}</h2><article class="badges">`;
-    if(values[1].data){
+    if(values[1].data.active){
       tempHTML += `<span class="active">DTE</span><span class="active">DWSW</span>`;
     }else{
       tempHTML += `<span class="inactive">DTE</span><span class="inactive">DWSW</span>`;

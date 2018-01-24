@@ -31,6 +31,15 @@ import Connector from './connector.class.js';
       sources: json.sources,
       layers: [
         {
+          "id": "addres-point",
+          "source": "adress-point",
+          "type": "circle",
+          "paint": {
+              "circle-radius": 10,
+              "circle-color": "#007cbf"
+          }
+        },
+        {
           "id": "city-fill",
           "type": "fill",
           "source": "council",

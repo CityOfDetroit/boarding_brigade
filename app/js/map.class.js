@@ -6,6 +6,7 @@ const detroitBBox = [-83.3437,42.2102,-82.8754,42.5197];
 export default class Map {
   constructor(init, controller) {
     if(init.geocoder){
+      this.geocoderLatLng = null;
       this.geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         placeholder: 'Enter address',
@@ -13,7 +14,10 @@ export default class Map {
       });
       this.geocoder.on('result', function(e) {
         // console.log(ev);
-        Map.geocoderResultsFunction(e);
+        if(e.result.center.toString() != controller.map.geocoderLatLng){
+          controller.map.geocoderLatLng = e.result.center.toString();
+          controller.geocoderResults(e, controller);
+        }
       });
     }
     this.prevState = null;
@@ -275,8 +279,5 @@ export default class Map {
   }
   static setMap(map){
     this.map = map;
-  }
-  static geocoderResultsFunction(point){
-    // console.log(point);
   }
 }
