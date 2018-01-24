@@ -15,6 +15,7 @@ export default class Controller {
     this.currentPolygon = null;
     this.cityPolygon = null;
     this.dataBank = null;
+    this.activeLayers = [];
     this.tempDataDetails = null;
     this.tempAddressPoint = null;
     this.dataSouresInfo = dataSouresInfo;
@@ -365,12 +366,12 @@ export default class Controller {
     }
   }
   layerAddRemove(id, actionType, controller){
-    // console.log(id);
+    console.log(id);
     // console.log(controller);
     // console.log(document.getElementById(id));
     if(actionType === 'add'){
-      // console.log('add layer');
-      if(!controller.router.getQueryVariable('dataSets') ||  controller.router.getQueryVariable('dataSets').length < 4){
+      console.log('add layer');
+      if(!controller.activeLayers.length ||  controller.activeLayers.length < 4){
         if(controller.map.map.getLayer(id)){
           // console.log('layer already exist');
         }else{
@@ -406,9 +407,44 @@ export default class Controller {
           tempLegend += `<label data-id="${id}">${id}</label>`;
           document.querySelector('#legend .text').innerHTML = tempLegend;
           document.querySelector('#legend .color').innerHTML = tempColor;
-          let tempNewLayer = null
+          let tempNewLayer = null;
           try {
-            controller.dataManager.createLayer(id, color, controller);
+            if(controller.map.map.getSource(id)){
+              controller.map.map.getSource(id).setData(data);
+              tempNewLayer = {
+                "id": id,
+                "source": id,
+                "type": "circle",
+                "paint": {
+                    "circle-radius": 6,
+                    "circle-color": color
+                },
+                "event": true
+              };
+            }else{
+              console.log("no source found");
+              console.log(controller.dataBank[id]);
+              let sources = [{
+                "id": id,
+                "type": "geojson",
+                "data": controller.dataBank[id]
+              }];
+              controller.map.addSources(sources, controller);
+              tempNewLayer = {
+                "id": id,
+                "source": id,
+                "type": "circle",
+                "paint": {
+                    "circle-radius": 6,
+                    "circle-color": color
+                },
+                "event": true
+              };
+            }
+            controller.map.addLayers([tempNewLayer], controller);
+            console.log(controller.map.currentState);
+            controller.activeLayers.push(id);
+            controller.map.currentState.layers.push(tempNewLayer);
           } catch (e) {
             console.log("Error: " + e);
           }

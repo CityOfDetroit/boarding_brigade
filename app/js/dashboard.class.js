@@ -389,6 +389,7 @@ export default class Dashboard {
     console.log(controller.dataBank[set]);
     switch (set) {
       case "911":
+        controller.layerAddRemove("911",'add',controller);
         let categories = [];
         let categoriesData = {};
         let priorities = [];
@@ -541,11 +542,12 @@ export default class Dashboard {
         let rtime4 = Math.round((prioritiesData[4].responseTimeSum / prioritiesData[4].count) * 100)*.01;
         let rtime5 = Math.round((prioritiesData[5].responseTimeSum / prioritiesData[5].count) * 100)*.01;
         let tempHTML = `
+        <article id="view-map-btn"><span>VIEW MAP</span> <img src="img/map-view.png" alt="map"></article>
         <section class="breadcrumbs">
           <article class="inner">
             <ul class="cf">
               <li><a href="#"><span>1</span><span class="breadcrumb-title">Home</span></a></li>
-              <li><a href="#"><span>2</span><span class="breadcrumb-title">911 CALLS</span></a></li>
+              <li><a href="#" class="active"><span>2</span><span class="breadcrumb-title">911 CALLS</span></a></li>
             </ul>
           </article>
         </section>
@@ -584,7 +586,11 @@ export default class Dashboard {
         </div>
         </article>`;
         document.querySelector('.panel-content').innerHTML = tempHTML;
-
+        document.getElementById('view-map-btn').addEventListener('click', function(){
+          document.querySelector('.tab-btn.active').className = "tab-btn";
+          document.querySelector('.tab-btn[data-view="map"]').className = "tab-btn active";
+          controller.createPanelData("MAP", controller);
+        });
         controller.dashboard.ctx['911'] = document.getElementById("911-chart");
         controller.dashboard.charts['911'] = new Chart(controller.dashboard.ctx["911"], {
             type: 'bar',
