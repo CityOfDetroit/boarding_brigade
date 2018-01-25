@@ -130,4 +130,7 @@ import Connector from './connector.class.js';
   document.getElementById("hidde-panel-btn").addEventListener('click', function(){
     document.getElementById("map-side-panel").className = "";
   });
+  document.getElementById("hidde-panel-small-btn").addEventListener('click', function(){
+    document.getElementById("map-side-panel-small").className = "";
+  });
 })(window);

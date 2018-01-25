@@ -14,6 +14,41 @@ $sm: new-breakpoint(min-width 320px);
 $med: new-breakpoint(min-width 768px);
 $lg: new-breakpoint(min-width 1024px);
 
+#map-side-panel-small{
+  position: fixed;
+  top: 4em;
+  left: -25em;
+  width: 25em;
+  height: calc(100vh - 4em);
+  overflow-y: auto;
+  z-index: 1;
+  background-color: $white;
+  padding: 1em;
+  transition: all $base-duration ease;
+
+  .box{
+    position: relative;
+
+    h2{
+      color: $color-4;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .sub-box{
+      background-color: $color-2;
+    }
+
+    p{
+      padding: .5em .25em;
+      margin: 0;
+    }
+    p:nth-child(odd){
+      background-color: rgba($white, .6);
+    }
+  }
+}
+
 #map-side-panel{
   position: fixed;
   top: 4em;
@@ -130,7 +165,11 @@ $lg: new-breakpoint(min-width 1024px);
   left: 4em;
   transition: all $base-duration ease;
 }
-#hidde-panel-btn{
+#map-side-panel-small.active{
+  left: 4em;
+  transition: all $base-duration ease;
+}
+#hidde-panel-btn, #hidde-panel-small-btn{
   position: absolute;
   top: -.5em;
   right: 0;
@@ -141,7 +180,7 @@ $lg: new-breakpoint(min-width 1024px);
   transition: all $base-duration ease;
   cursor: pointer;
 }
-#hidde-panel-btn:hover{
+#hidde-panel-btn:hover, #hidde-panel-small-btn:hover{
   padding: .7em 1.15em;
   background-color: lighten($color-4, 5%);
   transition: all $base-duration ease;

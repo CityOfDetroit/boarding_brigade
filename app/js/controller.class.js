@@ -459,16 +459,6 @@ export default class Controller {
       if(controller.map.map.getLayer(id)){
         // console.log('removing layer');
         controller.map.removeLayer(id, controller);
-        let tempDataSet = '';
-        controller.map.currentState.layers = controller.router.getQueryVariable('dataSets');
-        controller.map.currentState.layers.forEach(function(layer){
-          console.log(layer);
-          if(layer != id){tempDataSet += `${layer},`;}
-        });
-        // controller.map.currentState.layers.forEach(function(layer){
-        //   (JSUtilities.inArray(controller.dataSouresInfo.dataSets,layer.id)) ? tempDataSet += `${layer.id},` : 0;
-        // });
-        controller.router.updateURLParams({dataSets: tempDataSet});
         // console.log(controller.map.currentState);
         let tempColors = document.querySelectorAll('#legend .color span');
         let tempLegend = document.querySelectorAll('#legend .text label');
@@ -538,10 +528,72 @@ export default class Controller {
           case "parcel-fill":
             controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
             controller.panel.creatPanel("parcel", value.properties.parcelno, controller);
+            controller.layerAddRemove("feature-selected",'remove',controller);
+            break;
+          case "911":
+            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", ""]);
+            controller.createdSelectedLayer(value, controller);
+            controller.panel.creatPanel("911", value, controller);
             break;
           default:
 
         }
+    }
+  }
+  createdSelectedLayer(value, controller){
+    controller.map.map.flyTo({
+        center: [value.properties.longitude, value.properties.latitude],
+        zoom: 16,
+        bearing: 0,
+        // These options control the flight curve, making it move
+        // slowly and zoom out almost completely before starting
+        // to pan.
+        speed: 2, // make the flying slow
+        curve: 1, // change the speed at which it zooms out
+
+        // This can be any easing function: it takes a number between
+        // 0 and 1 and returns another number between 0 and 1.
+        easing: function (t) {
+            return t;
+        }
+    });
+    let tempNewLayer = null;
+    try {
+      if(controller.map.map.getSource("feature-selected")){
+        controller.map.map.getSource("feature-selected").setData(value.toJSON());
+        tempNewLayer = {
+          "id": "feature-selected",
+          "source": "feature-selected",
+          "type": "circle",
+          "paint": {
+              "circle-radius": 6,
+              "circle-color": "#000"
+          }
+        };
+      }else{
+        console.log("no source found");
+        let sources = [{
+          "id": "feature-selected",
+          "type": "geojson",
+          "data": value.toJSON()
+        }];
+        controller.map.addSources(sources, controller);
+        tempNewLayer = {
+          "id": "feature-selected",
+          "source": "feature-selected",
+          "type": "circle",
+          "paint": {
+              "circle-radius": 6,
+              "circle-color": "#000"
+          }
+        };
+      }
+      controller.map.addLayers([tempNewLayer], controller);
+      console.log(controller.map.currentState);
+      controller.activeLayers.push("feature-selected");
+      controller.map.currentState.layers.push(tempNewLayer);
+    } catch (e) {
+      console.log("Error: " + e);
     }
   }
   loadPrevious(prev, controller){
@@ -605,25 +657,27 @@ export default class Controller {
       console.log(data);
       if(data.candidates.length){
         if(data.candidates[0].attributes.User_fld != ""){
-          document.querySelector('#alert-overlay div').innerHTML = `
-            <p>This address has parcel data. Would you like to see it?</p>
-            <button class="parcel-view-btn">YES</button>
-            <button class="parcel-view-btn">NO</button>
-          `;
-          document.getElementById('alert-overlay').className = 'active';
-          let tempBtns = document.querySelectorAll('.parcel-view-btn');
-          tempBtns.forEach(function(btn){
-            btn.addEventListener('click', function(ev){
-              console.log(ev);
-              console.log(ev.target.innerText);
-              if(ev.target.innerText === "YES"){
-                document.getElementById('alert-overlay').className = '';
-                controller.panel.creatPanel("parcel", data.candidates[0].attributes.User_fld, controller);
-              }else{
-                document.getElementById('alert-overlay').className = '';
-              }
-            });
-          });
+          // document.querySelector('#alert-overlay div').innerHTML = `
+          //   <p>This address has parcel data. Would you like to see it?</p>
+          //   <button class="parcel-view-btn">YES</button>
+          //   <button class="parcel-view-btn">NO</button>
+          // `;
+          // document.getElementById('alert-overlay').className = 'active';
+          // let tempBtns = document.querySelectorAll('.parcel-view-btn');
+          // tempBtns.forEach(function(btn){
+          //   btn.addEventListener('click', function(ev){
+          //     console.log(ev);
+          //     console.log(ev.target.innerText);
+          //     if(ev.target.innerText === "YES"){
+          //       document.getElementById('alert-overlay').className = '';
+          //       controller.panel.creatPanel("parcel", data.candidates[0].attributes.User_fld, controller);
+          //     }else{
+          //       document.getElementById('alert-overlay').className = '';
+          //     }
+          //   });
+          // });
+          document.getElementById('alert-overlay').className = '';
+          controller.panel.creatPanel("parcel", data.candidates[0].attributes.User_fld, controller);
           controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", data.candidates[0].attributes.User_fld]);
         }else{
           console.log("no parcel found");
