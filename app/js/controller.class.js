@@ -224,7 +224,6 @@ export default class Controller {
       case 'DASH':
         document.getElementById('initial-loader-overlay').className = 'active';
         // console.log('creating stats data');
-        let url = null;
         controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);
         document.getElementById('menu').checked = true;
         break;

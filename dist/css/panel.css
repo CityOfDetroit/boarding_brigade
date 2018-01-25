@@ -40,7 +40,7 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    grid-template-areas: "header badges ." "owner property blight" "sales permits .";
+    grid-template-areas: "header badges ." "owner property blight" "sales permits .";
     grid-column-gap: 1em;
     grid-row-gap: 1.5em; }
     #map-side-panel .panel-information .info-section {

@@ -31,8 +31,8 @@
       "departments": ["BSEED"]
     },
     {
-      "id": "commercial-demos",
-      "name": "Commercial Demolitions",
+      "id": "demos",
+      "name": "Demolitions",
       "departments": ["DBA"]
     },
     {
