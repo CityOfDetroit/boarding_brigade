@@ -638,6 +638,16 @@ export default class Controller {
         // console.log("Hydrant view can't go back");
     }
   }
+  sandBoxLayers(e, controller){
+    console.log(e);
+    if(e.target.checked){
+      console.log("checked");
+      controller.layerAddRemove(e.target.id, "add", controller);
+    }else{
+      console.log("unchecked");
+      controller.layerAddRemove(e.target.id, "remove", controller);
+    }
+  }
   geocoderResults(e, controller){
     let tempAddr = e.result.place_name.split(",");
     tempAddr = tempAddr[0];

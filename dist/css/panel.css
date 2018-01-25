@@ -23,6 +23,30 @@
     #map-side-panel-small .box p:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.6); }
 
+#map-data-panel {
+  position: fixed;
+  top: 4em;
+  left: -25em;
+  width: 25em;
+  height: calc(100vh - 4em);
+  overflow-y: auto;
+  z-index: 1;
+  background-color: #fff;
+  padding: 1em;
+  transition: all 500ms ease; }
+  #map-data-panel .box {
+    position: relative; }
+    #map-data-panel .box h2 {
+      color: #CF3234;
+      font-size: 1.5em;
+      font-weight: bold; }
+  #map-data-panel .layers-list {
+    padding-top: 1em; }
+    #map-data-panel .layers-list div {
+      padding: .5em 1em; }
+    #map-data-panel .layers-list div.active {
+      background-color: #E48F22; }
+
 #map-side-panel {
   position: fixed;
   top: 4em;
@@ -95,7 +119,7 @@
     #map-side-panel .panel-information .section-permits {
       grid-area: permits; }
 
-#map-side-panel.active {
+#map-side-panel.active, #map-data-panel.active {
   left: 4em;
   transition: all 500ms ease; }
 
@@ -103,7 +127,7 @@
   left: 4em;
   transition: all 500ms ease; }
 
-#hidde-panel-btn, #hidde-panel-small-btn {
+#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn {
   position: absolute;
   top: -.5em;
   right: 0;
@@ -114,7 +138,7 @@
   transition: all 500ms ease;
   cursor: pointer; }
 
-#hidde-panel-btn:hover, #hidde-panel-small-btn:hover {
+#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover {
   padding: .7em 1.15em;
   background-color: #d44748;
   transition: all 500ms ease; }

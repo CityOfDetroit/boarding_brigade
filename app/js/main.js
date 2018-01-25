@@ -133,4 +133,16 @@ import Connector from './connector.class.js';
   document.getElementById("hidde-panel-small-btn").addEventListener('click', function(){
     document.getElementById("map-side-panel-small").className = "";
   });
+  document.getElementById("layers-btn").addEventListener('click', function(){
+    document.getElementById("map-data-panel").className = "active";
+  });
+  document.getElementById("hidde-map-data-btn").addEventListener('click', function(){
+    document.getElementById("map-data-panel").className = "";
+  });
+  let layerBtns = document.querySelectorAll('input[name="datasets"]');
+  layerBtns.forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      controller.sandBoxLayers(ev, controller);
+    });
+  });
 })(window);

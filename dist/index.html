@@ -129,12 +129,16 @@
   <main>
     <section class="map-panel">
       <article id="map"></article>
-      <article id='legend'>
-        <strong>DATA</strong>
+      <article id="legend">
+        <strong>LEGEND</strong>
         <div class="color"></div>
         <div class="text"></div>
       </article>
       <article id="geocoder"></article>
+      <article id="layers-btn">
+        <span>LAYERS</span>
+        <img src="img/layers.png" alt="layers">
+      </article>
     </section>
   </main>
   <section id="map-side-panel">
@@ -152,6 +156,54 @@
         BACK
       </article>
       <article class="panel-information">
+      </article>
+    </section>
+  </section>
+  <section id="map-data-panel">
+    <section class="box">
+      <article id="hidde-map-data-btn">
+        BACK
+      </article>
+      <article class="panel-information">
+        <h2>DATASETS</h2>
+        <article class="layers-list">
+          <div class="">
+            <input type="checkbox" id="911" name="datasets">
+            <label class="layer-btn checkbox" data-id="911" for="911">911 CALLS</label>
+          </div>
+          <div>
+            <input type="checkbox" id="blight-tickets" name="datasets">
+            <label class="layer-btn checkbox" data-id="blight-tickets" for="blight-tickets">BLIGHT TICKETS</label>
+          </div>
+          <div>
+            <input type="checkbox" id="permits" name="datasets">
+            <label class="layer-btn checkbox" data-id="permits" for="permits">BUILDING PERMITS</label>
+          </div>
+          <div>
+            <input type="checkbox" id="crime" name="datasets">
+            <label class="layer-btn checkbox" data-id="crime" for="crime">CRIMES</label>
+          </div>
+          <div>
+            <input type="checkbox" id="boarded" name="datasets">
+            <label class="layer-btn checkbox" data-id="boarded" for="boarded">BOARDED PROPERTIES</label>
+          </div>
+          <div>
+            <input type="checkbox" id="demos" name="datasets">
+            <label class="layer-btn checkbox" data-id="demos" for="demos">DEMOLITIONS</label>
+          </div>
+          <div>
+            <input type="checkbox" id="total-property-sales" name="datasets">
+            <label class="layer-btn checkbox" data-id="total-property-sales" for="total-property-sales">TOTAL PROPERTY SALES</label>
+          </div>
+          <div>
+            <input type="checkbox" id="fire" name="datasets">
+            <label class="layer-btn checkbox" data-id="fire" for="fire">FIRE INCIDENTS</label>
+          </div>
+          <div>
+            <input type="checkbox" id="green-lights" name="datasets">
+            <label class="layer-btn checkbox" data-id="green-lights" for="green-lights">GREEN LIGHTS</label>
+          </div>
+        </article>
       </article>
     </section>
   </section>

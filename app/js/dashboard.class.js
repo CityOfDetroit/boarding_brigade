@@ -315,48 +315,6 @@ export default class Dashboard {
           }
         });
         break;
-      case 'TOOLS':
-        // console.log('creating settings view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Tools dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
-      case 'SET':
-        // console.log('creating settings view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Settings dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
-      case 'FORM':
-        // console.log('creating forms view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Form submitions dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
       default:
         console.log('invalid view reverting back');
     }
