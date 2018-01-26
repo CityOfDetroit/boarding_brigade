@@ -42,7 +42,7 @@ export default class DataManager {
     let arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
     let socrataPolygon = WKT.convert(simplePolygon.geometry);
     if(!dataSets) {
-      tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","demos","911","crime","fire","green-lights"];
+      tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","demos","911","crime","fire","green-lights", "dlba-inventory", "tree-removals", "tree-planting", "motorcitymatch", "motorcityrestore", "schools"];
     }else{
       tempDataSets = dataSets;
     }
@@ -164,7 +164,97 @@ export default class DataManager {
         return resolve(null);
       }
     });
-    Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pDemos, p911, pCrime, pFire, pGreenlight]).then(values => {
+
+    let pDlbaInventory = new Promise((resolve, reject) => {
+      let url = "https://data.detroitmi.gov/resource/mhw8-ppmt.geojson?$query=SELECT * WHERE within_polygon(location,"+ JSON.stringify(socrataPolygon) + ") LIMIT 500000";
+      if(JSUtilities.inArray(tempDataSets, "dlba-inventory")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          resolve({"id": "dlba-inventory", "name": "DLBA Inventory", "numbers": data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        console.log('returning null');
+        return resolve(null);
+      }
+    });
+
+    let pTreeRemovals = new Promise((resolve, reject) => {
+      let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/TreeRemovals18/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson";
+      if(JSUtilities.inArray(tempDataSets, "tree-removals")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          resolve({"id" : "tree-removals", "name": "Tree Removals", "numbers" : data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        return resolve(null);
+      }
+    });
+
+    let pTreePlanting = new Promise((resolve, reject) => {
+      let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/General_Services_Tree_Planting_and_Removal/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson";
+      if(JSUtilities.inArray(tempDataSets, "tree-planting")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          resolve({"id" : "tree-planting", "name": "Trees Planted", "numbers" : data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        return resolve(null);
+      }
+    });
+
+    let pMotorCityMatch = new Promise((resolve, reject) => {
+      let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Motor_City_Match_and_Motor_City_ReStore/FeatureServer/0/query?where=1%3D1+and+program%3D%27Motor+City+Match%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson";
+      if(JSUtilities.inArray(tempDataSets, "tree-planting")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          resolve({"id" : "motorcitymatch", "name": "Motor City Match Awards", "numbers" : data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        return resolve(null);
+      }
+    });
+
+    let pMotorCityRestore = new Promise((resolve, reject) => {
+      let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Motor_City_Match_and_Motor_City_ReStore/FeatureServer/0/query?where=1%3D1+and+program%3D%27Motor+City+Restore%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson";
+      if(JSUtilities.inArray(tempDataSets, "motorcityrestore")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          resolve({"id" : "motorcityrestore", "name": "Motor City Restore Awards", "numbers" : data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        return resolve(null);
+      }
+    });
+
+    let pSchools = new Promise((resolve, reject) => {
+      let url = "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/Schools2017/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnHiddenFields=false&returnGeometry=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson";
+      if(JSUtilities.inArray(tempDataSets, "schools")){
+        return fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data);
+          resolve({"id" : "schools", "name": "Schools", "numbers" : data.features.length.toLocaleString(), "data": data});
+        });
+      }else{
+        return resolve(null);
+      }
+    });
+
+
+
+
+
+
+    Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pDemos, p911, pCrime, pFire, pGreenlight, pDlbaInventory, pTreeRemovals, pTreePlanting, pMotorCityMatch, pMotorCityRestore, pSchools]).then(values => {
         console.log(values); //one, two
         let dataSets = [];
         let initalLoadInfo = {};
