@@ -274,6 +274,7 @@ export default class Map {
   }
   addClickFunction(e, parent = this){
     console.log(e);
+    console.log(this.appController.activeLayers);
     // console.log(this.tempLayerEvent.id);
     let features = this.queryRenderedFeatures(e.point, {
       layers: this.appController.activeLayers

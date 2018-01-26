@@ -226,11 +226,13 @@ export default class Controller {
         document.getElementById('initial-loader-overlay').className = 'active';
         // console.log('creating stats data');
         controller.activeLayers.forEach(function(layer){
-          controller.layerAddRemove(layer, "remove", controller);
-          let tempCheckbox = document.getElementById(layer);
-          if(tempCheckbox != null){
-            tempCheckbox.checked = false;
-            tempCheckbox.parentElement.className = "";
+          if(layer != 'parcel-fill'){
+            controller.layerAddRemove(layer, "remove", controller);
+            let tempCheckbox = document.getElementById(layer);
+            if(tempCheckbox != null){
+              tempCheckbox.checked = false;
+              tempCheckbox.parentElement.className = "";
+            }
           }
         });
         let tempCheckboxList = document.querySelectorAll('input[name="datasets"]');
@@ -475,7 +477,7 @@ export default class Controller {
         console.log('removing layer');
         let newActiveLayers = [];
         controller.activeLayers.forEach(function(layer){
-          if(layer != id || layer === "parcel-fill"){newActiveLayers.push(layer);}
+          if(layer != id){newActiveLayers.push(layer);}
         });
         controller.activeLayers = newActiveLayers;
         controller.map.removeLayer(id, controller);
