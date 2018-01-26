@@ -16,6 +16,7 @@ export default class Controller {
     this.cityPolygon = null;
     this.dataBank = null;
     this.activeLayers = [];
+    this.currentBoundary = "city";
     this.tempDataDetails = null;
     this.tempAddressPoint = null;
     this.dataSouresInfo = dataSouresInfo;
@@ -409,7 +410,7 @@ export default class Controller {
           let tempNewLayer = null;
           try {
             if(controller.map.map.getSource(id)){
-              controller.map.map.getSource(id).setData(data);
+              controller.map.map.getSource(id).setData(controller.dataBank[id]);
               tempNewLayer = {
                 "id": id,
                 "source": id,
@@ -443,7 +444,6 @@ export default class Controller {
             controller.map.addLayers([tempNewLayer], controller);
             console.log(controller.map.currentState);
             controller.activeLayers.push(id);
-            controller.map.currentState.layers.push(tempNewLayer);
           } catch (e) {
             console.log("Error: " + e);
           }
@@ -456,7 +456,12 @@ export default class Controller {
       }
     }else{
       if(controller.map.map.getLayer(id)){
-        // console.log('removing layer');
+        console.log('removing layer');
+        let newActiveLayers = [];
+        controller.activeLayers.forEach(function(layer){
+          if(layer != id){newActiveLayers.push(layer);}
+        });
+        controller.activeLayers = newActiveLayers;
         controller.map.removeLayer(id, controller);
         // console.log(controller.map.currentState);
         let tempColors = document.querySelectorAll('#legend .color span');
@@ -523,19 +528,15 @@ export default class Controller {
         }
         break;
       default:
-        switch (id) {
-          case "parcel-fill":
-            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
-            controller.panel.creatPanel("parcel", value.properties.parcelno, controller);
-            controller.layerAddRemove("feature-selected",'remove',controller);
-            break;
-          case "911":
-            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", ""]);
-            controller.createdSelectedLayer(value, controller);
-            controller.panel.creatPanel("911", value, controller);
-            break;
-          default:
-
+        console.log(id);
+        if(id != "parcel-fill"){
+          controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", ""]);
+          controller.createdSelectedLayer(value, controller);
+          controller.panel.creatPanel("911", value, controller);
+        }else{
+          controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
+          controller.panel.creatPanel("parcel-fill", value.properties.parcelno, controller);
+          controller.layerAddRemove("feature-selected",'remove',controller);
         }
     }
   }
@@ -642,9 +643,11 @@ export default class Controller {
     console.log(e);
     if(e.target.checked){
       console.log("checked");
+      e.target.parentNode.className = "active";
       controller.layerAddRemove(e.target.id, "add", controller);
     }else{
       console.log("unchecked");
+      e.target.parentNode.className = "";
       controller.layerAddRemove(e.target.id, "remove", controller);
     }
   }

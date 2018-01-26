@@ -64,7 +64,7 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    grid-template-areas: "header badges ." "owner property blight" "sales permits .";
+    grid-template-areas: "header badges ." "owner property blight" "sales permits demos";
     grid-column-gap: 1em;
     grid-row-gap: 1.5em; }
     #map-side-panel .panel-information .info-section {
@@ -118,6 +118,8 @@
       grid-area: sales; }
     #map-side-panel .panel-information .section-permits {
       grid-area: permits; }
+    #map-side-panel .panel-information .section-demos {
+      grid-area: demos; }
 
 #map-side-panel.active, #map-data-panel.active {
   left: 4em;

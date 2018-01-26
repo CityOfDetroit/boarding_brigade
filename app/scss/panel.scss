@@ -107,7 +107,7 @@ $lg: new-breakpoint(min-width 1024px);
     grid-template-areas:
     "header badges ."
     "owner property blight"
-    "sales permits .";
+    "sales permits demos";
     grid-column-gap: 1em;
     grid-row-gap: 1.5em;
 
@@ -193,6 +193,10 @@ $lg: new-breakpoint(min-width 1024px);
 
     .section-permits{
       grid-area: permits;
+    }
+
+    .section-demos{
+      grid-area: demos;
     }
   }
 }

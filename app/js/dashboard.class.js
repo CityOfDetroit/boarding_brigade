@@ -348,6 +348,9 @@ export default class Dashboard {
     switch (set) {
       case "911":
         controller.layerAddRemove("911",'add',controller);
+        document.getElementById('911').checked = true;
+        document.getElementById('911').disabled = true;
+        document.getElementById('911').parentElement.className = "active";
         let categories = [];
         let categoriesData = {};
         let priorities = [];
