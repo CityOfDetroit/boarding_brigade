@@ -42,13 +42,25 @@ import Connector from './connector.class.js';
         {
           "id": "city-fill",
           "type": "fill",
-          "source": "council",
-          "maxzoom": 12.5,
-          "layout": {},
+          "source": "city",
+          "maxzoom": 15,
+          "layout": {
+          },
           "paint": {
-            "fill-color": '#9FD5B3',
-            "fill-opacity": .4
+               "fill-color":"#9fd5b3",
+               "fill-opacity":.5
           }
+         },
+        {
+         "id": "city-line",
+         "type": "line",
+         "source": "city",
+         "layout": {
+         },
+         "paint": {
+              "line-color":"#004544",
+              "line-width": 2
+         }
         },
         {
             "id": "parcel-fill",
@@ -132,5 +144,17 @@ import Connector from './connector.class.js';
   });
   document.getElementById("hidde-panel-small-btn").addEventListener('click', function(){
     document.getElementById("map-side-panel-small").className = "";
+  });
+  document.getElementById("layers-btn").addEventListener('click', function(){
+    document.getElementById("map-data-panel").className = "active";
+  });
+  document.getElementById("hidde-map-data-btn").addEventListener('click', function(){
+    document.getElementById("map-data-panel").className = "";
+  });
+  let layerBtns = document.querySelectorAll('input[name="datasets"]');
+  layerBtns.forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      controller.sandBoxLayers(ev, controller);
+    });
   });
 })(window);

@@ -1,14 +1,14 @@
 [type="radio"]:checked,
 [type="radio"]:not(:checked),
-nav [type="checkbox"]:checked,
-nav [type="checkbox"]:not(:checked) {
+.layers-list [type="checkbox"]:checked,
+.layers-list [type="checkbox"]:not(:checked) {
   position: absolute;
   left: -9999px; }
 
 [type="radio"]:checked + label,
 [type="radio"]:not(:checked) + label,
-nav [type="checkbox"]:checked + label,
-nav [type="checkbox"]:not(:checked) + label {
+.layers-list [type="checkbox"]:checked + label,
+.layers-list [type="checkbox"]:not(:checked) + label {
   position: relative;
   padding-left: 28px;
   cursor: pointer;
@@ -18,12 +18,12 @@ nav [type="checkbox"]:not(:checked) + label {
 
 [type="radio"]:checked + label:before,
 [type="radio"]:not(:checked) + label:before,
-nav [type="checkbox"]:checked + label:before,
-nav [type="checkbox"]:not(:checked) + label:before {
+.layers-list [type="checkbox"]:checked + label:before,
+.layers-list [type="checkbox"]:not(:checked) + label:before {
   content: '';
   position: absolute;
   left: 0;
-  top: .35em;
+  top: .1em;
   width: 18px;
   height: 18px;
   border: 1px solid #ddd;
@@ -32,27 +32,27 @@ nav [type="checkbox"]:not(:checked) + label:before {
 
 [type="radio"]:checked + label:after,
 [type="radio"]:not(:checked) + label:after,
-nav [type="checkbox"]:checked + label:after,
-nav [type="checkbox"]:not(:checked) + label:after {
+.layers-list [type="checkbox"]:checked + label:after,
+.layers-list [type="checkbox"]:not(:checked) + label:after {
   content: '';
   width: 12px;
   height: 12px;
   background: #004544;
   position: absolute;
-  top: .55em;
+  top: .25em;
   left: .2em;
   border-radius: 100%;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease; }
 
 [type="radio"]:not(:checked) + label:after,
-nav [type="checkbox"]:not(:checked) + label:after {
+.layers-list [type="checkbox"]:not(:checked) + label:after {
   opacity: 0;
   -webkit-transform: scale(0);
   transform: scale(0); }
 
 [type="radio"]:checked + label:after,
-nav [type="checkbox"]:checked + label:after {
+.layers-list [type="checkbox"]:checked + label:after {
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1); }

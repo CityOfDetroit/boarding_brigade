@@ -15,7 +15,8 @@ export default class Controller {
     this.currentPolygon = null;
     this.cityPolygon = null;
     this.dataBank = null;
-    this.activeLayers = [];
+    this.activeLayers = ['parcel-fill'];
+    this.currentBoundary = "city";
     this.tempDataDetails = null;
     this.tempAddressPoint = null;
     this.dataSouresInfo = dataSouresInfo;
@@ -370,7 +371,7 @@ export default class Controller {
     // console.log(document.getElementById(id));
     if(actionType === 'add'){
       console.log('add layer');
-      if(!controller.activeLayers.length ||  controller.activeLayers.length < 4){
+      if(!controller.activeLayers.length ||  controller.activeLayers.length < 5){
         if(controller.map.map.getLayer(id)){
           // console.log('layer already exist');
         }else{
@@ -409,7 +410,7 @@ export default class Controller {
           let tempNewLayer = null;
           try {
             if(controller.map.map.getSource(id)){
-              controller.map.map.getSource(id).setData(data);
+              controller.map.map.getSource(id).setData(controller.dataBank[id]);
               tempNewLayer = {
                 "id": id,
                 "source": id,
@@ -443,7 +444,6 @@ export default class Controller {
             controller.map.addLayers([tempNewLayer], controller);
             console.log(controller.map.currentState);
             controller.activeLayers.push(id);
-            controller.map.currentState.layers.push(tempNewLayer);
           } catch (e) {
             console.log("Error: " + e);
           }
@@ -452,11 +452,17 @@ export default class Controller {
         document.querySelector('#alert-overlay div').innerText = "Too many datasets selected. Please remove one before proceding.";
         console.log(document.querySelector("input#" + id).checked);
         document.querySelector("input#" + id).checked = false;
+        document.getElementById(id).parentElement.className = "";
         document.getElementById('alert-overlay').className = "active";
       }
     }else{
       if(controller.map.map.getLayer(id)){
-        // console.log('removing layer');
+        console.log('removing layer');
+        let newActiveLayers = [];
+        controller.activeLayers.forEach(function(layer){
+          if(layer != id){newActiveLayers.push(layer);}
+        });
+        controller.activeLayers = newActiveLayers;
         controller.map.removeLayer(id, controller);
         // console.log(controller.map.currentState);
         let tempColors = document.querySelectorAll('#legend .color span');
@@ -480,7 +486,8 @@ export default class Controller {
       }
     }
   }
-  checkLayerType(id, value, controller){
+  checkLayerType(point, id, value, controller){
+    console.log(point);
     console.log(id);
     console.log(value);
     document.getElementById('initial-loader-overlay').className = 'active';
@@ -523,25 +530,21 @@ export default class Controller {
         }
         break;
       default:
-        switch (id) {
-          case "parcel-fill":
-            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
-            controller.panel.creatPanel("parcel", value.properties.parcelno, controller);
-            controller.layerAddRemove("feature-selected",'remove',controller);
-            break;
-          case "911":
-            controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", ""]);
-            controller.createdSelectedLayer(value, controller);
-            controller.panel.creatPanel("911", value, controller);
-            break;
-          default:
-
+        console.log(id);
+        if(id != "parcel-fill"){
+          controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", ""]);
+          controller.createdSelectedLayer(point, value, controller);
+          controller.panel.creatPanel("911", value, controller);
+        }else{
+          controller.map.map.setFilter("parcel-fill-selected", ["==", "parcelno", value.properties.parcelno]);
+          controller.panel.creatPanel("parcel-fill", value.properties.parcelno, controller);
+          controller.layerAddRemove("feature-selected",'remove',controller);
         }
     }
   }
-  createdSelectedLayer(value, controller){
+  createdSelectedLayer(point, value, controller){
     controller.map.map.flyTo({
-        center: [value.properties.longitude, value.properties.latitude],
+        center: [point.lngLat.lng, point.lngLat.lat],
         zoom: 16,
         bearing: 0,
         // These options control the flight curve, making it move
@@ -636,6 +639,18 @@ export default class Controller {
         break;
       default:
         // console.log("Hydrant view can't go back");
+    }
+  }
+  sandBoxLayers(e, controller){
+    console.log(e);
+    if(e.target.checked){
+      console.log("checked");
+      e.target.parentNode.className = "active";
+      controller.layerAddRemove(e.target.id, "add", controller);
+    }else{
+      console.log("unchecked");
+      e.target.parentNode.className = "";
+      controller.layerAddRemove(e.target.id, "remove", controller);
     }
   }
   geocoderResults(e, controller){

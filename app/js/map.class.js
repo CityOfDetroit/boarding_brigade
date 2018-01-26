@@ -57,6 +57,7 @@ export default class Map {
     });
     this.map.on('style.load',()=>{
       this.loadMap(controller);
+      controller.map.addEvent(controller);
     });
   }
   changeBaseMap(baseMap){
@@ -74,7 +75,7 @@ export default class Map {
         });
         if (features.length) {
           // console.log(features);
-          controller.checkLayerType(features[0].layer.id,features[0],controller);
+          controller.checkLayerType(e, features[0].layer.id,features[0],controller);
         }else{
           console.log('No features');
         }
@@ -150,11 +151,11 @@ export default class Map {
       console.log(layer);
       try {
         if(controller.map.map.getLayer(layer[0]) != undefined){
-          controller.map.removeEvent(layer[0],controller);
+          // controller.map.removeEvent(layer[0], controller);
           for (var x = 0; x < controller.map.currentState.layers.length; x++) {
             (controller.map.currentState.layers[x].id === layer[0]) ? controller.map.currentState.layers.splice(x, 1) : 0;
           }
-          controller.map.map.removeLayer(layer);
+          controller.map.map.removeLayer(layer[0]);
         }
       } catch (e) {
         console.log(e);
@@ -162,15 +163,22 @@ export default class Map {
     }else{
       try {
         if(controller.map.map.getLayer(layer) != undefined){
-          controller.map.map.removeLayer(layer);
+          // controller.map.removeEvent(layer, controller);
           for (var x = 0; x < controller.map.currentState.layers.length; x++) {
             (controller.map.currentState.layers[x].id === layer) ? controller.map.currentState.layers.splice(x, 1) : 0;
           }
+          controller.map.map.removeLayer(layer);
         }
       } catch (e) {
         console.log(e);
       }
     }
+  }
+  removeEvent(layer, controller){
+    console.log(layer);
+    controller.map.map.off('click', layer, addClickFunction);
+    controller.map.map.off('mousemove', layer, addMouseMoveFunction);
+    controller.map.map.off('mouseleave', layer, addMouseLeaveFunction);
   }
   addSources(sources, controller){
     sources.forEach(function(source){
@@ -206,18 +214,12 @@ export default class Map {
       (layer.ref === undefined) ? 0: tempLayer.ref = layer.ref;
       if(controller.map.map.getLayer(layer.id) === undefined){
         controller.map.map.addLayer(tempLayer);
-        (layer.event) ? controller.map.addEvent(layer, controller) : 0;
+        // (layer.event) ? controller.map.addEvent(layer, controller) : 0;
       }
     });
   }
-  removeEvent(layer, controller){
-    console.log(layer);
-    console.log(controller.map.map.off('click', layer, addClickFunction));
-    controller.map.map.off('mousemove', layer, addMouseMoveFunction);
-    controller.map.map.off('mouseleave', layer, addMouseLeaveFunction);
-  }
   addMouseMoveFunction(e , parent = this){
-    switch (this.tempLayerEvent.id) {
+    switch (this.appController.currentBoundary) {
       case "council":
         let features = this.queryRenderedFeatures(e.point, {
           layers: ["council"]
@@ -225,6 +227,7 @@ export default class Map {
         if (features.length) {
           this.setFilter("council-hover", ["==", "districts", features[0].properties.districts]);
         }
+        this.getCanvas().style.cursor = 'pointer';
         break;
       case "neighborhood":
         features = this.queryRenderedFeatures(e.point, {
@@ -233,14 +236,30 @@ export default class Map {
         if (features.length) {
           this.setFilter("neighborhood-hover", ["==", "name", features[0].properties.name]);
         }
+        this.getCanvas().style.cursor = 'pointer';
         break;
       default:
 
     }
-    this.getCanvas().style.cursor = 'pointer';
+    let checker = false;
+    for (var i = 0; i < this.appController.activeLayers.length; i++) {
+      if(this.getLayer(this.appController.activeLayers[i])){
+        let tempFeature = this.queryRenderedFeatures(e.point, {
+          layers: [this.appController.activeLayers[i]]
+        });
+        if(tempFeature.length){
+          checker = true;
+        }
+      }
+    }
+    if(checker){
+      this.getCanvas().style.cursor = 'pointer';
+    }else{
+      this.getCanvas().style.cursor = '';
+    }
   }
   addMouseLeaveFunction(e, parent = this){
-    switch (this.tempLayerEvent.id) {
+    switch (this.appController.currentBoundary) {
       case "council":
         this.setFilter("council-hover", ["==", "districts", ""]);
         this.getCanvas().style.cursor = '';
@@ -252,32 +271,27 @@ export default class Map {
       default:
 
     }
-
   }
   addClickFunction(e, parent = this){
+    console.log(e);
+    // console.log(this.tempLayerEvent.id);
     let features = this.queryRenderedFeatures(e.point, {
-      layers: [this.tempLayerEvent.id]
+      layers: this.appController.activeLayers
     });
+    console.log(features);
     if (features.length) {
       console.log(features);
       console.log(this.appController);
-      this.appController.checkLayerType(features[0].layer.id,features[0],this.appController);
+      this.appController.checkLayerType(e, features[0].layer.id, features[0],this.appController);
     }else{
       console.log('No features');
     }
   }
-  addEvent(layer, controller){
-    controller.map.map.tempLayerEvent = layer;
-    controller.map.map.on('click', layer.id, controller.map.addClickFunction);
+  addEvent(controller){
+    controller.map.map.on('click', controller.map.addClickFunction);
     // Change the cursor to a pointer when the mouse is over the places layer.
-    controller.map.map.on('mousemove', layer.id, controller.map.addMouseMoveFunction);
+    controller.map.map.on('mousemove', controller.map.addMouseMoveFunction);
 
-    controller.map.map.on('mouseleave', layer.id, controller.map.addMouseLeaveFunction);
-  }
-  static getMap(){
-    return this.map;
-  }
-  static setMap(map){
-    this.map = map;
+    controller.map.map.on('mouseleave', controller.map.addMouseLeaveFunction);
   }
 }

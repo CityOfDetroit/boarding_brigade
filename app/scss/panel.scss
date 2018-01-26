@@ -49,6 +49,41 @@ $lg: new-breakpoint(min-width 1024px);
   }
 }
 
+#map-data-panel{
+  position: fixed;
+  top: 4em;
+  left: -25em;
+  width: 25em;
+  height: calc(100vh - 4em);
+  overflow-y: auto;
+  z-index: 1;
+  background-color: $white;
+  padding: 1em;
+  transition: all $base-duration ease;
+
+  .box{
+    position: relative;
+
+    h2{
+      color: $color-4;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+  }
+
+  .layers-list{
+    padding-top: 1em;
+
+    div{
+      padding: .5em 1em;
+    }
+
+    div.active{
+      background-color: lighten($color-3, 20%);
+    }
+  }
+}
+
 #map-side-panel{
   position: fixed;
   top: 4em;
@@ -71,8 +106,8 @@ $lg: new-breakpoint(min-width 1024px);
     grid-template-rows: auto;
     grid-template-areas:
     "header badges ."
-    "owner property blight"
-    "sales permits .";
+    "owner property demos"
+    "sales permits blight";
     grid-column-gap: 1em;
     grid-row-gap: 1.5em;
 
@@ -159,9 +194,13 @@ $lg: new-breakpoint(min-width 1024px);
     .section-permits{
       grid-area: permits;
     }
+
+    .section-demos{
+      grid-area: demos;
+    }
   }
 }
-#map-side-panel.active{
+#map-side-panel.active, #map-data-panel.active{
   left: 4em;
   transition: all $base-duration ease;
 }
@@ -169,7 +208,7 @@ $lg: new-breakpoint(min-width 1024px);
   left: 4em;
   transition: all $base-duration ease;
 }
-#hidde-panel-btn, #hidde-panel-small-btn{
+#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn{
   position: absolute;
   top: -.5em;
   right: 0;
@@ -180,7 +219,7 @@ $lg: new-breakpoint(min-width 1024px);
   transition: all $base-duration ease;
   cursor: pointer;
 }
-#hidde-panel-btn:hover, #hidde-panel-small-btn:hover{
+#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover{
   padding: .7em 1.15em;
   background-color: lighten($color-4, 5%);
   transition: all $base-duration ease;

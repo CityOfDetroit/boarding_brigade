@@ -698,13 +698,14 @@ ul {
 }
 #legend{
   position: absolute;
-  bottom: 2em;
+  bottom: 3em;
   right: 6em;
   width: 20em;
   z-index: 2;
 
   strong{
-    background-color: rgba(255,255,255,.7);
+    font-weight: bold;
+    background-color: $white;
   }
 
   .color{
@@ -722,7 +723,7 @@ ul {
     label{
       width: 25%;
       font-size: .65em;
-      background-color: rgba(255,255,255,.7);
+      background-color: $white;
     }
   }
 }
@@ -730,7 +731,7 @@ ul {
 .legend label,
 
 .legend span {
-  background-color: rgba(255,255,255,.7);
+  background-color: $white;
   display:block;
   float:left;
   height:15px;
@@ -743,7 +744,7 @@ main {
 	display: flex;
 	align-items: stretch;
 	width: 100vw;
-	height: 100vh;
+	height: calc(100vh - 4em);
 	transform: translateX(0px);
 	transition: transform $base-duration ease;
 	z-index: 0;
@@ -756,10 +757,36 @@ main {
 		#map{
 			width: 100%;
 			height: 100%;
-			box-shadow: -2px 2px 10px 1px rgba($color-1, 0.5);
 
       .mapboxgl-missing-css{display: none;}
 		}
+
+    #layers-btn{
+      position: absolute;
+      bottom: 2em;
+      left: 5em;
+      background-color: $color-4;
+      padding: .25em .5em;
+      transition: all $base-duration ease;
+      cursor: pointer;
+
+      img{
+        width: 1.5em;
+      }
+
+      span{
+        position: relative;
+        top: -.25em;
+        color: $white;
+        font-weight: bold;
+      }
+    }
+
+    #layers-btn:hover{
+      padding: .25em .7em;
+      background-color: lighten($color-4, 10%);
+      transition: all $base-duration ease;
+    }
 	}
 }
 // ===================== main end =========================

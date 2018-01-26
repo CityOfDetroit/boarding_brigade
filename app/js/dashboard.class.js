@@ -315,48 +315,6 @@ export default class Dashboard {
           }
         });
         break;
-      case 'TOOLS':
-        // console.log('creating settings view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Tools dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
-      case 'SET':
-        // console.log('creating settings view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Settings dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
-      case 'FORM':
-        // console.log('creating forms view');
-        tempHTML = `
-          <article class="title">
-            <h1>${controller.dashboard.title}</h1>
-          </article>
-          <article class="data-sets-boundaries">
-            <div>
-              <p>Form submitions dashboard comming soon.</p>
-            </div>
-          </article>
-        `;
-        document.querySelector('.panel-content').innerHTML = tempHTML;
-        break;
       default:
         console.log('invalid view reverting back');
     }
@@ -390,6 +348,9 @@ export default class Dashboard {
     switch (set) {
       case "911":
         controller.layerAddRemove("911",'add',controller);
+        document.getElementById('911').checked = true;
+        document.getElementById('911').disabled = true;
+        document.getElementById('911').parentElement.className = "active";
         let categories = [];
         let categoriesData = {};
         let priorities = [];
