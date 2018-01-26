@@ -42,13 +42,25 @@ import Connector from './connector.class.js';
         {
           "id": "city-fill",
           "type": "fill",
-          "source": "council",
-          "maxzoom": 12.5,
-          "layout": {},
+          "source": "city",
+          "maxzoom": 15,
+          "layout": {
+          },
           "paint": {
-            "fill-color": '#9FD5B3',
-            "fill-opacity": .4
+               "fill-color":"#9fd5b3",
+               "fill-opacity":.5
           }
+         },
+        {
+         "id": "city-line",
+         "type": "line",
+         "source": "city",
+         "layout": {
+         },
+         "paint": {
+              "line-color":"#004544",
+              "line-width": 2
+         }
         },
         {
             "id": "parcel-fill",

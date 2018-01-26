@@ -75,7 +75,7 @@ export default class Map {
         });
         if (features.length) {
           // console.log(features);
-          controller.checkLayerType(features[0].layer.id,features[0],controller);
+          controller.checkLayerType(e, features[0].layer.id,features[0],controller);
         }else{
           console.log('No features');
         }
@@ -282,7 +282,7 @@ export default class Map {
     if (features.length) {
       console.log(features);
       console.log(this.appController);
-      this.appController.checkLayerType(features[0].layer.id,features[0],this.appController);
+      this.appController.checkLayerType(e, features[0].layer.id, features[0],this.appController);
     }else{
       console.log('No features');
     }

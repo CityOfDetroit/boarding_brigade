@@ -79,7 +79,7 @@ $lg: new-breakpoint(min-width 1024px);
     }
 
     div.active{
-      background-color: $color-3;
+      background-color: lighten($color-3, 20%);
     }
   }
 }
@@ -106,8 +106,8 @@ $lg: new-breakpoint(min-width 1024px);
     grid-template-rows: auto;
     grid-template-areas:
     "header badges ."
-    "owner property blight"
-    "sales permits demos";
+    "owner property demos"
+    "sales permits blight";
     grid-column-gap: 1em;
     grid-row-gap: 1.5em;
 
