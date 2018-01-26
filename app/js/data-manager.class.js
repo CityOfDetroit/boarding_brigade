@@ -42,7 +42,7 @@ export default class DataManager {
     let arcsimplePolygon = arcGIS.convert(simplePolygon.geometry);
     let socrataPolygon = WKT.convert(simplePolygon.geometry);
     if(!dataSets) {
-      tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","demos","911","crime","fire","green-lights", "dlba-inventory", "tree-removals", "tree-planting", "motorcitymatch", "motorcityrestore", "schools"];
+      tempDataSets = ["boarded","permits","total-property-sales","blight-tickets","demos","911","crime", "green-lights", "dlba-inventory", "tree-removals", "tree-planting", "motorcitymatch", "motorcityrestore", "schools"];
     }else{
       tempDataSets = dataSets;
     }
@@ -254,7 +254,7 @@ export default class DataManager {
 
 
 
-    Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pDemos, p911, pCrime, pFire, pGreenlight, pDlbaInventory, pTreeRemovals, pTreePlanting, pMotorCityMatch, pMotorCityRestore, pSchools]).then(values => {
+    Promise.all([pBoarded, pBuildingPermits, pTotalPropertySales, pBlight, pDemos, p911, pCrime, pGreenlight, pDlbaInventory, pTreeRemovals, pTreePlanting, pMotorCityMatch, pMotorCityRestore, pSchools]).then(values => {
         console.log(values); //one, two
         let dataSets = [];
         let initalLoadInfo = {};

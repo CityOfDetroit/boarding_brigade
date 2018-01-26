@@ -99,9 +99,9 @@ export default class Panel {
       case "parcel-fill":
         tempHTML += `<h2>${values[0].data.propstreetcombined}</h2><article class="badges">`;
         if(values[1].data.active){
-          tempHTML += `<span class="active">DTE</span><span class="active">DWSW</span>`;
+          tempHTML += `<span class="active">DTE</span><span class="active">DWSD</span>`;
         }else{
-          tempHTML += `<span class="inactive">DTE</span><span class="inactive">DWSW</span>`;
+          tempHTML += `<span class="inactive">DTE</span><span class="inactive">DWSD</span>`;
         }
         tempHTML += `</article>
         <article class="info-section section-owner">

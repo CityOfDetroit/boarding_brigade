@@ -119,17 +119,23 @@ import Connector from './connector.class.js';
     btn.addEventListener('click',function(ev){
       // console.log(ev);
       if(ev.target.tagName === "DIV"){
-        if(ev.target.className != "tab-btn active"){
-          document.querySelector('.tab-btn.active').className = 'tab-btn';
-          controller.createPanelData(ev.target.children[1].innerText, controller);
-          ev.target.className = 'tab-btn active';
-        }
+        // if(ev.target.className != "tab-btn active"){
+        //   document.querySelector('.tab-btn.active').className = 'tab-btn';
+        //   controller.createPanelData(ev.target.children[1].innerText, controller);
+        //   ev.target.className = 'tab-btn active';
+        // }
+        document.querySelector('.tab-btn.active').className = 'tab-btn';
+        controller.createPanelData(ev.target.children[1].innerText, controller);
+        ev.target.className = 'tab-btn active';
       }else{
-        if(ev.target.parentNode.className != "tab-btn active"){
-          document.querySelector('.tab-btn.active').className = 'tab-btn';
-          controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
-          ev.target.parentNode.className = 'tab-btn active';
-        }
+        // if(ev.target.parentNode.className != "tab-btn active"){
+        //   document.querySelector('.tab-btn.active').className = 'tab-btn';
+        //   controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
+        //   ev.target.parentNode.className = 'tab-btn active';
+        // }
+        document.querySelector('.tab-btn.active').className = 'tab-btn';
+        controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
+        ev.target.parentNode.className = 'tab-btn active';
       }
     });
   });
