@@ -1,6 +1,6 @@
 'use strict';
 import JSUtilities from './utilities.class.js';
-const turf = require('@turf/simplify');
+const turf = require('@turf/turf');
 const arcGIS = require('terraformer-arcgis-parser');
 const WKT = require('terraformer-wkt-parser');
 export default class DataManager {
@@ -29,11 +29,11 @@ export default class DataManager {
       case "city":
         console.log("city");
         dataObj = {title: "City of Detroit"};
-        simplePolygon = turf(controller.cityPolygon, 0.01, false);
+        simplePolygon = turf.simplify(controller.cityPolygon, {tolerance: 0.01, highQuality: false});
         break;
       case "council":
         dataObj = {title: controller.currentPolygon.properties.name};
-        simplePolygon = turf(controller.currentPolygon, 0.005, false);
+        simplePolygon = turf.simplify(controller.currentPolygon,{tolerance: 0.005, highQuality: false});
         break;
       default:
     }

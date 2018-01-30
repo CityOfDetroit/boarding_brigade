@@ -18,6 +18,7 @@ import Connector from './connector.class.js';
       mapContainer: 'map',
       geocoder: true,
       controls: true,
+      draw: true,
       baseLayers: {
         street: 'streets-v10',
         satellite: 'cj774gftq3bwr2so2y6nqzvz4'

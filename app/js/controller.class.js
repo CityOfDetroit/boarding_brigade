@@ -79,6 +79,9 @@ export default class Controller {
       controller.createPanelData('DASH', controller);
     });
   }
+  mapToolEvent(ev){
+    console.log(ev);
+  }
   addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
       defaultDate: controller.defaultSettings.startDate,
