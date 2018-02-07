@@ -21,19 +21,6 @@ export default class Map {
         }
       });
     }
-    if(init.draw){
-      this.drawTool = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-            polygon: true,
-            trash: true
-        }
-      });
-      this.map.addControl(this.drawTool);
-      this.map.on('draw.create', controller.mapToolEvent);
-      this.map.on('draw.delete', controller.mapToolEvent);
-      this.map.on('draw.update', controller.mapToolEvent);
-    }
     this.prevState = null;
     this.currentState = {
       baseMap: init.baseLayers.street,
@@ -55,6 +42,19 @@ export default class Map {
     this.map.appController = controller;
     if(init.controls){
       this.map.addControl(new mapboxgl.NavigationControl());
+    }
+    if(init.draw){
+      this.drawTool = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+            polygon: true,
+            trash: true
+        }
+      });
+      this.map.addControl(this.drawTool);
+      this.map.on('draw.create', controller.mapToolEvent);
+      this.map.on('draw.delete', controller.mapToolEvent);
+      this.map.on('draw.update', controller.mapToolEvent);
     }
     this.styleURL = init.styleURL;
     this.baseLayers = {

@@ -7,6 +7,7 @@ import JSUtilities from './utilities.class.js';
 import DataManager from './data-manager.class.js';
 import flatpickr from "flatpickr";
 import mapboxgl from 'mapbox-gl';
+const turf = require('@turf/turf');
 const moment = require('moment');
 const GeoJSON = require('geojson');
 export default class Controller {
@@ -81,6 +82,9 @@ export default class Controller {
   }
   mapToolEvent(ev){
     console.log(ev);
+    let area = turf.area(ev.features[0]);
+    area = Math.round(area*100)/100;
+    console.log(area);
   }
   addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
