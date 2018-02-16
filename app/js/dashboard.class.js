@@ -29,7 +29,11 @@ export default class Dashboard {
           <h2>${data.numbers}<br><span>${data.name}</span></h2>
         </div>`;
       });
-      markUp += `</article>`;
+      markUp += `
+        <div class="item link" data-id="add-data-set">
+          <h2><img class="light" src="img/add-light.png" alt="add dataset"><img class="dark" src="img/add-dark.png" alt="add dataset"></img><span>ADD DATASET</span></h2>
+        </div>
+      </article>`;
     }else{
       markUp = `
       <article class="data-sets-boundaries">
@@ -341,6 +345,16 @@ export default class Dashboard {
     });
     console.log(chartData);
     return chartData;
+  }
+  loadPropertyView(controller){
+    console.log("loading property view");
+    let tempHTML = `
+    <article id="view-map-btn"><span>VIEW ON MAP</span> <img src="img/map-view.png" alt="map"></article>
+    <article class="sec-title property"><h2>PROPERTY LOOKUP <span><img src="img/property-green.png" alt="property search"></img></span></h2></article>
+    <article id="property-search"></article>`;
+    document.querySelector('.panel-content').className = "panel-content details";
+    document.querySelector('.panel-content').innerHTML = tempHTML;
+    document.getElementById('initial-loader-overlay').className = '';
   }
   buildSetView(set, controller){
     console.log(set);

@@ -337,10 +337,27 @@ img{width: 100%;}
       }
     }
 
+    .sec-title.property{
+      padding-top: 1em;
+      
+      h2{
+        width: 12em;
+        border-bottom: .25em solid $color-1;
+      }
+    }
     .sec-title{
       padding: 0 1em;
       color: $color-1;
       font-size: 1.25em;
+
+      span{
+        position: relative;
+        top: .15em;
+
+        img{
+          width: 1em;
+        }
+      }
     }
 
     .highlights{
@@ -370,6 +387,17 @@ img{width: 100%;}
       }
       .item.link{
         cursor: pointer;
+
+        img.dark{
+          width: 1em;
+          margin: .15em auto;
+          display: block;
+        }
+        img.light{
+          width: 1em;
+          margin: .15em auto;
+          display: none;
+        }
       }
 
       .item.parent-item h2{
@@ -382,6 +410,13 @@ img{width: 100%;}
           background-color: $color-1;
           color: $color-2;
           transition: all .5s ease-in-out;
+
+          img.dark{
+            display: none;
+          }
+          img.light{
+            display: block;
+          }
         }
       }
     }

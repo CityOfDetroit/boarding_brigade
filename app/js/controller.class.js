@@ -255,6 +255,25 @@ export default class Controller {
       case 'MAP':
         (document.getElementById('menu').checked) ? document.getElementById('menu').checked = false : document.getElementById('menu').checked = true;
         break;
+      case 'PROPERTY':
+        document.getElementById('initial-loader-overlay').className = 'active';
+        // console.log('creating stats data');
+        controller.activeLayers.forEach(function(layer){
+          if(layer != 'parcel-fill'){
+            controller.layerAddRemove(layer, "remove", controller);
+            let tempCheckbox = document.getElementById(layer);
+            if(tempCheckbox != null){
+              tempCheckbox.checked = false;
+              tempCheckbox.parentElement.className = "";
+            }
+          }
+        });
+        document.getElementById('map-data-panel').className = "";
+        document.getElementById('map-side-panel').className = "";
+        document.getElementById('map-side-panel-small').className = "";
+        controller.dashboard.loadPropertyView(controller);
+        document.getElementById('menu').checked = true;
+        break;
       case 'FILTERS':
         // console.log('creating layers data');
         const layerURL = 'js/layers.json';

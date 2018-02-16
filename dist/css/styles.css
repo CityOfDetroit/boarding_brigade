@@ -597,10 +597,20 @@ img {
         text-align: center;
         color: #E48F22;
         text-transform: uppercase; }
+    .nav .panel-content .sec-title.property {
+      padding-top: 1em; }
+      .nav .panel-content .sec-title.property h2 {
+        width: 12em;
+        border-bottom: 0.25em solid #004544; }
     .nav .panel-content .sec-title {
       padding: 0 1em;
       color: #004544;
       font-size: 1.25em; }
+      .nav .panel-content .sec-title span {
+        position: relative;
+        top: .15em; }
+        .nav .panel-content .sec-title span img {
+          width: 1em; }
     .nav .panel-content .highlights {
       display: flex;
       flex-wrap: wrap; }
@@ -622,6 +632,14 @@ img {
             font-size: .3em; }
       .nav .panel-content .highlights .item.link {
         cursor: pointer; }
+        .nav .panel-content .highlights .item.link img.dark {
+          width: 1em;
+          margin: .15em auto;
+          display: block; }
+        .nav .panel-content .highlights .item.link img.light {
+          width: 1em;
+          margin: .15em auto;
+          display: none; }
       .nav .panel-content .highlights .item.parent-item h2 {
         background-color: #004544;
         color: #9fd5b3; }
@@ -629,6 +647,10 @@ img {
         background-color: #004544;
         color: #9fd5b3;
         transition: all .5s ease-in-out; }
+        .nav .panel-content .highlights .item.link:hover h2 img.dark {
+          display: none; }
+        .nav .panel-content .highlights .item.link:hover h2 img.light {
+          display: block; }
     .nav .panel-content .chart-section {
       display: flex;
       flex-wrap: wrap;
