@@ -218,6 +218,41 @@ export default class Controller {
       console.log("not valid boundary");
     }
   }
+  datasetDashboarActions(ev, controller){
+    console.log(ev);
+    let setID = null;
+    let actionType = null;
+    if(ev.target.tagName === "IMG"){
+      actionType = ev.target.parentNode.attributes[1].nodeValue;
+      setID = ev.target.parentNode.attributes[2].nodeValue;
+    }else{
+      actionType = ev.target.attributes[1].nodeValue;
+      setID = ev.target.attributes[2].nodeValue;
+    }
+    console.log(setID);
+    console.log(actionType);
+    switch (actionType) {
+      case "data":
+        controller.dashboard.buildSetView(setID, controller);
+        break;
+      case "map":
+        controller.loadMapLayer(setID, controller);
+        break;
+      default:
+        controller.removeDataset(setID, controller);
+    }
+  }
+  loadMapLayer(id, controller){
+    console.log('loading map layer');
+    console.log(id);
+  }
+  removeDataset(id, controller){
+    console.log('removing dataset');
+    console.log(id);
+  }
+  addDataset(controller){
+    console.log('adding dataset');
+  }
   loadDatasetView(ev, controller){
     console.log(ev);
     let setID = null;

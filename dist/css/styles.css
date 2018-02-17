@@ -566,9 +566,9 @@ img {
     overflow-x: hidden;
     overflow-y: auto;
     position: relative; }
-    .nav .panel-content #view-map-btn {
+    .nav .panel-content #view-map-btn, .nav .panel-content #view-filters-btn {
       position: absolute;
-      top: 3em;
+      top: 1.5em;
       right: 1em;
       background-color: #CF3234;
       color: #fff;
@@ -577,12 +577,14 @@ img {
       cursor: pointer;
       transition: all 500ms ease;
       z-index: 5; }
-      .nav .panel-content #view-map-btn span {
+      .nav .panel-content #view-map-btn span, .nav .panel-content #view-filters-btn span {
         position: relative;
         top: -.25em; }
-      .nav .panel-content #view-map-btn img {
+      .nav .panel-content #view-map-btn img, .nav .panel-content #view-filters-btn img {
         width: 1.5em; }
-    .nav .panel-content #view-map-btn:hover {
+    .nav .panel-content #view-filters-btn {
+      right: 12em; }
+    .nav .panel-content #view-map-btn:hover, .nav .panel-content #view-filters-btn:hover {
       padding: .25em .6em;
       background-color: #d95b5d;
       transition: all 500ms ease; }
@@ -622,7 +624,7 @@ img {
           text-align: center;
           height: 100%;
           background-color: #9fd5b3;
-          padding: .5em;
+          padding: .25em 0;
           text-transform: uppercase;
           font-size: 3em;
           color: #004544;
@@ -630,19 +632,35 @@ img {
           .nav .panel-content .highlights .item h2 span {
             display: block;
             font-size: .3em; }
+          .nav .panel-content .highlights .item h2 .dataset-btns {
+            display: flex;
+            padding: 1em;
+            justify-content: space-evenly; }
+            .nav .panel-content .highlights .item h2 .dataset-btns .dataset-action-btn {
+              cursor: pointer;
+              flex: 1;
+              padding: .25em 1em;
+              text-align: center;
+              font-size: .75em;
+              transition: all .5s ease-in-out; }
+              .nav .panel-content .highlights .item h2 .dataset-btns .dataset-action-btn img {
+                width: 3em; }
+            .nav .panel-content .highlights .item h2 .dataset-btns .dataset-action-btn:hover {
+              transition: all .5s ease-in-out;
+              background-color: #004544;
+              color: #fff; }
       .nav .panel-content .highlights .item.link {
         cursor: pointer; }
-        .nav .panel-content .highlights .item.link img.dark {
+        .nav .panel-content .highlights .item.link h2 img.dark {
           width: 1em;
-          margin: .15em auto;
+          margin: auto;
+          padding-top: 1em;
           display: block; }
-        .nav .panel-content .highlights .item.link img.light {
+        .nav .panel-content .highlights .item.link h2 img.light {
           width: 1em;
-          margin: .15em auto;
+          margin: auto;
+          padding-top: 1em;
           display: none; }
-      .nav .panel-content .highlights .item.parent-item h2 {
-        background-color: #004544;
-        color: #9fd5b3; }
       .nav .panel-content .highlights .item.link:hover h2 {
         background-color: #004544;
         color: #9fd5b3;
@@ -651,6 +669,9 @@ img {
           display: none; }
         .nav .panel-content .highlights .item.link:hover h2 img.light {
           display: block; }
+      .nav .panel-content .highlights .item.parent-item h2 {
+        background-color: #004544;
+        color: #9fd5b3; }
     .nav .panel-content .chart-section {
       display: flex;
       flex-wrap: wrap;

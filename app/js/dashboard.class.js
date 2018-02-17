@@ -25,13 +25,32 @@ export default class Dashboard {
       (data.dataSets.length > 3) ? markUp += `<article class="highlights lots">` : markUp += `<article class="highlights">`;
       data.dataSets.forEach(function(data){
         markUp += `
-        <div class="item link" data-id="${data.id}">
-          <h2>${data.numbers}<br><span>${data.name}</span></h2>
+        <div class="item">
+          <h2>
+            ${data.numbers}<br><span>${data.name}</span>
+            <span class="dataset-btns">
+              <span class="dataset-action-btn" data-btn-type="data" data-id="${data.id}">
+                <img src="img/bars.png" alt="charts"></img>
+                <br>DATA
+              </span>
+              <span class="dataset-action-btn" data-btn-type="map" data-id="${data.id}">
+                <img src="img/map.png" alt="map"></img>
+                <br>MAP
+              </span>
+              <span class="dataset-action-btn" data-btn-type="delete" data-id="${data.id}">
+                <img src="img/trash.png" alt="delete"></img>
+                <br>REMOVE
+              </span>
+            </span>
+          </h2>
         </div>`;
       });
       markUp += `
         <div class="item link" data-id="add-data-set">
-          <h2><img class="light" src="img/add-light.png" alt="add dataset"><img class="dark" src="img/add-dark.png" alt="add dataset"></img><span>ADD DATASET</span></h2>
+          <h2>
+            <img class="light" src="img/add-light.png" alt="add dataset"><img class="dark" src="img/add-dark.png" alt="add dataset"></img>
+            <span>ADD DATASET</span>
+          </h2>
         </div>
       </article>`;
     }else{
@@ -70,113 +89,15 @@ export default class Dashboard {
           </article>
           ${tempMarkup[0]}
         `;
-        // NOTE: removing breadcrumbs
-        // <section class="breadcrumbs">
-        //   <article class="inner">
-        //     <ul class="cf">
-        //       ${tempMarkup[1]}
-        //     </ul>
-        //   </article>
-        // </section>
-        // NOTE: removing charting for now
-        // data.dataSets.forEach(function(set){
-        //   switch (true) {
-        //     case set.id === "911":
-        //       chartingItems.push(set);
-        //       break;
-        //     case set.id === "crime":
-        //       chartingItems.push(set);
-        //       break;
-        //     default:
-        //
-        //   }
-        // });
-        console.log(chartingItems);
-        if(chartingItems.length){
-          tempHTML += `<article class="chart-section">`;
-          chartingItems.forEach(function(item){
-            tempHTML += `
-              <div>
-                <h2>${item.id}</h2>
-                <canvas id="${item.id}-chart"`;
-            if(item.id === "crime"){
-              tempHTML += `
-                width="400" height="250"></canvas>
-              </div>
-              `;
-            }else{
-              tempHTML += `
-                width="400" height="1200"></canvas>
-              </div>
-              `;
-            }
-          });
-          tempHTML += `</article>`;
-          document.querySelector('.panel-content').innerHTML = tempHTML;
-          let rawChartData = controller.dashboard.buildChartData(chartingItems);
-          let cleanChartData = {};
-          for(let chart in rawChartData){
-            cleanChartData[chart] = {"labels":[],"data":[],"color":[]};
-            for(let value in rawChartData[chart]){
-              cleanChartData[chart].labels.push(value);
-              cleanChartData[chart].data.push(rawChartData[chart][value]);
-              cleanChartData[chart].color.push(JSUtilities.dynamicColors());
-            }
-          }
-          console.log(cleanChartData);
-          for (var chart in cleanChartData) {
-            console.log(chart);
-            console.log(cleanChartData[chart]);
-            controller.dashboard.ctx[chart] = document.getElementById(chart + "-chart");
-            controller.dashboard.charts[chart] = new Chart(controller.dashboard.ctx[chart], {
-                type: 'horizontalBar',
-                data: {
-                    labels: cleanChartData[chart].labels,
-                    datasets: [{
-                        data: cleanChartData[chart].data,
-                        backgroundColor: "#E48F22",
-                        borderColor: "#E48F22"
-                    }]
-                },
-                options: {
-                  legend: {
-                      display: false
-                  },
-                  scales: {
-                      yAxes: [{
-                          ticks: {
-                              fontColor: "#004544"
-                          },
-                          gridLines: {
-                            color: 'rgba(0,69,68,.25)'
-                          }
-                      }],
-                      xAxes: [{
-                          ticks: {
-                              fontColor: "#004544"
-                          },
-                          gridLines: {
-                            color: 'rgba(0,69,68,.25)'
-                          }
-                      }]
-                  }
-                }
-             });
-          }
-        }else{
-          document.querySelector('.panel-content').innerHTML = tempHTML;
-        }
-        let dashItems = document.querySelectorAll("nav .item.link");
+        document.querySelector('.panel-content').innerHTML = tempHTML;
+        let dashItems = document.querySelectorAll("nav .dataset-action-btn");
         dashItems.forEach(function(item){
           item.addEventListener('click', function(e){
-            controller.loadDatasetView(e, controller);
+            controller.datasetDashboarActions(e, controller);
           });
         });
-        let breadcrumbs = document.querySelectorAll('.cf a');
-        breadcrumbs.forEach(function(bread){
-          bread.addEventListener('click', function(e){
-            controller.loadPrevious(e, controller);
-          });
+        document.querySelector('nav .item.link').addEventListener('click', function(){
+          controller.addDataset(controller);
         });
         document.getElementById('initial-loader-overlay').className = '';
         break;
@@ -350,6 +271,7 @@ export default class Dashboard {
     console.log("loading property view");
     let tempHTML = `
     <article id="view-map-btn"><span>VIEW ON MAP</span> <img src="img/map-view.png" alt="map"></article>
+    <article id="view-filters-btn"><span>FILTERS</span> <img src="img/settings-1.png" alt="filters"></article>
     <article class="sec-title property"><h2>PROPERTY LOOKUP <span><img src="img/property-green.png" alt="property search"></img></span></h2></article>
     <article id="property-search"></article>`;
     document.querySelector('.panel-content').className = "panel-content details";
