@@ -418,7 +418,7 @@ img{width: 100%;}
         cursor: pointer;
 
         h2{
-          
+
           img.dark{
             width: 1em;
             margin: auto;
@@ -612,8 +612,10 @@ ul {
 }
 
 .breadcrumbs {
-	width: 100%;
+	width: calc(100% - 20em);
   padding: 0 2em 0 1em;
+  position: relative;
+  top: -.5em;
 }
 
 .inner{
