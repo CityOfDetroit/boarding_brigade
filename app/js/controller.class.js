@@ -82,9 +82,21 @@ export default class Controller {
   }
   mapToolEvent(ev){
     console.log(ev);
-    let area = turf.area(ev.features[0]);
-    area = Math.round(area*100)/100;
-    console.log(area);
+    switch (ev.type) {
+      case "draw.create":
+        let area = turf.area(ev.features[0]);
+        area = Math.round(area*100)/100;
+        console.log(area);
+        this.appController.map.drawTool.options.controls.polygon = false;
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon').style.display = "none";
+        break;
+      case "draw.delete":
+        this.appController.map.drawTool.options.controls.polygon = true;
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon').style.display = "block";
+        break;
+      default:
+
+    }
   }
   addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
