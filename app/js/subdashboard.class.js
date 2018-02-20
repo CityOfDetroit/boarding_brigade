@@ -3,6 +3,8 @@ import Chart from 'chart.js';
 const moment = require('moment');
 export default class SubDashboard {
   constructor() {
+    this.currentProperties = null;
+    this.selectedProperties = null;
   }
   loadStartView(set, controller){
     console.log(controller.dataBank[set]);

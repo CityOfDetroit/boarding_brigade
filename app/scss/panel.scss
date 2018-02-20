@@ -200,6 +200,28 @@ $lg: new-breakpoint(min-width 1024px);
     }
   }
 }
+#buffer-panel{
+  position: absolute;
+  bottom: -30em;
+  background-color: $white;
+  left: 6em;
+  width: 15em;
+  height: 25em;
+  transition: all $base-duration ease;
+
+  .box{
+    position: relative;
+    display: none;
+  }
+}
+#buffer-panel.active{
+  bottom: 1em;
+  transition: all $base-duration ease;
+
+  .box{
+    display: block;
+  }
+}
 #map-side-panel.active, #map-data-panel.active{
   left: 4em;
   transition: all $base-duration ease;

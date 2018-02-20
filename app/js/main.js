@@ -158,6 +158,9 @@ import Connector from './connector.class.js';
   document.getElementById("hidde-map-data-btn").addEventListener('click', function(){
     document.getElementById("map-data-panel").className = "";
   });
+  document.getElementById("buffer-btn").addEventListener('click', function(){
+    controller.buffer.editBuffer(controller);
+  });
   let layerBtns = document.querySelectorAll('input[name="datasets"]');
   layerBtns.forEach(function(btn){
     btn.addEventListener('click', function(ev){

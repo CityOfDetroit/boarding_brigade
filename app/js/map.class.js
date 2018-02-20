@@ -47,8 +47,10 @@ export default class Map {
       this.drawTool = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
-            polygon: true,
-            trash: true
+          point: true,
+          line_string: true,
+          polygon: true,
+          trash: true
         }
       });
       this.map.addControl(this.drawTool);

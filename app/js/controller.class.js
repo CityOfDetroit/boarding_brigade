@@ -5,6 +5,7 @@ import Panel from './panel.class.js';
 import Router from './router.class.js';
 import JSUtilities from './utilities.class.js';
 import DataManager from './data-manager.class.js';
+import Buffer from './buffer.class.js';
 import flatpickr from "flatpickr";
 import mapboxgl from 'mapbox-gl';
 const turf = require('@turf/turf');
@@ -25,6 +26,7 @@ export default class Controller {
     this.dataManager = new DataManager('https://apis.detroitmi.gov/data_cache/city_data_summaries/');
     this.dashboard = new Dashboard();
     this.panel = new Panel();
+    this.buffer = new Buffer();
     this.map = new Map(map, this);
     this.router = new Router(router);
     this.initialLoad(this);
@@ -87,15 +89,23 @@ export default class Controller {
         let area = turf.area(ev.features[0]);
         area = Math.round(area*100)/100;
         console.log(area);
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_point').style.display = "none";
+        this.appController.map.drawTool.options.controls.line_string = false;
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_line').style.display = "none";
         this.appController.map.drawTool.options.controls.polygon = false;
         document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon').style.display = "none";
+        document.querySelector('#buffer-btn').className = "active";
         break;
       case "draw.delete":
+        this.appController.map.drawTool.options.controls.point = true;
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_point').style.display = "block";
+        this.appController.map.drawTool.options.controls.line_string = true;
+        document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_line').style.display = "block";
         this.appController.map.drawTool.options.controls.polygon = true;
         document.querySelector('.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon').style.display = "block";
         break;
       default:
-
+        console.log('editing polygon');
     }
   }
   addDateBoundaryPicker(controller){
