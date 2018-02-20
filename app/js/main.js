@@ -1,7 +1,24 @@
 'use strict';
 import Controller from './controller.class.js';
 import Connector from './connector.class.js';
-(function(){
+const Navigo = require('navigo');
+const root = null;
+const useHash = false; // Defaults to: false
+const hash = '#!'; // Defaults to: '#'
+let router = new Navigo(root, useHash, hash);
+
+router
+  .on({
+    'mayor': function () {
+      console.log("mayor's view");
+    },
+    '*': function () {
+      console.log('loading default view');
+    }
+  })
+  .resolve();
+
+function initialLoad(){
   const dataURL = 'js/layers.json';
   let controller = null;
   fetch(dataURL).then(function(response) {
@@ -167,4 +184,4 @@ import Connector from './connector.class.js';
       controller.sandBoxLayers(ev, controller);
     });
   });
-})(window);
+}
