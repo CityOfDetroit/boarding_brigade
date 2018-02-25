@@ -835,10 +835,10 @@ main {
       .mapboxgl-missing-css{display: none;}
 		}
 
-    #layers-btn, #buffer-btn{
+    #layers-btn, #buffer-btn, #settings-btn{
       position: absolute;
       bottom: 2em;
-      left: 5em;
+      left: 2em;
       background-color: $color-4;
       padding: .25em .5em;
       transition: all $base-duration ease;
@@ -855,16 +855,19 @@ main {
         font-weight: bold;
       }
     }
+    #settings-btn{
+      bottom: 5em;
+    }
     #buffer-btn{
       display: none;
-      bottom: 5em;
+      bottom: 8em;
     }
 
     #buffer-btn.active{
       display: block
     }
 
-    #layers-btn:hover, #buffer-btn:hover{
+    #layers-btn:hover, #buffer-btn:hover, #settings-btn:hover{
       padding: .25em .7em;
       background-color: lighten($color-4, 10%);
       transition: all $base-duration ease;

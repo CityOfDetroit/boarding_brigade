@@ -1,24 +1,7 @@
 'use strict';
 import Controller from './controller.class.js';
 import Connector from './connector.class.js';
-const Navigo = require('navigo');
-const root = null;
-const useHash = false; // Defaults to: false
-const hash = '#!'; // Defaults to: '#'
-let router = new Navigo(root, useHash, hash);
-
-router
-  .on({
-    'mayor': function () {
-      console.log("mayor's view");
-    },
-    '*': function () {
-      console.log('loading default view');
-    }
-  })
-  .resolve();
-
-function initialLoad(){
+(function(){
   const dataURL = 'js/layers.json';
   let controller = null;
   fetch(dataURL).then(function(response) {
@@ -132,36 +115,17 @@ function initialLoad(){
     ["#feebe2","#fbb4b9","#f768a1","#c51b8a","#7a0177"]);
   })
   .catch(function(error) { console.log(error); });
-  const buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(function(btn){
-    btn.addEventListener('click',function(ev){
-      // console.log(ev);
-      if(ev.target.tagName === "DIV"){
-        // if(ev.target.className != "tab-btn active"){
-        //   document.querySelector('.tab-btn.active').className = 'tab-btn';
-        //   controller.createPanelData(ev.target.children[1].innerText, controller);
-        //   ev.target.className = 'tab-btn active';
-        // }
-        document.querySelector('.tab-btn.active').className = 'tab-btn';
-        controller.createPanelData(ev.target.children[1].innerText, controller);
-        ev.target.className = 'tab-btn active';
-      }else{
-        // if(ev.target.parentNode.className != "tab-btn active"){
-        //   document.querySelector('.tab-btn.active').className = 'tab-btn';
-        //   controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
-        //   ev.target.parentNode.className = 'tab-btn active';
-        // }
-        document.querySelector('.tab-btn.active').className = 'tab-btn';
-        controller.createPanelData(ev.target.parentNode.children[1].innerText, controller);
-        ev.target.parentNode.className = 'tab-btn active';
-      }
-    });
-  });
   let closeAlertBtns = document.querySelectorAll('.close');
   closeAlertBtns.forEach(function(btn){
     btn.addEventListener('click', function(ev){
         controller.closeAlert(ev)
     });
+  });
+  document.getElementById("hidde-settings-btn").addEventListener('click', function(){
+    document.getElementById("settings-map-panel").className = "";
+  });
+  document.getElementById("settings-btn").addEventListener('click', function(){
+    document.getElementById("settings-map-panel").className = "active";
   });
   document.getElementById("hidde-panel-btn").addEventListener('click', function(){
     document.getElementById("map-side-panel").className = "";
@@ -184,4 +148,4 @@ function initialLoad(){
       controller.sandBoxLayers(ev, controller);
     });
   });
-}
+})(window);

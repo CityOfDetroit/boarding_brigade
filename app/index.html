@@ -44,89 +44,16 @@
       <div></div>
     </article>
   </section>
-
-  <!-- NOTE: hidding menu -->
-  <!-- <label for="menu" class="menu">
-    <span></span>
-    <span></span>
-    <span></span>
-    MENU
-  </label> -->
-  <input type="checkbox" id="menu" checked/>
   <header>
     <article class="logo">
       <img src="img/logo-220x220.jpg" alt="City of Detroit">
     </article>
     <section id="top-filters">
       <article>
-        <label for="start-date">
-          Start Date:
-          <input type="text" id="start-date" name="start-date" value="">
-        </label>
-      </article>
-      <article class="">
-        <label for="end-date">
-          End Date:
-          <input type="text" id="end-date" name="end-date" value="">
-        </label>
-      </article>
-      <article>
-        <label for="boundaries">
-          Boundary:
-          <input id="boundaries" type="text" list="boundaries-list" name="boundaries" value="city">
-          <datalist id="boundaries-list">
-            <option value="city">Cityk</option>
-            <option value="council"></option>
-            <option value="neighborhood"></option>
-          </datalist>
-        </label>
-      </article>
-      <article>
-        <label for="polygons">
-          Polygon:
-          <input id="polygons" type="text" list="polygons-list" name="polygons" value="" disabled>
-          <datalist id="polygons-list">
-          </datalist>
-        </label>
+        <h1>ChopShop</h1>
       </article>
     </section>
   </header>
-  <article id="view-tabs">
-    <div class="tab-btn active" data-view="dash">
-      <img src="img/gauge.png" alt="dashboard">
-      <span>DASH</span>
-    </div>
-    <div class="tab-btn" data-view="map">
-      <img src="img/map-view.png" alt="map">
-      <span>MAP</span>
-    </div>
-    <div class="tab-btn">
-      <img src="img/property.png" alt="property">
-      <span>PROPERTY</span>
-    </div>
-    <!-- <div class="tab-btn">
-      <img src="img/filter.png" alt="filters">
-      <span>FILTERS</span>
-    </div>
-    <div class="tab-btn">
-      <img src="img/wrench.png" alt="tools">
-      <span>TOOLS</span>
-    </div>
-    <div class="tab-btn">
-      <img src="img/settings.png" alt="settings">
-      <span>SET</span>
-    </div>
-    <div class="tab-btn">
-      <img src="img/question.png" alt="form">
-      <span>FORM</span>
-    </div> -->
-  </article>
-  <nav class="nav">
-  	<section id="panel-container">
-      <article class="panel-content">
-      </article>
-  	</section>
-  </nav>
   <main>
     <section class="map-panel">
       <article id="map"></article>
@@ -136,6 +63,10 @@
         <div class="text"></div>
       </article>
       <article id="geocoder"></article>
+      <article id="settings-btn">
+        <span>SETTINGS</span>
+        <img src="img/settings-1.png" alt="settings">
+      </article>
       <article id="layers-btn">
         <span>LAYERS</span>
         <img src="img/layers.png" alt="layers">
@@ -148,8 +79,9 @@
   </main>
   <section id="buffer-panel">
     <section class="box">
-      <article id="hidde-panel-btn">x</article>
+      <article id="hidde-buffer-panel-btn">BACK</article>
       <article class="panel-information">
+        <h2>BUFFER SETTINGS</h2>
         <label for="buffer-on">
           <div class="toggle">
             <input id="buffer-on" type="checkbox" class="check">
@@ -158,6 +90,46 @@
           </div>
           <span>Add Buffer</span>
         </label>
+      </article>
+    </section>
+  </section>
+  <section id="settings-map-panel">
+    <section class="box">
+      <article id="hidde-settings-btn">
+        BACK
+      </article>
+      <article class="panel-information">
+        <h2>SETTINGS</h2>
+        <article>
+          <label for="start-date">
+            Start Date:
+            <input type="text" id="start-date" name="start-date" value="" placeholder="Select start date...">
+          </label>
+        </article>
+        <article class="">
+          <label for="end-date">
+            End Date:
+            <input type="text" id="end-date" name="end-date" value="" placeholder="Select end date...">
+          </label>
+        </article>
+        <article class="">
+          <label for="boundary-type">
+            Boundary Type:
+            <input list="boundary-type" name="boundary-type">
+            <datalist id="boundary-type">
+              <option value="Council">
+              <option value="Neighborhood">
+            </datalist>
+          </label>
+        </article>
+        <article class="">
+          <label for="boundary-list">
+            Boundary Selection:
+            <input list="boundary-list" name="boundary-list">
+            <datalist id="boundary-list">
+            </datalist>
+          </label>
+        </article>
       </article>
     </section>
   </section>

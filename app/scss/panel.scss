@@ -49,7 +49,7 @@ $lg: new-breakpoint(min-width 1024px);
   }
 }
 
-#map-data-panel{
+#map-data-panel, #settings-map-panel, #buffer-panel{
   position: fixed;
   top: 4em;
   left: -25em;
@@ -200,37 +200,15 @@ $lg: new-breakpoint(min-width 1024px);
     }
   }
 }
-#buffer-panel{
-  position: absolute;
-  bottom: -30em;
-  background-color: $white;
-  left: 6em;
-  width: 15em;
-  height: 25em;
-  transition: all $base-duration ease;
-
-  .box{
-    position: relative;
-    display: none;
-  }
-}
-#buffer-panel.active{
-  bottom: 1em;
-  transition: all $base-duration ease;
-
-  .box{
-    display: block;
-  }
-}
-#map-side-panel.active, #map-data-panel.active{
-  left: 4em;
+#map-side-panel.active, #map-data-panel.active, #settings-map-panel.active, #buffer-panel.active{
+  left: 0;
   transition: all $base-duration ease;
 }
 #map-side-panel-small.active{
-  left: 4em;
+  left: 0;
   transition: all $base-duration ease;
 }
-#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn{
+#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn, #hidde-settings-btn, #hidde-buffer-panel-btn{
   position: absolute;
   top: -.5em;
   right: 0;
@@ -241,7 +219,7 @@ $lg: new-breakpoint(min-width 1024px);
   transition: all $base-duration ease;
   cursor: pointer;
 }
-#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover{
+#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover, #hidde-settings-btn:hover, #hidde-buffer-panel-btn:hover{
   padding: .7em 1.15em;
   background-color: lighten($color-4, 5%);
   transition: all $base-duration ease;

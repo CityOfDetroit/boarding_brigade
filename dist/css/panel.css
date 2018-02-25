@@ -23,7 +23,7 @@
     #map-side-panel-small .box p:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.6); }
 
-#map-data-panel {
+#map-data-panel, #settings-map-panel, #buffer-panel {
   position: fixed;
   top: 4em;
   left: -25em;
@@ -34,17 +34,17 @@
   background-color: #fff;
   padding: 1em;
   transition: all 500ms ease; }
-  #map-data-panel .box {
+  #map-data-panel .box, #settings-map-panel .box, #buffer-panel .box {
     position: relative; }
-    #map-data-panel .box h2 {
+    #map-data-panel .box h2, #settings-map-panel .box h2, #buffer-panel .box h2 {
       color: #CF3234;
       font-size: 1.5em;
       font-weight: bold; }
-  #map-data-panel .layers-list {
+  #map-data-panel .layers-list, #settings-map-panel .layers-list, #buffer-panel .layers-list {
     padding-top: 1em; }
-    #map-data-panel .layers-list div {
+    #map-data-panel .layers-list div, #settings-map-panel .layers-list div, #buffer-panel .layers-list div {
       padding: .5em 1em; }
-    #map-data-panel .layers-list div.active {
+    #map-data-panel .layers-list div.active, #settings-map-panel .layers-list div.active, #buffer-panel .layers-list div.active {
       background-color: #efbd7d; }
 
 #map-side-panel {
@@ -121,33 +121,15 @@
     #map-side-panel .panel-information .section-demos {
       grid-area: demos; }
 
-#buffer-panel {
-  position: absolute;
-  bottom: -30em;
-  background-color: #fff;
-  left: 6em;
-  width: 15em;
-  height: 25em;
-  transition: all 500ms ease; }
-  #buffer-panel .box {
-    position: relative;
-    display: none; }
-
-#buffer-panel.active {
-  bottom: 1em;
-  transition: all 500ms ease; }
-  #buffer-panel.active .box {
-    display: block; }
-
-#map-side-panel.active, #map-data-panel.active {
-  left: 4em;
+#map-side-panel.active, #map-data-panel.active, #settings-map-panel.active, #buffer-panel.active {
+  left: 0;
   transition: all 500ms ease; }
 
 #map-side-panel-small.active {
-  left: 4em;
+  left: 0;
   transition: all 500ms ease; }
 
-#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn {
+#hidde-panel-btn, #hidde-panel-small-btn, #hidde-map-data-btn, #hidde-settings-btn, #hidde-buffer-panel-btn {
   position: absolute;
   top: -.5em;
   right: 0;
@@ -158,7 +140,7 @@
   transition: all 500ms ease;
   cursor: pointer; }
 
-#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover {
+#hidde-panel-btn:hover, #hidde-panel-small-btn:hover, #hidde-map-data-btn:hover, #hidde-settings-btn:hover, #hidde-buffer-panel-btn:hover {
   padding: .7em 1.15em;
   background-color: #d44748;
   transition: all 500ms ease; }

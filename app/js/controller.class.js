@@ -78,8 +78,8 @@ export default class Controller {
         // console.log(dataList);
       });
       // console.log(dataList);
-      controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat, zoom: controller.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
-      controller.createPanelData('DASH', controller);
+      // controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat, zoom: controller.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
+      // controller.createPanelData('DASH', controller);
     });
   }
   mapToolEvent(ev){
@@ -110,7 +110,6 @@ export default class Controller {
   }
   addDateBoundaryPicker(controller){
     flatpickr('#start-date', {
-      defaultDate: controller.defaultSettings.startDate,
       altInput: true,
       altFormat: "F j, Y",
       dateFormat: "Y-m-d",
@@ -120,7 +119,6 @@ export default class Controller {
       }
     });
     flatpickr('#end-date', {
-      defaultDate: controller.defaultSettings.endDate,
       altInput: true,
       altFormat: "F j, Y",
       dateFormat: "Y-m-d",
@@ -129,23 +127,23 @@ export default class Controller {
         controller.createPanelData('DASH', controller);
       }
     });
-    let boundary = document.getElementById("boundaries");
-    boundary.addEventListener('input', function(){
-      console.log('input changed to: ', boundary.value);
-      switch (boundary.value) {
-        case "council":
-          controller.polygonPicker(boundary.value, controller);
-          break;
-        case "neighborhood":
-          controller.polygonPicker(boundary.value, controller);
-          break;
-        case "city":
-          controller.polygonPicker(boundary.value, controller);
-          break;
-        default:
-
-      }
-    });
+    // let boundary = document.getElementById("boundaries");
+    // boundary.addEventListener('input', function(){
+    //   console.log('input changed to: ', boundary.value);
+    //   switch (boundary.value) {
+    //     case "council":
+    //       controller.polygonPicker(boundary.value, controller);
+    //       break;
+    //     case "neighborhood":
+    //       controller.polygonPicker(boundary.value, controller);
+    //       break;
+    //     case "city":
+    //       controller.polygonPicker(boundary.value, controller);
+    //       break;
+    //     default:
+    //
+    //   }
+    // });
   }
   createPolygon(currentBoundary, currentPolygon, controller){
     switch (currentBoundary) {
