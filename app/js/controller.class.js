@@ -62,6 +62,8 @@ export default class Controller {
     .then((resp) => resp.json()) // Transform the data into json
     .then(function(data) {
       controller.cityPolygon = data.features[0];
+
+      //console.log("city poly", controller.cityPolygon)
       controller.defaultSettings.startDate = moment().subtract(currentOfSet, 'days').format('YYYY-MM-DD');
       controller.defaultSettings.endDate = moment().format('YYYY-MM-DD');
       console.log(controller.defaultSettings);
@@ -79,7 +81,7 @@ export default class Controller {
       });
       // console.log(dataList);
       // controller.router.updateURLParams({lng: controller.map.map.getCenter().lng, lat: controller.map.map.getCenter().lat, zoom: controller.map.map.getZoom(), boundary: boundaries, dataSets: dataList, polygon: polygon});
-      // controller.createPanelData('DASH', controller);
+      controller.createPanelData('INIT', controller);
     });
   }
   mapToolEvent(ev){
@@ -284,9 +286,15 @@ export default class Controller {
     console.log(view);
     // console.log(controller);
     switch (view) {
+      case 'INIT':
+        console.log('creating init data');
+        console.log('boundary:', controller.router.getQueryVariable('boundary'))
+        controller.dataManager.createViewData('city', controller.router.getQueryVariable('dataSets'), controller.cityPolygon, controller, view);
+        break;
       case 'DASH':
+        
         document.getElementById('initial-loader-overlay').className = 'active';
-        // console.log('creating stats data');
+        
         controller.activeLayers.forEach(function(layer){
           if(layer != 'parcel-fill'){
             controller.layerAddRemove(layer, "remove", controller);
@@ -304,7 +312,7 @@ export default class Controller {
         document.getElementById('map-data-panel').className = "";
         document.getElementById('map-side-panel').className = "";
         document.getElementById('map-side-panel-small').className = "";
-        controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.router.getQueryVariable('polygon'), controller, view);
+        controller.dataManager.createViewData(controller.router.getQueryVariable('boundary'), controller.router.getQueryVariable('dataSets'), controller.cityPolygon, controller, view);
         document.getElementById('menu').checked = true;
         break;
       case 'MAP':
@@ -464,14 +472,15 @@ export default class Controller {
     }
   }
   layerAddRemove(id, actionType, controller){
-    console.log(id);
+    console.log("The id:", id);
     // console.log(controller);
     // console.log(document.getElementById(id));
     if(actionType === 'add'){
       console.log('add layer');
       if(!controller.activeLayers.length ||  controller.activeLayers.length < 5){
         if(controller.map.map.getLayer(id)){
-          // console.log('layer already exist');
+          console.log('layer already exist');
+          
         }else{
           // console.log('adding')
           let colorList = ["#9ab3ff","#ae017e","#4574ff","#f768a1"];
@@ -521,11 +530,14 @@ export default class Controller {
               };
             }else{
               console.log("no source found");
-              console.log(controller.dataBank[id]);
+              console.log(controller.dataSouresInfo.sources[id]);
+              console.log("datamanager", controller.dataManager);
+              console.log("controller", controller);
+              console.log("databank", controller.dataBank)
               let sources = [{
                 "id": id,
                 "type": "geojson",
-                "data": controller.dataBank[id]
+                "data": "https://data.detroitmi.gov/resource/9i6z-cm98.json?$limit=200000"
               }];
               controller.map.addSources(sources, controller);
               tempNewLayer = {

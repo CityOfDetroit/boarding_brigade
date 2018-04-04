@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var historyApiFallback = require('connect-history-api-fallback')
 var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -34,7 +35,9 @@ gulp.task('browserSync', function() {
     server: {
       baseDir: 'dist'
     },
-    https: true
+    https: true,
+    // Use the history api fallback in development for single page routes
+    middleware: [ historyApiFallback() ]
   });
 });
 

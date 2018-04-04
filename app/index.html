@@ -9,7 +9,7 @@
   <!--build:css css/styles.min.css-->
   <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+  <link rel="stylesheet" type="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
   <link href="https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css" type="text/css" />
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.4/mapbox-gl-draw.css' type='text/css' />
@@ -17,188 +17,122 @@
   <!--endbuild-->
 </head>
 <body>
-  <section id="initial-loader-overlay" class="">
-    <article>
-      <div>
-        <div class="loader">
-          <div class="loader__bar"></div>
-          <div class="loader__bar"></div>
-          <div class="loader__bar"></div>
-          <div class="loader__bar"></div>
-          <div class="loader__bar"></div>
-          <div class="loader__ball"></div>
-        </div>
-        <p>LOADING</p>
-      </div>
+  <div class="wrapper">
+    <header>
+      <article class="logo">
+        <img src="img/logo-220x220.jpg" alt="City of Detroit">
+      </article>
+    </header>
+
+    <section class="map-data-panel">
+      <section class="box">
+        <article class="panel-information">
+          <h2 id="current-location">Location</h3>
+          <hr>
+          <ul class="stats">
+
+          </ul>
+
+          <section class="date-settings">
+            <h3>Date Range</h2>
+            <article>
+              <label for="start-date">
+                Start Date:
+                <input type="text" id="start-date" name="start-date" value="" placeholder="Select start date...">
+              </label>
+            </article>
+            <article>
+              <label for="end-date">
+                End Date:
+                <input type="text" id="end-date" name="end-date" value="" placeholder="Select end date...">
+              </label>
+            </article>
+          </section>
+
+          <h3>Boundries</h2>
+          <div class="boundries-list">
+            <form>
+              <fieldset>
+                <ul>
+                  <li>
+                    <input type="radio" name="boundry" id="city-boundry" data-id="city" value="city">
+                    <label for="city-boundry">City</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="boundry"  id="neighborhoods-boundry" data-id="neighborhoods" value="neighborhoods">
+                    <label for="neighborhoods-boundry">Neighborhoods</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="boundry" id="council-boundry" data-id="council" value="council">
+                    <label for="council-boundry">Council Districts</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="boundry" id="census-boundry" data-id="census" value="census">
+                    <label for="census-boundry">Census</label>
+                  </li>
+                </ul>
+              </fieldset>
+            </form>
+          </div>
+
+          <h3>Datasets</h2>
+          <article class="layers-list">
+            <div class="">
+              <input type="checkbox" id="911" name="datasets">
+              <label class="layer-btn checkbox" data-id="911" for="911">911 CALLS</label>
+            </div>
+            <div>
+              <input type="checkbox" id="blight-tickets" name="datasets">
+              <label class="layer-btn checkbox" data-id="blight" for="blight-tickets">BLIGHT TICKETS</label>
+            </div>
+            <div>
+              <input type="checkbox" id="permits" name="datasets">
+              <label class="layer-btn checkbox" data-id="permits" for="permits">BUILDING PERMITS</label>
+            </div>
+            <div>
+              <input type="checkbox" id="crime" name="datasets">
+              <label class="layer-btn checkbox" data-id="crime" for="crime">CRIMES</label>
+            </div>
+            <div>
+              <input type="checkbox" id="boarded" name="datasets">
+              <label class="layer-btn checkbox" data-id="boarded" for="boarded">BOARDED PROPERTIES</label>
+            </div>
+            <div>
+              <input type="checkbox" id="demos" name="datasets">
+              <label class="layer-btn checkbox" data-id="demos" for="demos">DEMOLITIONS</label>
+            </div>
+            <div>
+              <input type="checkbox" id="total-property-sales" name="datasets">
+              <label class="layer-btn checkbox" data-id="sales" for="total-property-sales">TOTAL PROPERTY SALES</label>
+            </div>
+            <div>
+              <input type="checkbox" id="fire" name="datasets">
+              <label class="layer-btn checkbox" data-id="fire" for="fire">FIRE INCIDENTS</label>
+            </div>
+            <div>
+              <input type="checkbox" id="green-lights" name="datasets">
+              <label class="layer-btn checkbox" data-id="green-lights" for="green-lights">GREEN LIGHTS</label>
+            </div>
+          </article>
+        </article>
+      </section>
+    </section>
+
+    <article id="" class="parcel-details">
+      <h3 class="current-parcel">Location</h3>
+      <hr>
+      <section>
+        <ul>
+          <li>Owner Name:</li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </section>
     </article>
-  </section>
-  <section id="alert-overlay" class="">
-    <article>
-      <span class="close">x</span>
-      <div></div>
-    </article>
-  </section>
-  <section id="drill-down-overlay" class="">
-    <article>
-      <span class="close">x</span>
-      <div></div>
-    </article>
-  </section>
-  <header>
-    <article class="logo">
-      <img src="img/logo-220x220.jpg" alt="City of Detroit">
-    </article>
-    <section id="top-filters">
-      <article>
-        <h1>ChopShop</h1>
-      </article>
-    </section>
-  </header>
-  <main>
-    <section class="map-panel">
-      <article id="map"></article>
-      <article id="legend">
-        <strong>LEGEND</strong>
-        <div class="color"></div>
-        <div class="text"></div>
-      </article>
-      <article id="geocoder"></article>
-      <article id="settings-btn">
-        <span>SETTINGS</span>
-        <img src="img/settings-1.png" alt="settings">
-      </article>
-      <article id="layers-btn">
-        <span>LAYERS</span>
-        <img src="img/layers.png" alt="layers">
-      </article>
-      <article id="buffer-btn">
-        <span>BUFFER</span>
-        <img src="img/buffer.png" alt="radius circle">
-      </article>
-    </section>
-  </main>
-  <section id="buffer-panel">
-    <section class="box">
-      <article id="hidde-buffer-panel-btn">BACK</article>
-      <article class="panel-information">
-        <h2>BUFFER SETTINGS</h2>
-        <label for="buffer-on">
-          <div class="toggle">
-            <input id="buffer-on" type="checkbox" class="check">
-            <b class="b switch"></b>
-            <b class="b track"></b>
-          </div>
-          <span>Add Buffer</span>
-        </label>
-      </article>
-    </section>
-  </section>
-  <section id="settings-map-panel">
-    <section class="box">
-      <article id="hidde-settings-btn">
-        BACK
-      </article>
-      <article class="panel-information">
-        <h2>SETTINGS</h2>
-        <article>
-          <label for="start-date">
-            Start Date:
-            <input type="text" id="start-date" name="start-date" value="" placeholder="Select start date...">
-          </label>
-        </article>
-        <article class="">
-          <label for="end-date">
-            End Date:
-            <input type="text" id="end-date" name="end-date" value="" placeholder="Select end date...">
-          </label>
-        </article>
-        <article class="">
-          <label for="boundary-type">
-            Boundary Type:
-            <input list="boundary-type" name="boundary-type">
-            <datalist id="boundary-type">
-              <option value="Council">
-              <option value="Neighborhood">
-            </datalist>
-          </label>
-        </article>
-        <article class="">
-          <label for="boundary-list">
-            Boundary Selection:
-            <input list="boundary-list" name="boundary-list">
-            <datalist id="boundary-list">
-            </datalist>
-          </label>
-        </article>
-      </article>
-    </section>
-  </section>
-  <section id="map-side-panel">
-    <section class="box">
-      <article id="hidde-panel-btn">
-        BACK
-      </article>
-      <article class="panel-information">
-      </article>
-    </section>
-  </section>
-  <section id="map-side-panel-small">
-    <section class="box">
-      <article id="hidde-panel-small-btn">
-        BACK
-      </article>
-      <article class="panel-information">
-      </article>
-    </section>
-  </section>
-  <section id="map-data-panel">
-    <section class="box">
-      <article id="hidde-map-data-btn">
-        BACK
-      </article>
-      <article class="panel-information">
-        <h2>DATASETS</h2>
-        <article class="layers-list">
-          <div class="">
-            <input type="checkbox" id="911" name="datasets">
-            <label class="layer-btn checkbox" data-id="911" for="911">911 CALLS</label>
-          </div>
-          <div>
-            <input type="checkbox" id="blight-tickets" name="datasets">
-            <label class="layer-btn checkbox" data-id="blight-tickets" for="blight-tickets">BLIGHT TICKETS</label>
-          </div>
-          <div>
-            <input type="checkbox" id="permits" name="datasets">
-            <label class="layer-btn checkbox" data-id="permits" for="permits">BUILDING PERMITS</label>
-          </div>
-          <div>
-            <input type="checkbox" id="crime" name="datasets">
-            <label class="layer-btn checkbox" data-id="crime" for="crime">CRIMES</label>
-          </div>
-          <div>
-            <input type="checkbox" id="boarded" name="datasets">
-            <label class="layer-btn checkbox" data-id="boarded" for="boarded">BOARDED PROPERTIES</label>
-          </div>
-          <div>
-            <input type="checkbox" id="demos" name="datasets">
-            <label class="layer-btn checkbox" data-id="demos" for="demos">DEMOLITIONS</label>
-          </div>
-          <div>
-            <input type="checkbox" id="total-property-sales" name="datasets">
-            <label class="layer-btn checkbox" data-id="total-property-sales" for="total-property-sales">TOTAL PROPERTY SALES</label>
-          </div>
-          <div>
-            <input type="checkbox" id="fire" name="datasets">
-            <label class="layer-btn checkbox" data-id="fire" for="fire">FIRE INCIDENTS</label>
-          </div>
-          <div>
-            <input type="checkbox" id="green-lights" name="datasets">
-            <label class="layer-btn checkbox" data-id="green-lights" for="green-lights">GREEN LIGHTS</label>
-          </div>
-        </article>
-      </article>
-    </section>
-  </section>
+    <article id="map"></article>
+  </div>
   <script src="js/app.main.js"></script>
 </body>
 </html>

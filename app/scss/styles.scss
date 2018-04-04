@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700,900');
-@import "radio.scss";
+//@import "radio.scss";
 @import "loader.scss";
 @import "panel.scss";
 @import "toggle.scss";
@@ -40,228 +40,6 @@ main {position: relative; width: 100%;}
 h1,h2,h3,h4,h5{font-weight: bold; margin: 0;}
 img{width: 100%;}
 // ====================== mobile ============================
-#alert-overlay, #drill-down-overlay, #initial-loader-overlay{
-	display: none;
-
-	article{
-		padding: 0;
-		transition: all .2s ease-in-out;
-	}
-}
-#initial-loader-overlay.active{
-  position: absolute;
-	z-index: 205;
-	height: 100vh;
-	width: 100vw;
-	padding: 1em;
-	background-color: $white;
-	display: flex;
-
-	article{
-		margin: auto;
-		position: relative;
-		max-width: 100%;
-		padding: 4em 2em;
-		transition: all .2s ease-in-out;
-
-		div{
-			padding: .5em;
-
-      p{
-        font-size: 1.28em;
-      }
-		}
-	}
-}
-#drill-down-overlay.active{
-  position: absolute;
-	z-index: 5;
-	height: 100vh;
-	width: 100vw;
-	padding: 1em;
-	background-color: rgba($white, .5);
-	display: flex;
-
-	article{
-
-		div{
-			padding: .5em;
-			background-color: $white;
-			color: $color-5;
-      max-height: 80vh;
-      overflow-y: scroll;
-
-      .hydrant-title{
-        width: 100%;
-        background-color: $color-1;
-        padding: 0;
-        color: $white;
-        display: flex;
-
-        article{
-          width: 33.3334%;
-          padding: 1em;
-          font-weight: bold;
-        }
-      }
-      .hydrant-row:nth-child(even){
-        background-color: $color-3;
-      }
-      .hydrant-row{
-        display: flex;
-        border-bottom: 1px solid $color-1;
-
-        article{
-          width: 33.3334%;
-          padding: 1em;
-        }
-      }
-		}
-
-		.close{
-			position: absolute;
-			top: .5em;
-			right: .5em;
-			font-weight: bold;
-			color: $white;
-			border: 2px solid $white;
-			padding: .25em .5em;
-			border-radius: 50%;
-			cursor: pointer;
-		}
-	}
-}
-#drill-down-overlay.active > article{
-  margin: auto;
-  position: relative;
-  width: 80%;
-  max-width: 100%;
-  background-color: $color-5;
-  padding: 4em 2em;
-  transition: all .2s ease-in-out;
-}
-#alert-overlay.active{
-	position: absolute;
-	z-index: 205;
-	height: 100vh;
-	width: 100vw;
-	padding: 1em;
-	background-color: rgba($white, .5);
-	display: flex;
-
-	article{
-		margin: auto;
-		position: relative;
-		width: 30em;
-		max-width: 100%;
-		background-color: $color-5;
-		padding: 4em 2em;
-		transition: all .2s ease-in-out;
-
-		div{
-			padding: .5em;
-			background-color: $white;
-			color: $color-5;
-		}
-
-		.close{
-			position: absolute;
-			top: .5em;
-			right: .5em;
-			font-weight: bold;
-			color: $white;
-			border: 2px solid $white;
-			padding: .25em .5em;
-			border-radius: 50%;
-			cursor: pointer;
-		}
-	}
-}
-.menu {
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	width: 5em;
-	height: 5em;
-	background-color: $color-1;
-  color: $color-3;
-	//box-shadow: 0 0 20px rgba(black,0.2);
-	transition: transform 250ms ease;
-	cursor: pointer;
-	z-index: 200;
-  font-weight: bold;
-	letter-spacing: .2em;
-  padding: 1em 1em .5em 1em;
-
-	span {
-		position: relative;
-		display: block;
-		width: 100%;
-		height: 2px;
-		background-color: $color-3;
-		float: left;
-		transform-origin: center center;
-		transition: transform 250ms ease;
-		z-index: 200;
-
-		&:nth-of-type(1) {
-			transform: translateY(-.5em);
-		}
-
-		&:nth-of-type(3) {
-			transform: translateY(.5em);
-      margin-bottom: .75em;
-		}
-	}
-}
-
-#menu {
-	display: none;
-
-	&:checked ~ .menu {
-		background-color: $color-3;
-    color: $color-1;
-		// transform: rotate(360deg);
-		// transition: transform 250ms ease;
-
-		span {
-			background-color: $color-1;
-			transition: transform 250ms ease;
-
-			&:nth-of-type(1) {
-				transform: translateY(1px) rotate(45deg);
-			}
-
-			&:nth-of-type(2) {
-				display: none;
-			}
-
-			&:nth-of-type(3) {
-				transform: translateY(-1px) rotate(-45deg);
-			}
-		}
-	}
-
-	&:checked ~ .nav {
-		left: 4em;
-		transition: left $base-duration ease;
-	}
-
-	&:checked ~ main {
-		transform: translateX(250px);
-		transition: transform $base-duration ease;
-	}
-
-	// &:checked ~ header {
-	// 	transform: translateX(250px);
-	// 	transition: transform $base-duration ease;
-	// }
-}
-
 .nav {
 	position: fixed;
 	top: 4em;
@@ -273,242 +51,6 @@ img{width: 100%;}
 	background-color: $white;
 	transition: left $base-duration ease;
 	z-index: 5;
-
-  #panel-container{
-    position: relative;
-    display:flex;
-  }
-
-  #dash-content{
-    flex: 1;
-    height: calc(100vh - 4em);
-    overflow: hidden;
-  }
-  .panel-content{
-    height: calc(100vh - 4em);
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: relative;
-
-    #view-map-btn, #view-filters-btn{
-      position: absolute;
-      top: 1.5em;
-      right: 1em;
-      background-color: $color-4;
-      color: $white;
-      font-weight: bold;
-      padding: .25em .5em;
-      cursor: pointer;
-      transition: all $base-duration ease;
-      z-index: 5;
-
-      span{
-        position: relative;
-        top: -.25em;
-      }
-
-      img{
-        width: 1.5em;
-      }
-    }
-
-    #view-filters-btn{
-      right: 12em;
-    }
-
-    #view-map-btn:hover, #view-filters-btn:hover{
-      padding: .25em .6em;
-      background-color: lighten($color-4, 10%);
-      transition: all $base-duration ease;
-    }
-
-    input{
-      padding: .85em;
-    }
-
-    p{
-      color: $white;
-    }
-
-    .title{
-      margin: 1.5em auto;
-
-      h1{
-        font-size: 1.5em;
-        text-align: center;
-        color: $color-3;
-        text-transform: uppercase;
-      }
-    }
-
-    .sec-title.property{
-      padding-top: 1em;
-
-      h2{
-        width: 12em;
-        border-bottom: .25em solid $color-1;
-      }
-    }
-    .sec-title{
-      padding: 0 1em;
-      color: $color-1;
-      font-size: 1.25em;
-
-      span{
-        position: relative;
-        top: .15em;
-
-        img{
-          width: 1em;
-        }
-      }
-    }
-
-    .highlights{
-      display: flex;
-      flex-wrap: wrap;
-
-      .item{
-        width: 100%;
-        padding: 1em;
-
-        h2{
-          margin: auto;
-          text-align: center;
-          height: 100%;
-          background-color: $color-2;
-          padding: .25em 0;
-          text-transform: uppercase;
-          font-size: 3em;
-          color: $color-1;
-          transition: all .5s ease-in-out;
-
-          span{
-            display: block;
-            font-size: .3em;
-          }
-
-          .dataset-btns{
-            display: flex;
-            padding: 1em;
-            justify-content: space-evenly;
-
-            .dataset-action-btn{
-              cursor: pointer;
-              flex: 1;
-              padding: .25em 1em;
-              text-align: center;
-              font-size: .75em;
-              transition: all .5s ease-in-out;
-
-              img{
-                width: 3em;
-              }
-            }
-            .dataset-action-btn:hover{
-              transition: all .5s ease-in-out;
-              background-color: $color-1;
-              color: $white;
-            }
-          }
-        }
-      }
-
-      .item.link{
-        cursor: pointer;
-
-        h2{
-
-          img.dark{
-            width: 1em;
-            margin: auto;
-            padding-top: 1em;
-            display: block;
-          }
-          img.light{
-            width: 1em;
-            margin: auto;
-            padding-top: 1em;
-            display: none;
-          }
-        }
-      }
-
-      .item.link:hover{
-        h2{
-          background-color: $color-1;
-          color: $color-2;
-          transition: all .5s ease-in-out;
-
-          img.dark{
-            display: none;
-          }
-          img.light{
-            display: block;
-          }
-        }
-      }
-
-      .item.parent-item h2{
-        background-color: $color-1;
-        color: $color-2;
-      }
-
-
-    }
-
-    .chart-section{
-      display: flex;
-      flex-wrap: wrap;
-      padding: 1em;
-
-      h2{
-        text-transform: uppercase;
-        text-align: center;
-        color: $color-1;
-      }
-
-      #myChart, div{
-        flex: 1;
-        max-width: 50%;
-      }
-    }
-
-    .data-sets-boundaries{
-      padding: 1em;
-
-      div{
-        article{
-          position: relative;
-          background-color: $white;
-          padding: .5em;
-
-          span{
-            padding-right: 2em;
-          }
-
-          label:first-child{
-            padding-left: 0;
-          }
-        }
-      }
-
-      h2{
-        color: $color-2;
-      }
-      label{
-        padding: .35em 0 .35em 1.5em;
-        margin-bottom: .5em;
-      }
-    }
-
-    .time-range{
-      article{
-        display: flex;
-      }
-    }
-  }
 }
 
 header{
@@ -520,358 +62,68 @@ header{
   .logo{
     width: 4em;
   }
+}
 
-  #top-filters{
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    color: $white;
+.date-settings{
+  padding-bottom: 2em;
+}
 
-    article{
-      display: flex;
-      padding: 0 1em;
-
-      label{
-        margin: auto;
-        cursor: pointer;
+.boundries-list{
+  margin-bottom: 2em;
+  fieldset{
+    border: none;
+    padding: 0;
+    ul{
+      padding: 0;
+      margin: 0;
+      li{
+        list-style: none;
       }
     }
-
-    input[type="text"]{
-      padding: .5em 1em;
-      border: none;
-    }
   }
 }
 
-#view-tabs{
-  width: 4em;
-  height: 100vh;
-  position: fixed;
-  top: 4em;
-  left: 0;
-  background-color: $color-3;
-  z-index: 6;
-}
-.tab-btn{
-  padding: 1.5em;
-  font-size: .5em;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  transition: all .2s ease-in-out;
-}
-.tab-btn:hover, .tab-btn.active{
-  background-color: $color-1;
-  color: $color-3;
-  transition: all .2s ease-in-out;
-}
-.tab-btn:not(:last-child){
-  border-bottom: 1px solid $color-1;
-}
-ul {
-  position: relative;
-  list-style-type: none;
-  margin: 100px 0;
-  padding: 0;
 
-  li {
-    position: relative;
-    display: block;
-    border-bottom: 5px solid rgba($color-3,1);
-
-    a {
-      position: relative;
-      display: block;
-      margin: 0;
-      padding: 15px 20px;
-      color: $color-3;
-      font-size: 14px;
-      font-weight: bold;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-  }
-}
-.search{
-	width: 3em;
-	padding: .5em;
-	display: flex;
-
-	img{
-		margin: auto;
-	}
-}
-ul {
-  list-style: none;
-}
-
-.cf {
-	padding: 0;
-  &:before, &:after { content: ' '; display: table; }
-  &:after { clear: both; }
-}
-
-.breadcrumbs {
-	width: calc(100% - 20em);
-  padding: 0 2em 0 1em;
-  position: relative;
-  top: -.5em;
-}
-
-.inner{
-	width: 100%;
-}
-
-.breadcrumbs ul {
-	display: flex;
-  margin: 2em 0 1em 0;
-}
-
-.breadcrumbs li {
-  float: left;
-	flex: 1;
-  max-width: 25em;
-  border-bottom: none !important;
-}
-
-.breadcrumbs a {
-  position: relative;
-  display: block;
-  padding: 20.5px !important;
-  padding-right: 0 !important; /* important overrides media queries */
-  font-size: 13px;
-  font-weight: bold;
-  text-align: center;
-  color: $color-1;
-  cursor: pointer;
-}
 // ====================== mobile end ========================
 @media all and (min-width: 401px) {
-  .nav {
-    .panel-content{
-
-      .highlights{
-
-        .item{
-          flex: 1;
-        }
-      }
-
-      .highlights.lots{
-
-        .item{
-          flex: none;
-          width: 33.3333334%;
-        }
-      }
-    }
-  }
-	.filter{
-		flex: 1;
-		display: flex;
-	}
-	.filter article{
-		margin: auto;
-	}
-	.filter label{
-		color: $color-3;
-		font-weight: bold;
-	}
-	.filter input[type="text"]{
-		font-family: 'Montserrat', sans-serif; font-weight: lighter;
-		color: $white;
-		background-color: rgba($color-3, .2);
-		border: none;
-		padding: .5em 1em;
-	}
-	button{
-		border: none;
-		background-color: $color-3;
-		padding: 1em;
-		font-weight: bold;
-		color: $color-1;
-		cursor: pointer;
-		transition: all .2s ease-in-out;
-	}
-	.filter button:hover{
-		padding: 1.15em;
-		box-shadow: -2px 2px 10px 0px rgba($color-2, 0.5);
-		transition: all .2s ease-in-out;
-	}
-	.breadcrumbs a:hover {
-	  background: $color-3;
-    color: $color-1;
-	}
-
-	.breadcrumbs a.active {
-	  color: #777;
-	  background-color: #fafafa;
-	}
-
-	.breadcrumbs a span:first-child {
-	  display: inline-block;
-	  width: 22px;
-	  height: 22px;
-	  padding: 1px;
-	  margin-right: 5px;
-	  border: 2px solid $color-1;
-	  border-radius: 50%;
-	  background-color: #fff;
-	}
-
-	.breadcrumbs a.active span:first-child {
-	  color: #fff;
-	  border-color: #777;
-	  background-color: #777;
-	}
-
-	.breadcrumbs a:before,
-	.breadcrumbs a:after {
-	  content: '';
-	  position: absolute;
-	  top: 0;
-	  left: 100%;
-	  z-index: 1;
-	  display: block;
-	  width: 0;
-	  height: 0;
-	  border-top: 32px solid transparent;
-	  border-bottom: 32px solid transparent;
-	  border-left: 16px solid transparent;
-	}
-
-	.breadcrumbs a:before {
-	  margin-left: 1px;
-	  border-left-color: $color-3;
-	}
-
-	.breadcrumbs a:after {
-	  border-left-color: $white;
-	}
-
-	.breadcrumbs a:hover:after {
-	  border-left-color: $color-3;
-	}
-
-	.breadcrumbs a.active:after {
-	  border-left-color: #fafafa;
-	}
-
-	// .breadcrumbs li:last-child a:before,
-	// .breadcrumbs li:last-child a:after {
-	//   display: none;
-	// }
-}
-// ======================= header end =====================
-// ======================== main ==========================
-#geocoder{
-  position: absolute;
-  top: .65em;
-  right: 3em;
-}
-#legend{
-  position: absolute;
-  bottom: 3em;
-  right: 6em;
-  width: 20em;
-  z-index: 2;
-
-  strong{
-    font-weight: bold;
-    background-color: $white;
+  .wrapper{
+    display: grid;
+    grid-auto-columns: 300px 300px 1fr;
+    grid-auto-rows: 50px 1fr;
+    grid-template:
+      "header header header"
+      "data parcel map"
+    ;
   }
 
-  .color{
-    display: flex;
-    height: 1em;
-
-    span{
-      width: 25%;
-    }
+  header{
+    grid-area: header;
   }
 
-  .text{
-    display: flex;
-
-    label{
-      width: 25%;
-      font-size: .65em;
-      background-color: $white;
-    }
+  .map-data-panel{
+    grid-area: data;
+    padding: 20px;
   }
-}
 
-.legend label,
+  .parcel-details{
+    grid-area: parcel;
+    padding: 20px;
+  }
 
-.legend span {
-  background-color: $white;
-  display:block;
-  float:left;
-  height:15px;
-  width:20%;
-  text-align:center;
-  font-size:.75em;
-}
-main {
-	position: relative;
-	display: flex;
-	align-items: stretch;
-	width: 100vw;
-	height: calc(100vh - 4em);
-	transform: translateX(0px);
-	transition: transform $base-duration ease;
-	z-index: 0;
-
-	.map-panel{
-		display: block;
-		flex: 1;
+  main {
     position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden; }
 
-		#map{
-			width: 100%;
-			height: 100%;
-
-      .mapboxgl-missing-css{display: none;}
-		}
-
-    #layers-btn, #buffer-btn, #settings-btn{
-      position: absolute;
-      bottom: 2em;
-      left: 2em;
-      background-color: $color-4;
-      padding: .25em .5em;
-      transition: all $base-duration ease;
-      cursor: pointer;
-
-      img{
-        width: 1.5em;
-      }
-
-      span{
-        position: relative;
-        top: -.25em;
-        color: $white;
-        font-weight: bold;
-      }
-    }
-    #settings-btn{
-      bottom: 5em;
-    }
-    #buffer-btn{
-      display: none;
-      bottom: 8em;
-    }
-
-    #buffer-btn.active{
-      display: block
-    }
-
-    #layers-btn:hover, #buffer-btn:hover, #settings-btn:hover{
-      padding: .25em .7em;
-      background-color: lighten($color-4, 10%);
-      transition: all $base-duration ease;
-    }
-	}
+  #map {
+    width: 100%;
+    height: 100vh;
+    transition: all 0.2s ease-in-out;
+    grid-area: map;
+  }
 }
+
+
+.mapboxgl-missing-css{display: none;}
 // ===================== main end =========================

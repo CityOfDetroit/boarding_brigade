@@ -4,17 +4,6 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif; }
 
-main {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden; }
-
-#map {
-  width: 100%;
-  height: 100vh;
-  transition: all 0.2s ease-in-out; }
-
 #map.survey-on {
   width: 15em;
   height: 15em;
@@ -365,84 +354,6 @@ main {
   /* Firefox 4 - 18 */
   color: #000;
   opacity: 1; }
-
-@-webkit-keyframes dot-animation-1 {
-  0% {
-    opacity: 1; }
-  33% {
-    opacity: 0; }
-  100% {
-    opacity: 0; } }
-
-@-webkit-keyframes dot-animation-2 {
-  0% {
-    opacity: 0; }
-  33% {
-    opacity: 1; }
-  66% {
-    opacity: 0; } }
-
-@-webkit-keyframes dot-animation-3 {
-  0% {
-    opacity: 0; }
-  66% {
-    opacity: 1; }
-  100% {
-    opacity: 0; } }
-
-@-webkit-keyframes animation-form-btn {
-  0% {
-    padding: .75em; }
-  50% {
-    padding: 1em; }
-  100% {
-    padding: .75em; } }
-
-@-webkit-keyframes animation-close-btn {
-  0%, 50% {
-    -webkit-transform: rotate(0deg); }
-  75% {
-    -webkit-transform: rotate(450deg); }
-  100% {
-    -webkit-transform: rotate(405deg); } }
-
-@keyframes animation-close-btn {
-  0%, 50% {
-    -webkit-transform: rotate(0deg); }
-  75% {
-    -webkit-transform: rotate(360deg); }
-  100% {
-    -webkit-transform: rotate(360deg); } }
-
-@keyframes bounce {
-  22.2% {
-    transform: rotate(90deg);
-    padding: .75em 1em; }
-  55.5% {
-    transform: rotate(90deg);
-    padding: 1em 1em; }
-  88.8% {
-    transform: rotate(90deg);
-    padding: .75em 1em; }
-  100% {
-    transform: rotate(90deg);
-    padding: .5em 1em; } }
-
-@media (min-width: 401px) {
-  #info.active {
-    width: 25em;
-    height: 100vh;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    padding: 0 0 2em 0;
-    transition: all 0.2s ease-in-out;
-    -webkit-box-shadow: 2px 0px 5px -1px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: 2px 0px 5px -1px rgba(0, 0, 0, 0.6);
-    box-shadow: 2px 0px 5px -1px rgba(0, 0, 0, 0.6);
-    overflow-y: auto; } }
 
 @media (max-width: 400px) {
   #back-to-infor-btn {
